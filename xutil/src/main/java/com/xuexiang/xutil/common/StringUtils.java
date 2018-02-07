@@ -183,6 +183,11 @@ public final class StringUtils {
         return sw.toString();
     }
 
+    /**
+     * 将对象转化为String
+     * @param object
+     * @return
+     */
     public static String toString(Object object) {
         if (object == null) {
             return "null";
@@ -319,7 +324,7 @@ public final class StringUtils {
      * @return
      */
     public static String getSimpleName(Object object) {
-        return object.getClass().getSimpleName();
+        return object != null ? object.getClass().getSimpleName() : "NULL";
     }
 
     /**
@@ -328,7 +333,7 @@ public final class StringUtils {
      * @return
      */
     public static String getName(Object object) {
-        return object.getClass().getName();
+        return object != null ? object.getClass().getName() : "NULL";
     }
 
 }

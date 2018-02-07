@@ -48,6 +48,19 @@ public final class LogUtils {
     public static String sLogTag = DEFAULT_LOG_TAG;
 
     /**
+     * 设置调试模式
+     * @param tag
+     */
+    public static void debug(String tag) {
+        if (!StringUtils.isEmpty(tag)) {
+            setDebugMode(true);
+            setLogTag(tag);
+        } else {
+            setDebugMode(false);
+        }
+    }
+
+    /**
      * 设置调试的模式
      * @param isDebug
      */

@@ -90,12 +90,7 @@ public final class XUtil {
      * @param tag
      */
     public static void debug(String tag) {
-        if (!StringUtils.isEmpty(tag)) {
-            LogUtils.setDebugMode(true);
-            LogUtils.setLogTag(tag);
-        } else {
-            LogUtils.setDebugMode(false);
-        }
+       LogUtils.debug(tag);
     }
 
     /**
