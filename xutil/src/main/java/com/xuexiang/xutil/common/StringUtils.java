@@ -18,9 +18,9 @@ package com.xuexiang.xutil.common;
 
 import android.support.annotation.NonNull;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -56,6 +56,96 @@ public final class StringUtils {
      */
     public static boolean isEmptyTrim(final String s) {
         return (s == null || s.trim().length() == 0);
+    }
+
+    /**
+     * String转Int（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static int toInt(final String value, final int defValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defValue;
+    }
+
+    /**
+     * String转Float（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static float toFloat(final String value, final float defValue) {
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defValue;
+    }
+
+    /**
+     * String转Short（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static short toShort(final String value, final short defValue) {
+        try {
+            return Short.parseShort(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defValue;
+    }
+
+    /**
+     * String转Long（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static long toLong(final String value, final long defValue) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defValue;
+    }
+
+    /**
+     * String转Double（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static double toDouble(final String value, final double defValue) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defValue;
+    }
+
+    /**
+     * String转Boolean（防止崩溃）
+     * @param value
+     * @param defValue 默认值
+     * @return
+     */
+    public static boolean toBoolean(final String value, final boolean defValue) {
+        try {
+            return Boolean.parseBoolean(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defValue;
     }
 
     /**
@@ -225,20 +315,18 @@ public final class StringUtils {
         return "Couldn't find a correct type for the object";
     }
 
-
     /**
-     * 获取文件扩展名
-     * @param filename
-     * @return
+     * 获取全路径中的文件拓展名
+     *
+     * @param filePath 文件路径
+     * @return 文件拓展名
      */
-    public static String getExtensionName(String filename) {
-        if (!isEmpty(filename)) {
-            int dot = filename.lastIndexOf('.');
-            if ((dot > -1) && (dot < (filename.length() - 1))) {
-                return filename.substring(dot + 1);
-            }
-        }
-        return filename;
+    public static String getFileExtension(final String filePath) {
+        if (isSpace(filePath)) return filePath;
+        int lastPoi = filePath.lastIndexOf('.');
+        int lastSep = filePath.lastIndexOf(File.separator);
+        if (lastPoi == -1 || lastSep >= lastPoi) return "";
+        return filePath.substring(lastPoi + 1);
     }
 
     /**

@@ -33,7 +33,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-
+    //Gson序列化反序列化的依赖包
+    implementation 'com.google.code.gson:gson:2.7'
 }
 
 

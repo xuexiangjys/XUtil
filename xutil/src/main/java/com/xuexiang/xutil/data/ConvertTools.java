@@ -16,6 +16,8 @@
 
 package com.xuexiang.xutil.data;
 
+import java.util.Locale;
+
 /**
  * 转换相关工具类 
  * (【小端】低位在前，高位在后) 
@@ -77,6 +79,25 @@ public final class ConvertTools {
 			stringBuilder.append(hv);
 		}
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * byte[]数组转换为16进制的字符串
+	 *
+	 * @param data
+	 *            要转换的字节数组
+	 * @return 转换后的结果
+	 */
+	public static final String byteArrayToHexString(byte[] data) {
+		StringBuilder sb = new StringBuilder(data.length * 2);
+		for (byte b : data) {
+			int v = b & 0xff;
+			if (v < 16) {
+				sb.append('0');
+			}
+			sb.append(Integer.toHexString(v));
+		}
+		return sb.toString().toUpperCase(Locale.getDefault());
 	}
 
 	/**
