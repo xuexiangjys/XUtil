@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">XUtil</string>
+
+
+    <string name="tip_open_wifiap_failed">打开热点失败，请到系统设置里检查热点状态！</string>
+    <string name="tip_open_wifiap_success">已开启WLAN热点</string>
+    <string name="tip_close_wifiap_success">已关闭WLAN热点！</string>
+    <string name="tip_close_wifi_success">已关闭WiFi</string>
 </resources>

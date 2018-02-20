@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xutil.file;
+package com.xuexiang.xutil.data;
 
 import android.os.Environment;
 
@@ -24,12 +24,9 @@ import com.xuexiang.xutil.common.StringUtils;
 import java.io.File;
 
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/09/27
- *     desc  : 清除相关工具类
- * </pre>
+ * 清除相关工具类
+ * @author xuexiang
+ * @date 2018/2/16 下午2:35
  */
 public final class CleanUtils {
 

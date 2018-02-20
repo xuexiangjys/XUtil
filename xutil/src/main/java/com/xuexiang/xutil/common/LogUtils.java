@@ -137,9 +137,20 @@ public final class LogUtils {
      *
      * @param msg The message you would like logged.
      */
-    public static void e( String msg) {
+    public static void e(String msg) {
         if (Log.ERROR > gDebugLevel) {
             Log.e(sLogTag, msg);
+        }
+    }
+
+    /**
+     * Send an {@link Log#ERROR} log message.
+     *
+     * @param throwable The message you would like logged.
+     */
+    public static void e(Throwable throwable) {
+        if (Log.ERROR > gDebugLevel) {
+            Log.e(sLogTag, Log.getStackTraceString(throwable));
         }
     }
 

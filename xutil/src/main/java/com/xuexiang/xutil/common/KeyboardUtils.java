@@ -17,12 +17,14 @@
 package com.xuexiang.xutil.common;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -206,41 +208,51 @@ public final class KeyboardUtils {
      * 点击屏幕空白区域隐藏软键盘
      * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
      * <p>需重写 dispatchTouchEvent</p>
-     * <p>参照以下注释代码</p>
+     * @param ev
+     * @param activity 窗口
+     * @return
      */
-    public static void clickBlankArea2HideSoftInput() {
-        Log.i("KeyboardUtils", "Please refer to the following code.");
-        /*
-        @Override
-        public boolean dispatchTouchEvent(MotionEvent ev) {
-            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                View v = getCurrentFocus();
-                if (isShouldHideKeyboard(v, ev)) {
-                    InputMethodManager imm =
-                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS
-                    );
-                }
+    public static void dispatchTouchEvent(MotionEvent ev, Activity activity) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = activity.getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideSoftInput(v);
             }
-            return super.dispatchTouchEvent(ev);
         }
+    }
 
-        // 根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
-        private boolean isShouldHideKeyboard(View v, MotionEvent event) {
-            if (v != null && (v instanceof EditText)) {
-                int[] l = {0, 0};
-                v.getLocationInWindow(l);
-                int left = l[0],
-                        top = l[1],
-                        bottom = top + v.getHeight(),
-                        right = left + v.getWidth();
-                return !(event.getX() > left && event.getX() < right
-                        && event.getY() > top && event.getY() < bottom);
+    /**
+     * 点击屏幕空白区域隐藏软键盘
+     * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
+     * <p>需重写 dispatchTouchEvent</p>
+     * @param ev
+     * @param dialog 窗口
+     * @return
+     */
+    public static void dispatchTouchEvent(MotionEvent ev, Dialog dialog) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = dialog.getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideSoftInput(v);
             }
-            return false;
         }
-        */
+    }
+
+    /**
+     * 点击屏幕空白区域隐藏软键盘
+     * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
+     * <p>需重写 dispatchTouchEvent</p>
+     * @param ev
+     * @param window 窗口
+     * @return
+     */
+    public static void dispatchTouchEvent(MotionEvent ev, Window window) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = window.getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideSoftInput(v);
+            }
+        }
     }
 
     /**
@@ -265,6 +277,10 @@ public final class KeyboardUtils {
     }
 
     public interface OnSoftInputChangedListener {
+        /**
+         * 键盘输入法状态改变
+         * @param height
+         */
         void onSoftInputChanged(int height);
     }
 }

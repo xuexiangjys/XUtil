@@ -17,10 +17,12 @@
 package com.xuexiang.xutil.common;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,6 +39,8 @@ public final class StringUtils {
     private StringUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
+
+    public final static String EMPTY = "";
 
     /**
      * 判断字符串是否为 null 或长度为 0
@@ -155,6 +159,39 @@ public final class StringUtils {
      */
     public static String getString(String s) {
         return isEmptyTrim(s) ? "" : s;
+    }
+
+    /**
+     * 判断字符串是否是整数
+     */
+    public static boolean isInteger(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断字符串是否是双精度浮点数
+     */
+    public static boolean isDouble(String value) {
+        try {
+            Double.parseDouble(value);
+            if (value.contains("."))
+                return true;
+            return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断字符串是否是数字
+     */
+    public static boolean isNumber(String value) {
+        return isInteger(value) || isDouble(value);
     }
 
     /**
@@ -424,4 +461,18 @@ public final class StringUtils {
         return object != null ? object.getClass().getName() : "NULL";
     }
 
+    /**
+     * 将字符串格式化为带两位小数的字符串
+     *
+     * @param str 字符串
+     * @return
+     */
+    public static String format2Decimals(String str) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");// 构造方法的字符格式这里如果小数不足2位,会以0补足.
+        if (isEmpty(str)) {
+            return "";
+        } else {
+            return decimalFormat.format(toDouble(str, -1));
+        }
+    }
 }
