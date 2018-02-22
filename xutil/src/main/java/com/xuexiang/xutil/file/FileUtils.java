@@ -17,6 +17,10 @@
 package com.xuexiang.xutil.file;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Environment;
+
+import com.xuexiang.xutil.XUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -34,12 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/05/03
- *     desc  : 文件相关工具类
- * </pre>
+ * 文件相关工具类
+ * @author xuexiang
+ * @date 2018/2/20 下午4:49
  */
 public final class FileUtils {
 
@@ -48,6 +49,74 @@ public final class FileUtils {
     }
 
     private static final String LINE_SEP = System.getProperty("line.separator");
+
+    //================文件路径获取===================//
+    public static boolean isSDCardExist() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取磁盘的缓存目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/cache;
+     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache;
+     */
+    public static String getDiskCacheDir() {
+        return isSDCardExist() && XUtil.getContext().getExternalCacheDir() != null ? XUtil.getContext().getExternalCacheDir().getPath() : XUtil.getContext().getCacheDir().getPath();
+    }
+
+    /**
+     * 获取磁盘的自定义缓存目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/cache/fileDir;
+     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache/fileDir;
+     */
+    public static String getDiskCacheDir(String fileDir) {
+        return getDiskCacheDir() + File.separator + fileDir;
+    }
+
+    /**
+     * 获取磁盘的文件目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/files;
+     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files;
+     */
+    public static String getDiskFilesDir() {
+        return isSDCardExist() && XUtil.getContext().getExternalFilesDir(null) != null ? XUtil.getContext().getExternalFilesDir(null).getPath() : XUtil.getContext().getFilesDir().getPath();
+    }
+
+    /**
+     * 获取磁盘的自定义文件目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/files/fileDir;
+     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files/fileDir;
+     */
+    public static String getDiskFilesDir(String fileDir) {
+        return getDiskFilesDir() + File.separator + fileDir;
+    }
+
+    /**
+     * 获取磁盘目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/fileDir;
+     *              存在: /storage/emulated/0/fileDir; 或者 /storage/sdcard/fileDir
+     */
+    public static String getDiskDir(String fileDir) {
+        if (isSDCardExist()) {
+            return Environment.getExternalStorageDirectory() + File.separator + fileDir;
+        } else {
+            return XUtil.getContext().getDir(fileDir, Context.MODE_PRIVATE).getPath();
+        }
+    }
+
+    /**
+     * 获取磁盘目录
+     * @return SD卡不存在: /data/data/com.xxx.xxx/com.xxx.xxx;
+     *              存在: /storage/emulated/0/com.xxx.xxx; 或者 /storage/sdcard/com.xxx.xxx
+     */
+    public static String getDiskDir() {
+        return getDiskDir(XUtil.getContext().getPackageName());
+    }
+
+    //=========================================//
 
     /**
      * 根据文件路径获取文件

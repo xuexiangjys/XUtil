@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xutil.data;
+package com.xuexiang.xutil.file;
 
 import android.os.Environment;
 
