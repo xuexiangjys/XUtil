@@ -30,3 +30,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    APP_RELEASE_STORE_FILE = "../keystores/android.keystore"
+    APP_RELEASE_KEY_ALIAS = "android.keystore"
+    APP_RELEASE_STORE_PASSWORD = "xuexiang"
+    APP_RELEASE_KEY_PASSWORD = "xuexiang"
+}
