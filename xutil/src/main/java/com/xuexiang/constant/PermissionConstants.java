@@ -32,6 +32,8 @@ import java.lang.annotation.RetentionPolicy;
  */
 @SuppressLint("InlinedApi")
 public final class PermissionConstants {
+    public static final int REQUEST_OVERLAY_PERMISSION_CODE = 10001;
+    public static final int REQUEST_WRITE_SETTINGS_PERMISSION_CODE = 10002;
 
     public static final String CALENDAR   = Manifest.permission_group.CALENDAR;
     public static final String CAMERA     = Manifest.permission_group.CAMERA;
@@ -42,6 +44,10 @@ public final class PermissionConstants {
     public static final String SENSORS    = Manifest.permission_group.SENSORS;
     public static final String SMS        = Manifest.permission_group.SMS;
     public static final String STORAGE    = Manifest.permission_group.STORAGE;
+
+    public static final String[] ALL_PERMISSION   = {
+            CALENDAR, CAMERA, CONTACTS, LOCATION, MICROPHONE, PHONE, SENSORS, SMS, STORAGE
+    };
 
     private static final String[] GROUP_CALENDAR   = {
             permission.READ_CALENDAR, permission.WRITE_CALENDAR

@@ -12,6 +12,7 @@ import com.xuexiang.xutil.display.BarUtils;
 import com.xuexiang.xutil.display.ColorUtils;
 import com.xuexiang.xutil.display.Colors;
 import com.xuexiang.xutil.file.FileUtils;
+import com.xuexiang.xutil.resource.ResourceUtils;
 import com.xuexiang.xutil.tip.ToastUtil;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
-                Log.e("xuexiang", FileUtils.getDiskDir());
+                Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
                 break;
             default:
                 break;
