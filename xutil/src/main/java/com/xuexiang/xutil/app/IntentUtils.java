@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
@@ -31,10 +32,12 @@ import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.file.FileUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.ANY;
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.AUDIO;
@@ -465,6 +468,95 @@ public final class IntentUtils {
 
     private static Intent getIntent(final Intent intent, final boolean isNewTask) {
         return isNewTask ? intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) : intent;
+    }
+
+    /**
+     * 传递数据
+     * @param intent
+     * @param key 关键字
+     * @param param 数据
+     * @return
+     */
+    public static Intent putExtra(Intent intent, String key, Object param) {
+        if (param instanceof Serializable) {
+            intent.putExtra(key, (Serializable) param);
+        } else if (param instanceof String) {
+            intent.putExtra(key, (String) param);
+        } else if (param instanceof String[]) {
+            intent.putExtra(key, (String[]) param);
+        } else if (param instanceof boolean[]) {
+            intent.putExtra(key, (boolean[]) param);
+        } else if (param instanceof short[]) {
+            intent.putExtra(key, (short[]) param);
+        } else if (param instanceof int[]) {
+            intent.putExtra(key, (int[]) param);
+        } else if (param instanceof long[]) {
+            intent.putExtra(key, (long[]) param);
+        } else if (param instanceof float[]) {
+            intent.putExtra(key, (float[]) param);
+        } else if (param instanceof double[]) {
+            intent.putExtra(key, (double[]) param);
+        } else if (param instanceof Bundle) {
+            intent.putExtra(key, (Bundle) param);
+        } else if (param instanceof byte[]) {
+            intent.putExtra(key, (byte[]) param);
+        } else if (param instanceof char[]) {
+            intent.putExtra(key, (char[]) param);
+        } else if (param instanceof Parcelable) {
+            intent.putExtra(key, (Parcelable) param);
+        } else if (param instanceof Parcelable[]) {
+            intent.putExtra(key, (Parcelable[]) param);
+        } else if (param instanceof CharSequence) {
+            intent.putExtra(key, (CharSequence) param);
+        } else if (param instanceof CharSequence[]) {
+            intent.putExtra(key, (CharSequence[]) param);
+        }
+        return intent;
+    }
+
+
+    /**
+     * 传递数据
+     * @param bundle
+     * @param key 关键字
+     * @param param 数据
+     * @return
+     */
+    public static Bundle putBundle(Bundle bundle, String key, Object param) {
+        if (param instanceof Serializable) {
+            bundle.putSerializable(key, (Serializable) param);
+        } else if (param instanceof String) {
+            bundle.putString(key, (String) param);
+        } else if (param instanceof String[]) {
+            bundle.putStringArray(key, (String[]) param);
+        } else if (param instanceof boolean[]) {
+            bundle.putBooleanArray(key, (boolean[]) param);
+        } else if (param instanceof short[]) {
+            bundle.putShortArray(key, (short[]) param);
+        } else if (param instanceof int[]) {
+            bundle.putIntArray(key, (int[]) param);
+        } else if (param instanceof long[]) {
+            bundle.putLongArray(key, (long[]) param);
+        } else if (param instanceof float[]) {
+            bundle.putFloatArray(key, (float[]) param);
+        } else if (param instanceof double[]) {
+            bundle.putDoubleArray(key, (double[]) param);
+        } else if (param instanceof Bundle) {
+            bundle.putBundle(key, (Bundle) param);
+        } else if (param instanceof byte[]) {
+            bundle.putByteArray(key, (byte[]) param);
+        } else if (param instanceof char[]) {
+            bundle.putCharArray(key, (char[]) param);
+        } else if (param instanceof Parcelable) {
+            bundle.putParcelable(key, (Parcelable) param);
+        } else if (param instanceof Parcelable[]) {
+            bundle.putParcelableArray(key, (Parcelable[]) param);
+        } else if (param instanceof CharSequence) {
+            bundle.putCharSequence(key, (CharSequence) param);
+        } else if (param instanceof CharSequence[]) {
+            bundle.putCharSequenceArray(key, (CharSequence[]) param);
+        }
+        return bundle;
     }
 
     /**

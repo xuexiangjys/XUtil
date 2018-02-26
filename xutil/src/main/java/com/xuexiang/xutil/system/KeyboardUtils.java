@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xutil.common;
+package com.xuexiang.xutil.system;
 
 import android.app.Activity;
 import android.app.Dialog;

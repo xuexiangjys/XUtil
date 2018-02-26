@@ -19,7 +19,7 @@ package com.xuexiang.xutil.net;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +43,7 @@ public final class JsonUtil {
 	public static <T> T fromJson(String json, Class<T> classOfT) {
 		try {
 			return new Gson().fromJson(json, classOfT);
-		} catch (JsonSyntaxException e) {
+		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -59,7 +59,7 @@ public final class JsonUtil {
 	public static <T> T fromJson(String json, Type typeOfT) {
 		try {
 			return new Gson().fromJson(json, typeOfT);
-		} catch (JsonSyntaxException e) {
+		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -80,12 +80,21 @@ public final class JsonUtil {
 	 * @return
 	 */
 	public static JSONObject toJSONObject(Object src) {
+		return toJSONObject(toJson(src));
+	}
+
+	/**
+	 * json转JSONObject
+	 * @param json
+	 * @return
+	 */
+	public static JSONObject toJSONObject(String json) {
 		JSONObject jsonObject = null;
 		try {
-			jsonObject = new JSONObject(toJson(src));
+			jsonObject = new JSONObject(json);
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}  
+		}
 		return jsonObject;
 	}
 }

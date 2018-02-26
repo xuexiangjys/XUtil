@@ -24,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;
@@ -35,6 +36,7 @@ import java.lang.reflect.Field;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -145,6 +147,57 @@ public final class DeviceUtils {
 
     public static String getManufacturer() {
         return Build.MANUFACTURER;
+    }
+
+    /**
+     * 获取硬件信息
+     * @return
+     */
+    public static String getHardware() {
+        return Build.HARDWARE;
+    }
+
+    /**
+     * 获取产品信息
+     * @return
+     */
+    public static String getProduct() {
+        return Build.PRODUCT;
+    }
+
+    /**
+     *  获取设备信息
+     * @return
+     */
+    public static String getDevice() {
+        return Build.DEVICE;
+    }
+
+    /**
+     * 获取系统版本号
+     * @return
+     */
+    public static String getDisplayVersion() {
+        return Build.DISPLAY;
+    }
+
+    /**
+     *获取语言
+     * @return
+     */
+    public static String getLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
+
+    /**
+     * 获取国家
+     * @param ctx
+     * @return
+     */
+    public static String getCountry(Context ctx) {
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        Locale locale = Locale.getDefault();
+        return tm.getSimState() == TelephonyManager.SIM_STATE_READY ? tm.getSimCountryIso().toLowerCase(Locale.getDefault()) : locale.getCountry().toLowerCase(locale);
     }
 
     /**

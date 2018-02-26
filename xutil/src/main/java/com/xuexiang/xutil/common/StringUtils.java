@@ -311,6 +311,43 @@ public final class StringUtils {
     }
 
     /**
+     * 字符串连接，将参数列表拼接为一个字符串
+     *
+     * @param more 追加
+     * @return 返回拼接后的字符串
+     */
+    public static String concat(Object... more) {
+        return concatSpiltWith("", more);
+    }
+
+    /**
+     * 字符串连接，将参数列表拼接为一个字符串
+     * @param split
+     * @param more
+     * @return 回拼接后的字符串
+     */
+    public static String concatSpiltWith(String split, Object... more) {
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < more.length; i++) {
+            if (i != 0) buf.append(split);
+            buf.append(toString(more[i]));
+        }
+        return buf.toString();
+    }
+
+    /**
+     * 判断一个数组里是否包含指定对象
+     *
+     * @param arr 对象数组
+     * @param obj 要判断的对象
+     * @return 是否包含
+     */
+    public static boolean contains(Object arr[], Object... obj) {
+        if (arr == null || obj == null || arr.length == 0) return false;
+        return Arrays.asList(arr).containsAll(Arrays.asList(obj));
+    }
+
+    /**
      * 将对象转化为String
      * @param object
      * @return
