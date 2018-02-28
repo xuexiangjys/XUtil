@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
+                ToastUtil.get().toast("我们都爱学习！");
                 Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
                 break;
             default:

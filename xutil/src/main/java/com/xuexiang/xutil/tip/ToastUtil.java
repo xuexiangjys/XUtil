@@ -15,8 +15,14 @@
  */
 package com.xuexiang.xutil.tip;
 
+import android.content.Context;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xuexiang.xutil.R;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.resource.ResUtils;
 
@@ -51,12 +57,24 @@ public class ToastUtil {
      * @param duration 提示长度
      */
     public void toast(final String text, final int duration) {
-        XUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showToast(text, duration);
-            }
-        });
+        if (isMainLooper()) {
+            showToast(text, duration);
+        } else {
+            XUtil.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showToast(text, duration);
+                }
+            });
+        }
+    }
+
+    /**
+     * 是否是主线程
+     * @return
+     */
+    private boolean isMainLooper() {
+        return Looper.getMainLooper() == Looper.myLooper();
     }
 
     /**
@@ -82,11 +100,30 @@ public class ToastUtil {
      */
     public void showToast(String text, int duration) {
         if (mToast == null) {
-            mToast = Toast.makeText(XUtil.getContext(), text, duration);
+            mToast = makeText(XUtil.getContext(), text, duration);
         } else {
-            mToast.setText(text);
+            ((TextView) mToast.getView().findViewById(R.id.tv_info)).setText(text);
         }
         mToast.show();
+    }
+
+
+    /**
+     * 构建Toast
+     * @param context
+     * @param msg
+     * @param duration
+     * @return
+     */
+    private Toast makeText(Context context, String msg, int duration) {
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_toast, null);
+        Toast toast = new Toast(context);
+        toast.setView(view);
+        TextView tv = (TextView) view.findViewById(R.id.tv_info);
+        tv.getBackground().setAlpha(100);
+        tv.setText(msg);
+        toast.setDuration(duration);
+        return toast;
     }
 
     public void showToast(String text) {
