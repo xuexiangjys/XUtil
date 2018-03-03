@@ -563,6 +563,20 @@ public final class NetworkUtils {
     }
 
     /**
+     * 解析前：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult?appId=10101
+     * 解析后：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult
+     * @param url
+     * @return
+     */
+    public static String parseUrl(String url) {
+        if (!"".equals(url) && url.contains("?")) {// 如果URL不是空字符串
+            url = url.substring(0, url.indexOf('?'));
+        }
+        return url;
+    }
+
+
+    /**
      * url是否有效合法
      *
      * @param url 匹配 http://www.allkins.com | http://255.255.255.255 | http://allkins.com/page.asp?action=1

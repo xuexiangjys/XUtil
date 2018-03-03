@@ -256,6 +256,22 @@ public final class KeyboardUtils {
     }
 
     /**
+     * 点击屏幕空白区域隐藏软键盘
+     * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
+     * <p>需重写 dispatchTouchEvent</p>
+     * @param ev
+     * @param focusView 聚焦的控件
+     * @return
+     */
+    public static void dispatchTouchEvent(MotionEvent ev, View focusView) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (isShouldHideKeyboard(focusView, ev)) {
+                hideSoftInput(focusView);
+            }
+        }
+    }
+
+    /**
      * 根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
      *
      * @param v

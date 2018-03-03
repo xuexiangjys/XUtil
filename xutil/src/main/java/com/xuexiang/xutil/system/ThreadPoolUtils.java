@@ -16,6 +16,7 @@
 
 package com.xuexiang.xutil.system;
 
+import android.os.Looper;
 import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
@@ -396,5 +397,22 @@ public final class ThreadPoolUtils {
      */
     public ScheduledExecutorService getScheduledExecutorService() {
         return scheduleExec;
+    }
+
+
+    /**
+     * 是否是主线程
+     * @return
+     */
+    public static boolean isMainLooper() {
+        return Looper.getMainLooper() == Looper.myLooper();
+    }
+
+    /**
+     * 是否是主线程
+     * @return
+     */
+    public static boolean isMainThread() {
+        return Thread.currentThread() == Looper.getMainLooper().getThread();
     }
 }

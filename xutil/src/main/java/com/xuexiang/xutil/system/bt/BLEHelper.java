@@ -129,7 +129,7 @@ public class BLEHelper{
 	 * @author XUE
 	 *
 	 */
-	public class BLESearchCountDownTimer extends CountDownTimer {
+	private class BLESearchCountDownTimer extends CountDownTimer {
 
 		public BLESearchCountDownTimer(long timeout) {
 			super(timeout * 1000, 1000);

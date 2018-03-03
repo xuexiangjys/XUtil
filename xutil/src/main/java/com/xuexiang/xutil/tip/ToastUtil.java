@@ -40,7 +40,7 @@ public class ToastUtil {
 
     }
 
-    public synchronized static ToastUtil get() {
+    public static ToastUtil get() {
         if (sInstance == null) {
             synchronized (ToastUtil.class) {
                 if (sInstance == null) {

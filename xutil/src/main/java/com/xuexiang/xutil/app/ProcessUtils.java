@@ -32,7 +32,6 @@ import android.util.Log;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.LogUtils;
-import com.xuexiang.xutil.common.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;

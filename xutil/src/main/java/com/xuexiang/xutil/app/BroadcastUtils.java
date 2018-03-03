@@ -33,7 +33,7 @@ import java.util.Map;
  * @author xuexiang
  * @date 2018/2/26 上午12:37
  */
-public class BroadcastUtils {
+public final class BroadcastUtils {
     //==========================接收广播: 数据获取==============================//
 	/**
 	 * 获取附加数据
