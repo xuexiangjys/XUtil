@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -269,6 +269,29 @@ public final class KeyboardUtils {
                 hideSoftInput(focusView);
             }
         }
+    }
+
+    /**
+     * 禁用物理返回键
+     *
+     *  使用方法：
+     * <p>需重写 onKeyDown</p>
+     *  @Override
+     *  public boolean onKeyDown(int keyCode, KeyEvent event) {
+     *      return KeyboardUtils.onKeyDown(keyCode) && super.onKeyDown(keyCode, event) ;
+     *  }
+     *
+     * @param keyCode
+     * @return
+     */
+    public static boolean onKeyDown(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                return false;
+            case KeyEvent.KEYCODE_HOME:
+                return false;
+        }
+        return true;
     }
 
     /**
