@@ -10,4 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="退出程序" />
+
+    <Button
+        android:id="@+id/router"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="路由测试" />
+
 </LinearLayout>

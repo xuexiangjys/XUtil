@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
+ * 基础Activity
  * @author xuexiang
  * @date 2018/1/11 上午10:37
  */

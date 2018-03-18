@@ -19,13 +19,11 @@ package com.xuexiang.xutil.app.router;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.xuexiang.xutil.app.IntentUtils;
 
 /**
  * 页面路由
@@ -73,84 +71,23 @@ public class Router {
         return this;
     }
 
-    public Router data(Bundle data) {
+    public Router putBundle(Bundle data) {
         this.data = data;
         return this;
     }
 
-    public Router putByte(@Nullable String key, byte value) {
-        getBundleData().putByte(key, value);
+    public Router putBundleParam(@NonNull String key, Object value) {
+        if (data == null) {
+            data = new Bundle();
+        }
+        data = IntentUtils.putBundle(data, key, value);
         return this;
     }
 
-    public Router putChar(@Nullable String key, char value) {
-        getBundleData().putChar(key, value);
+    public Router putExtraParam(@NonNull String key, Object value) {
+        intent = IntentUtils.putExtra(intent, key, value);
         return this;
     }
-
-    public Router putInt(@Nullable String key, int value) {
-        getBundleData().putInt(key, value);
-        return this;
-    }
-
-    public Router putString(@Nullable String key, String value) {
-        getBundleData().putString(key, value);
-        return this;
-    }
-
-    public Router putShort(@Nullable String key, short value) {
-        getBundleData().putShort(key, value);
-        return this;
-    }
-
-    public Router putFloat(@Nullable String key, float value) {
-        getBundleData().putFloat(key, value);
-        return this;
-    }
-
-    public Router putCharSequence(@Nullable String key, @Nullable CharSequence value) {
-        getBundleData().putCharSequence(key, value);
-        return this;
-    }
-
-    public Router putParcelable(@Nullable String key, @Nullable Parcelable value) {
-        getBundleData().putParcelable(key, value);
-        return this;
-    }
-
-    public Router putParcelableArray(@Nullable String key, @Nullable Parcelable[] value) {
-        getBundleData().putParcelableArray(key, value);
-        return this;
-    }
-
-    public Router putParcelableArrayList(@Nullable String key,
-                                         @Nullable ArrayList<? extends Parcelable> value) {
-        getBundleData().putParcelableArrayList(key, value);
-        return this;
-    }
-
-
-    public Router putIntegerArrayList(@Nullable String key, @Nullable ArrayList<Integer> value) {
-        getBundleData().putIntegerArrayList(key, value);
-        return this;
-    }
-
-    public Router putStringArrayList(@Nullable String key, @Nullable ArrayList<String> value) {
-        getBundleData().putStringArrayList(key, value);
-        return this;
-    }
-
-    public Router putCharSequenceArrayList(@Nullable String key,
-                                           @Nullable ArrayList<CharSequence> value) {
-        getBundleData().putCharSequenceArrayList(key, value);
-        return this;
-    }
-
-    public Router putSerializable(@Nullable String key, @Nullable Serializable value) {
-        getBundleData().putSerializable(key, value);
-        return this;
-    }
-
 
     public Router options(ActivityOptionsCompat options) {
         this.options = options;

@@ -473,6 +473,100 @@ public final class IntentUtils {
         return isNewTask ? intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) : intent;
     }
 
+
+    //==========================数据获取==============================//
+
+    /**
+     * 获取附加数据
+     *
+     * @param intent
+     * @return
+     */
+    public static Bundle getExtras(Intent intent) {
+        return intent != null ? intent.getExtras() : null;
+    }
+
+    /**
+     * 获取Intent中的Bundle
+     *
+     * @param intent
+     * @param key
+     * @return
+     */
+    public static Bundle getBundleExtra(Intent intent, String key) {
+        return intent != null ? intent.getBundleExtra(key) : null;
+    }
+
+    /**
+     * 获取Intent中的String
+     *
+     * @param intent
+     * @param key
+     * @return
+     */
+    public static String getStringExtra(Intent intent, String key) {
+        return intent != null ? intent.getStringExtra(key) : null;
+    }
+
+    /**
+     * 获取Intent中的Boolean
+     *
+     * @param intent
+     * @param key
+     * @param defValue 默认值
+     * @return
+     */
+    public static boolean getBooleanExtra(Intent intent, String key, boolean defValue) {
+        return intent != null ? intent.getBooleanExtra(key, defValue) : defValue;
+    }
+
+    /**
+     * 获取Intent中的Int
+     *
+     * @param intent
+     * @param key
+     * @param defValue 默认值
+     * @return
+     */
+    public static int getIntExtra(Intent intent, String key, int defValue) {
+        return intent != null ? intent.getIntExtra(key, defValue) : defValue;
+    }
+
+    /**
+     * 获取Intent中的Float
+     *
+     * @param intent
+     * @param key
+     * @param defValue 默认值
+     * @return
+     */
+    public static float getFloatExtra(Intent intent, String key, float defValue) {
+        return intent != null ? intent.getFloatExtra(key, defValue) : defValue;
+    }
+
+    /**
+     * 获取Intent中的Serializable数据
+     *
+     * @param intent
+     * @param key
+     * @return
+     */
+    public static <T> T getSerializable(Intent intent, String key) {
+        return intent != null ? (T) intent.getSerializableExtra(key) : null;
+    }
+
+    /**
+     * 获取附加数据中的Serializable数据
+     *
+     * @param intent
+     * @param key
+     * @return
+     */
+    public static <T> T getExtrasSerializable(Intent intent, String key) {
+        Bundle bundle = getExtras(intent);
+        return bundle != null ? (T) bundle.getSerializable(key) : null;
+    }
+
     /**
      * 获取Intent意图
      * @param context
@@ -482,12 +576,27 @@ public final class IntentUtils {
      */
     @NonNull
     public static Intent getIntent(Context context, Class<?> cls, String action) {
+        return getIntent(context, cls, action, false);
+    }
+
+    /**
+     * 获取Intent意图
+     * @param context
+     * @param cls 类名
+     * @param action 动作
+     * @return
+     */
+    @NonNull
+    public static Intent getIntent(Context context, Class<?> cls, String action, boolean isNewTask) {
         Intent intent = new Intent();
         if (cls != null) {
             intent.setClass(context, cls);
         }
         if (action != null) {
             intent.setAction(action);
+        }
+        if (isNewTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         return intent;
     }

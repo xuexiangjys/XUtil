@@ -16,12 +16,19 @@
 
 package com.xuexiang.xutildemo.activity;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
+import com.xuexiang.xutil.app.ActivityUtils;
+import com.xuexiang.xutil.app.IntentUtils;
+import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.resource.ResourceUtils;
 import com.xuexiang.xutil.tip.ToastUtil;
 import com.xuexiang.xutildemo.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.OnClick;
 
@@ -53,15 +60,35 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.button)
+    @OnClick({R.id.button, R.id.router})
     void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
                 ToastUtil.get().toast("我们都爱学习！");
                 Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
                 break;
+            case R.id.router:
+//                ActivityUtils.startActivity(TestRouterActivity.class, "param", "我是内容");
+                Map<String, Object> params = new HashMap<>();
+                params.put("param1", "我是参数1");
+                params.put("param2", 123);
+//                ActivityUtils.startActivity(TestRouterActivity.class, params);
+//                ActivityUtils.startActivity("com.xuexiang.TestRouter", "param", "我是内容");
+//                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100);
+//                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
+//                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
+                Router.newIntent(this).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
+                break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
         }
     }
 }
