@@ -62,7 +62,7 @@ public final class AppUtils {
     public static boolean isInstallApp(final String action, final String category) {
         Intent intent = new Intent(action);
         intent.addCategory(category);
-        PackageManager pm = XUtil.getContext().getPackageManager();
+        PackageManager pm = getPackageManager();
         ResolveInfo info = pm.resolveActivity(intent, 0);
         return info != null;
     }
@@ -314,7 +314,7 @@ public final class AppUtils {
     public static String getAppName(final String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadLabel(pm).toString();
         } catch (PackageManager.NameNotFoundException e) {
@@ -341,7 +341,7 @@ public final class AppUtils {
     public static Drawable getAppIcon(final String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadIcon(pm);
         } catch (PackageManager.NameNotFoundException e) {
@@ -368,7 +368,7 @@ public final class AppUtils {
     public static String getAppPath(final String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.sourceDir;
         } catch (PackageManager.NameNotFoundException e) {
@@ -395,7 +395,7 @@ public final class AppUtils {
     public static String getAppVersionName(final String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -422,7 +422,7 @@ public final class AppUtils {
     public static int getAppVersionCode(final String packageName) {
         if (isSpace(packageName)) return -1;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? -1 : pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -449,7 +449,7 @@ public final class AppUtils {
     public static boolean isSystemApp(final String packageName) {
         if (isSpace(packageName)) return false;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -476,7 +476,7 @@ public final class AppUtils {
     public static boolean isAppDebug(final String packageName) {
         if (isSpace(packageName)) return false;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -503,7 +503,7 @@ public final class AppUtils {
     public static Signature[] getAppSignature(final String packageName) {
         if (isSpace(packageName)) return null;
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             return pi == null ? null : pi.signatures;
@@ -686,7 +686,7 @@ public final class AppUtils {
      */
     public static AppInfo getAppInfo(final String packageName) {
         try {
-            PackageManager pm = XUtil.getContext().getPackageManager();
+            PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return getBean(pm, pi);
         } catch (PackageManager.NameNotFoundException e) {
@@ -725,7 +725,7 @@ public final class AppUtils {
      */
     public static List<AppInfo> getAppsInfo() {
         List<AppInfo> list = new ArrayList<>();
-        PackageManager pm = XUtil.getContext().getPackageManager();
+        PackageManager pm = getPackageManager();
         // 获取系统中安装的所有软件信息
         List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
         for (PackageInfo pi : installedPackages) {
@@ -734,6 +734,10 @@ public final class AppUtils {
             list.add(ai);
         }
         return list;
+    }
+
+    public static PackageManager getPackageManager() {
+        return XUtil.getContext().getPackageManager();
     }
 
     /**

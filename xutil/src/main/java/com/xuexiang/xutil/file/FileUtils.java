@@ -60,7 +60,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的缓存目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/cache;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/cache;<br>
      *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache;
      */
     public static String getDiskCacheDir() {
@@ -69,7 +69,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的自定义缓存目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/cache/fileDir;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/cache/fileDir;<br>
      *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache/fileDir;
      */
     public static String getDiskCacheDir(String fileDir) {
@@ -78,7 +78,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的文件目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/files;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/files;<br>
      *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files;
      */
     public static String getDiskFilesDir() {
@@ -87,7 +87,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的自定义文件目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/files/fileDir;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/files/fileDir;<br>
      *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files/fileDir;
      */
     public static String getDiskFilesDir(String fileDir) {
@@ -96,7 +96,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/fileDir;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/fileDir;<br>
      *              存在: /storage/emulated/0/fileDir; 或者 /storage/sdcard/fileDir
      */
     public static String getDiskDir(String fileDir) {
@@ -109,7 +109,7 @@ public final class FileUtils {
 
     /**
      * 获取磁盘目录
-     * @return SD卡不存在: /data/data/com.xxx.xxx/com.xxx.xxx;
+     * @return SD卡不存在: /data/data/com.xxx.xxx/com.xxx.xxx;<br>
      *              存在: /storage/emulated/0/com.xxx.xxx; 或者 /storage/sdcard/com.xxx.xxx
      */
     public static String getDiskDir() {
