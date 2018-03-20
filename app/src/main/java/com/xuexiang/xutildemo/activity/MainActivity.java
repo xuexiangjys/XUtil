@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.display.ColorUtils;
@@ -58,7 +59,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.button, R.id.router})
+    @OnClick({R.id.button, R.id.router, R.id.btn_notify})
     void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
@@ -79,6 +80,9 @@ public class MainActivity extends BaseActivity {
 //                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
 //                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
                 Router.newIntent(this).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
+                break;
+            case R.id.btn_notify:
+                ActivityUtils.startActivity(NotifyActivity.class);
                 break;
             default:
                 break;

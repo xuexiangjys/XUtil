@@ -30,6 +30,7 @@ import java.util.Map;
 
 /**
  * Activity页面跳转工具类
+ *
  * @author xuexiang
  * @date 2018/3/18 下午2:13
  */
@@ -74,6 +75,7 @@ public final class ActivityUtils {
     }
 
     //=================获取Activity跳转意图===============//
+
     /**
      * 获取Activity跳转意图
      *
@@ -146,7 +148,36 @@ public final class ActivityUtils {
         return IntentUtils.getIntent(context, null, action);
     }
 
+    /**
+     * 获取Activity跳转意图
+     *
+     * @param cls   Activity类
+     * @param key
+     * @param param
+     * @return
+     */
+    public static Intent getActivityIntent(Class<? extends Activity> cls, String key, Object param) {
+        Intent intent = getActivityIntent(cls);
+        intent = IntentUtils.putExtra(intent, key, param);
+        return intent;
+    }
 
+    /**
+     * 获取Activity跳转意图
+     *
+     * @param cls Activity类
+     * @param map 携带的数据
+     * @return
+     */
+    public static Intent getActivityIntent(Class<? extends Activity> cls, Map<String, Object> map) {
+        Intent intent = getActivityIntent(cls);
+        if (map != null && !map.isEmpty()) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+            }
+        }
+        return intent;
+    }
 
     //=====================显式启动==================//
 
@@ -181,9 +212,7 @@ public final class ActivityUtils {
      * @param param
      */
     public static void startActivity(Class<? extends Activity> cls, String key, Object param) {
-        Intent intent = getActivityIntent(cls);
-        intent = IntentUtils.putExtra(intent, key, param);
-        startActivity(intent);
+        startActivity(getActivityIntent(cls, key, param));
     }
 
     /**
@@ -209,12 +238,7 @@ public final class ActivityUtils {
      * @param map 携带的数据
      */
     public static void startActivity(Class<? extends Activity> cls, Map<String, Object> map) {
-        Intent intent = getActivityIntent(cls);
-        if (map != null && !map.isEmpty()) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
-            }
-        }
+        Intent intent = getActivityIntent(cls, map);
         startActivity(intent);
     }
 

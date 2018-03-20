@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.NotifyActivity"/>
+
     </application>
 
 </manifest>
