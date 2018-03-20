@@ -20,11 +20,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
-import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.router.Router;
-import com.xuexiang.xutil.resource.ResourceUtils;
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.display.ColorUtils;
 import com.xuexiang.xutildemo.R;
 
 import java.util.HashMap;
@@ -64,8 +62,11 @@ public class MainActivity extends BaseActivity {
     void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
-                ToastUtil.get().toast("我们都爱学习！");
-                Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
+//                ToastUtil.get().toast("我们都爱学习！");
+//                Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
+                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getDefaultColor(R.color.nlui_textcolor)));
+                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getEnableColor(R.color.nlui_textcolor)));
+                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getDisableColor(R.color.nlui_textcolor)));
                 break;
             case R.id.router:
 //                ActivityUtils.startActivity(TestRouterActivity.class, "param", "我是内容");

@@ -29,13 +29,13 @@ android {
     }
 
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            if (variant.buildType.name.equals('release')) {
-                outputFileName = "xutildemo_release_${defaultConfig.versionName}.apk"
-            }
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            if (variant.buildType.name.equals('release')) {
+//                outputFileName = "xutildemo_release_${defaultConfig.versionName}.apk"
+//            }
+//        }
+//    }
 
 //    applicationVariants.all { variant ->
 //        variant.outputs.each { output ->

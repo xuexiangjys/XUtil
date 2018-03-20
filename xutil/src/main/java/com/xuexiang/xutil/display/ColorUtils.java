@@ -19,6 +19,12 @@ package com.xuexiang.xutil.display;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
+
+import com.xuexiang.xutil.resource.ResUtils;
+
+import java.util.Random;
 
 /**
  * 颜色工具
@@ -31,6 +37,7 @@ public final class ColorUtils {
     private static final int ENABLE_ATTR = android.R.attr.state_enabled;
     private static final int CHECKED_ATTR = android.R.attr.state_checked;
     private static final int PRESSED_ATTR = android.R.attr.state_pressed;
+    private static final int FOCUSED_ATTR = android.R.attr.state_focused;
 
     /**
      * 矫正颜色的透明度
@@ -100,6 +107,7 @@ public final class ColorUtils {
 
     /**
      * 是否是深色的颜色
+     *
      * @param color
      * @return
      */
@@ -111,7 +119,7 @@ public final class ColorUtils {
         return darkness >= 0.5;
     }
 
-    static ColorStateList generateThumbColorWithTintColor(final int tintColor) {
+    public static ColorStateList generateThumbColorWithTintColor(final int tintColor) {
         int[][] states = new int[][]{
                 {-ENABLE_ATTR, CHECKED_ATTR},
                 {-ENABLE_ATTR},
@@ -132,7 +140,7 @@ public final class ColorUtils {
         return new ColorStateList(states, colors);
     }
 
-    static ColorStateList generateBackColorWithTintColor(final int tintColor) {
+    public static ColorStateList generateBackColorWithTintColor(final int tintColor) {
         int[][] states = new int[][]{
                 {-ENABLE_ATTR, CHECKED_ATTR},
                 {-ENABLE_ATTR},
@@ -152,4 +160,68 @@ public final class ColorUtils {
         };
         return new ColorStateList(states, colors);
     }
+
+    public static int getColorForState(@NonNull ColorStateList colorStateList, int[] stateSet, int defaultColor) {
+        return colorStateList.getColorForState(stateSet, defaultColor);
+    }
+
+    public static int getColorForState(@NonNull ColorStateList colorStateList, int state, int defaultColor) {
+        return colorStateList.getColorForState(new int[]{state}, defaultColor);
+    }
+
+    /**
+     * 获取可点击时的颜色
+     *
+     * @param colorStateList
+     * @param state          颜色状态
+     * @return
+     */
+    public static int getStateColor(@NonNull ColorStateList colorStateList, int state) {
+        return colorStateList.getColorForState(new int[]{state}, -1);
+    }
+
+    /**
+     * 获取可点击时的颜色
+     *
+     * @param colorResId
+     * @return
+     */
+    public static int getEnableColor(@ColorRes int colorResId) {
+        return ResUtils.getColorStateList(colorResId).getColorForState(new int[]{ENABLE_ATTR}, -1);
+    }
+
+    /**
+     * 获取不可点击时的颜色
+     *
+     * @param colorResId
+     * @return
+     */
+    public static int getDisableColor(@ColorRes int colorResId) {
+        return ResUtils.getColorStateList(colorResId).getColorForState(new int[]{-ENABLE_ATTR}, -1);
+    }
+
+    /**
+     * 获取默认的颜色
+     *
+     * @param colorResId 颜色资源id
+     * @return
+     */
+    public static int getDefaultColor(@ColorRes int colorResId) {
+        return ResUtils.getColorStateList(colorResId).getDefaultColor();
+    }
+
+    /**
+     * 获取随机颜色
+     *
+     * @return
+     */
+    public static int getRandomColor() {
+        Random random = new Random();
+        int r = random.nextInt(256);
+        int g = random.nextInt(256);
+        int b = random.nextInt(256);
+        return Color.rgb(r, g, b);
+    }
+
+
 }

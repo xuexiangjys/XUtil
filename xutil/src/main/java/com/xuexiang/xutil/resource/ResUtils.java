@@ -16,6 +16,7 @@
 package com.xuexiang.xutil.resource;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -100,6 +101,16 @@ public class ResUtils {
      */
     public static int getColor(@ColorRes int resId) {
         return getResources().getColor(resId);
+    }
+
+    /**
+     * 获取ColorStateList值
+     *
+     * @param resId
+     * @return
+     */
+    public static ColorStateList getColorStateList(@ColorRes int resId) {
+        return getResources().getColorStateList(resId);
     }
 
     @ColorInt

@@ -41,8 +41,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Color属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr    属性名
      * @return
      */
     @ColorInt
@@ -52,8 +53,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Color属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr     属性名
      * @param defValue 默认值
      * @return
      */
@@ -69,8 +71,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Dimension属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr    属性名
      * @return
      */
     public static int resolveDimension(Context context, @AttrRes int attr) {
@@ -79,8 +82,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Dimension属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr     属性名
      * @param defValue 默认值
      * @return
      */
@@ -95,8 +99,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Boolean属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr    属性名
      * @return
      */
     public static boolean resolveBoolean(Context context, @AttrRes int attr) {
@@ -105,8 +110,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Boolean属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr     属性名
      * @param defValue 默认值
      * @return
      */
@@ -121,8 +127,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Drawable属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr    属性名
      * @return
      */
     public static Drawable resolveDrawable(Context context, @AttrRes int attr) {
@@ -131,8 +138,9 @@ public final class ThemeUtils {
 
     /**
      * 解析主题的Drawable属性
+     *
      * @param context
-     * @param attr 属性名
+     * @param attr     属性名
      * @param defValue 默认值
      * @return
      */
@@ -265,7 +273,6 @@ public final class ThemeUtils {
         ta.recycle();
         return colors;
     }
-
 
 
 }
