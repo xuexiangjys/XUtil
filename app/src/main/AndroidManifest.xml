@@ -28,6 +28,13 @@
 
         <activity android:name=".activity.NotifyActivity"/>
 
+        <receiver android:name=".receiver.NotifyBroadCastReceiver">
+            <intent-filter>
+                <action android:name="com.xuexiang.xutildemo.receiver.action_submit"/>
+                <action android:name="com.xuexiang.xutildemo.receiver.action_cancel"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

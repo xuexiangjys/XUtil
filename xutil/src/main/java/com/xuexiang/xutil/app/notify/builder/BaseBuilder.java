@@ -392,9 +392,17 @@ public class BaseBuilder {
         if (mStyle != null) {
             mBuilder.setStyle(mStyle);
         }
+
+        afterBuild();
     }
 
+
+
     protected void beforeBuild() {
+
+    }
+
+    protected void afterBuild() {
 
     }
 

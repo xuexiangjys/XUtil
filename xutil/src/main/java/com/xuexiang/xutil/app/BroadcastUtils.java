@@ -41,6 +41,17 @@ public final class BroadcastUtils {
     /**
      * 获取广播意图
      *
+     * @param action  广播动作
+     * @return
+     */
+    @NonNull
+    public static Intent getBroadCastIntent(String action) {
+        return getBroadCastIntent(XUtil.getContext(), null, action);
+    }
+
+    /**
+     * 获取广播意图
+     *
      * @param context
      * @param action  广播动作
      * @return
@@ -50,6 +61,16 @@ public final class BroadcastUtils {
         return getBroadCastIntent(context, null, action);
     }
 
+    /**
+     * 获取广播意图
+     *
+     * @param cls     广播接收器
+     * @return
+     */
+    @NonNull
+    public static Intent getBroadCastIntent(Class<? extends BroadcastReceiver> cls) {
+        return getBroadCastIntent(XUtil.getContext(), cls, null);
+    }
 
     /**
      * 获取广播意图
@@ -63,6 +84,17 @@ public final class BroadcastUtils {
         return getBroadCastIntent(context, cls, null);
     }
 
+    /**
+     * 获取广播意图
+     *
+     * @param cls    广播接收器
+     * @param action 广播动作
+     * @return
+     */
+    @NonNull
+    public static Intent getBroadCastIntent(Class<? extends BroadcastReceiver> cls, String action) {
+        return IntentUtils.getIntent(XUtil.getContext(), cls, action);
+    }
 
     /**
      * 获取广播意图
@@ -77,16 +109,39 @@ public final class BroadcastUtils {
         return IntentUtils.getIntent(context, cls, action);
     }
 
+
     /**
      * 获取广播意图
-     *
-     * @param cls    广播接收器
+     * @param cls 广播接收器
      * @param action 广播动作
+     * @param map 携带的数据
      * @return
      */
-    @NonNull
-    public static Intent getBroadCastIntent(Class<? extends BroadcastReceiver> cls, String action) {
-        return IntentUtils.getIntent(XUtil.getContext(), cls, action);
+    public static Intent getBroadCastIntent(Context context, Class<? extends BroadcastReceiver> cls, String action, Map<String, Object> map) {
+        Intent intent = getBroadCastIntent(context, cls, action);
+        if (map != null && !map.isEmpty()) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+            }
+        }
+        return intent;
+    }
+
+    /**
+     * 获取广播意图
+     * @param cls 广播接收器
+     * @param action 广播动作
+     * @param map 携带的数据
+     * @return
+     */
+    public static Intent getBroadCastIntent(Class<? extends BroadcastReceiver> cls, String action, Map<String, Object> map) {
+        Intent intent = getBroadCastIntent(cls, action);
+        if (map != null && !map.isEmpty()) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+            }
+        }
+        return intent;
     }
 
     //==========================发送广播: 不携带数据==============================//
@@ -119,7 +174,6 @@ public final class BroadcastUtils {
         Intent intent = getBroadCastIntent(XUtil.getContext(), cls, action);
         XUtil.getContext().sendBroadcast(intent);
     }
-
 
     //==========================发送广播: intent携带数据==============================//
 
@@ -191,12 +245,7 @@ public final class BroadcastUtils {
      * @param map     数据
      */
     public static void sendBroadCast(Context context, Class<? extends BroadcastReceiver> cls, String action, Map<String, Object> map) {
-        Intent intent = getBroadCastIntent(context, cls, action);
-        if (map != null && !map.isEmpty()) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
-            }
-        }
+        Intent intent = getBroadCastIntent(context, cls, action, map);
         context.sendBroadcast(intent);
     }
 

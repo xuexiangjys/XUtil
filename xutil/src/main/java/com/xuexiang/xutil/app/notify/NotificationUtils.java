@@ -20,14 +20,18 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.ActivityUtils;
+import com.xuexiang.xutil.app.BroadcastUtils;
+import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.notify.builder.BaseBuilder;
 import com.xuexiang.xutil.app.notify.builder.BigPicBuilder;
 import com.xuexiang.xutil.app.notify.builder.BigTextBuilder;
 import com.xuexiang.xutil.app.notify.builder.MailboxBuilder;
+import com.xuexiang.xutil.app.notify.builder.ProgressBuilder;
 
 import java.util.Map;
 
@@ -80,13 +84,14 @@ public final class NotificationUtils {
 
     /**
      * 多文本通知
-     * @param id 通知的ID
-     * @param smallIcon 顶部状态栏的小图标
+     *
+     * @param id           通知的ID
+     * @param smallIcon    顶部状态栏的小图标
      * @param contentTitle 通知中心的标题
      * @param contentText  通知中心中的内容
      * @return
      */
-    public static BigTextBuilder buildBigText(int id, int smallIcon, CharSequence contentTitle, CharSequence contentText){
+    public static BigTextBuilder buildBigText(int id, int smallIcon, CharSequence contentTitle, CharSequence contentText) {
         return new BigTextBuilder()
                 .setId(id)
                 .setBaseInfo(smallIcon, contentTitle, contentText);
@@ -94,16 +99,37 @@ public final class NotificationUtils {
 
     /**
      * 带多条消息合并的消息盒通知
-     * @param id 通知的ID
-     * @param smallIcon 顶部状态栏的小图标
+     *
+     * @param id           通知的ID
+     * @param smallIcon    顶部状态栏的小图标
      * @param contentTitle 通知中心的标题
      * @return
      */
-    public static MailboxBuilder buildMailBox(int id, int smallIcon, CharSequence contentTitle){
+    public static MailboxBuilder buildMailBox(int id, int smallIcon, CharSequence contentTitle) {
         return new MailboxBuilder()
                 .setId(id)
                 .setSmallIcon(smallIcon)
                 .setContentTitle(contentTitle);
+    }
+
+
+    /**
+     * 带进度条的通知
+     *
+     * @param id           通知的ID
+     * @param smallIcon    顶部状态栏的小图标
+     * @param contentTitle 顶部状态栏的小图标
+     * @param max          最大进度
+     * @param progress     目前的进度
+     * @return
+     */
+    public static ProgressBuilder buildProgress(int id, int smallIcon, CharSequence contentTitle, int max, int progress) {
+        return new ProgressBuilder()
+                .setProgress(max, progress)
+                .setId(id)
+                .setSmallIcon(smallIcon)
+                .setContentTitle(contentTitle);
+
     }
 
 
@@ -119,87 +145,6 @@ public final class NotificationUtils {
         }
         sNotificationManager.notify(id, notification);
     }
-
-    //==================构建点击跳转Activity的意图======================//
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz) {
-        return buildActivityIntent(clazz, 0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, String key, Object param) {
-        return buildActivityIntent(clazz, key, param, 0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, Map<String, Object> map) {
-        return buildActivityIntent(clazz, map, 0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz       Activity类
-     * @param requestCode 请求码
-     * @param flags
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, int requestCode, int flags) {
-        Intent intent = ActivityUtils.getActivityIntent(clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
-    }
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz       Activity类
-     * @param key
-     * @param param
-     * @param requestCode 请求码
-     * @param flags
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, String key, Object param, int requestCode, int flags) {
-        Intent intent = ActivityUtils.getActivityIntent(clazz, key, param);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
-    }
-
-    /**
-     * 构建点击跳转Activity的意图
-     *
-     * @param clazz       Activity类
-     * @param map         携带的数据
-     * @param requestCode 请求码
-     * @param flags
-     * @return
-     */
-    public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, Map<String, Object> map, int requestCode, int flags) {
-        Intent intent = ActivityUtils.getActivityIntent(clazz, map);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
-    }
-
 
     public static NotificationManager getNotificationManager() {
         return (NotificationManager) XUtil.getContext().getSystemService(Activity.NOTIFICATION_SERVICE);

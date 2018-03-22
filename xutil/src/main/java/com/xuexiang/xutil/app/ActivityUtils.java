@@ -42,6 +42,10 @@ public final class ActivityUtils {
      * @param intent
      */
     public static void startActivity(Intent intent) {
+        if (intent == null) {
+            LogUtils.e("[startActivity failed]: intent == null");
+            return;
+        }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try {
                 XUtil.getContext().startActivity(intent);
@@ -62,6 +66,10 @@ public final class ActivityUtils {
      * @param requestCode  请求码
      */
     public static void startActivityForResult(Activity fromActivity, Intent intent, int requestCode) {
+        if (intent == null) {
+            LogUtils.e("[startActivity failed]: intent == null");
+            return;
+        }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try {
                 fromActivity.startActivityForResult(intent, requestCode);

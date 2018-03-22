@@ -67,7 +67,7 @@ public class TestRouterActivity extends BaseActivity {
      * 初始化监听
      */
     @Override
-    protected void initListener() {
+    protected void initListeners() {
 
     }
 

@@ -70,7 +70,7 @@ public final class SPUtils {
      * @param key
      * @param value
      */
-    public boolean putFloat(SharedPreferences sp, String key, float value) {
+    public static boolean putFloat(SharedPreferences sp, String key, float value) {
         return sp.edit().putFloat(key, value).commit();
     }
 
@@ -80,7 +80,7 @@ public final class SPUtils {
      * @param key
      * @param value
      */
-    public boolean putLong(SharedPreferences sp, String key, long value) {
+    public static boolean putLong(SharedPreferences sp, String key, long value) {
         return sp.edit().putLong(key, value).commit();
     }
 
@@ -90,7 +90,7 @@ public final class SPUtils {
      * @param key
      * @param value
      */
-    public boolean putString(SharedPreferences sp, String key, String value) {
+    public static boolean putString(SharedPreferences sp, String key, String value) {
         return sp.edit().putString(key, value).commit();
     }
 
@@ -100,7 +100,7 @@ public final class SPUtils {
      * @param key
      * @param value
      */
-    public boolean putInt(SharedPreferences sp, String key, int value) {
+    public static boolean putInt(SharedPreferences sp, String key, int value) {
         return sp.edit().putInt(key, value).commit();
     }
 
@@ -111,7 +111,7 @@ public final class SPUtils {
      * @param value
      * @return
      */
-    public boolean putObject(SharedPreferences sp, String key, Object value) {
+    public static boolean putObject(SharedPreferences sp, String key, Object value) {
         return sp.edit().putString(key, JsonUtil.toJson(value)).commit();
     }
 
@@ -122,7 +122,7 @@ public final class SPUtils {
      * @param value
      * @return
      */
-    public boolean putEncodeObject(SharedPreferences sp, String key, Object value) {
+    public static boolean putEncodeObject(SharedPreferences sp, String key, Object value) {
         String base64Obj = Base64Util.encode(JsonUtil.toJson(value), "UTF-8");
         return sp.edit().putString(key, base64Obj).commit();
     }
@@ -134,7 +134,7 @@ public final class SPUtils {
      * @param key
      * @param object
      */
-    public boolean put(SharedPreferences sp, String key, Object object) {
+    public static boolean put(SharedPreferences sp, String key, Object object) {
         if (object instanceof String) {
             return sp.edit().putString(key, (String) object).commit();
         } else if (object instanceof Integer) {
@@ -158,7 +158,7 @@ public final class SPUtils {
      * @param defValue
      * @return
      */
-    public boolean getBoolean(SharedPreferences sp, String key, boolean defValue) {
+    public static boolean getBoolean(SharedPreferences sp, String key, boolean defValue) {
         try {
             return sp.getBoolean(key, defValue);
         } catch (Exception e) {
@@ -174,7 +174,7 @@ public final class SPUtils {
      * @param defValue
      * @return
      */
-    public long getLong(SharedPreferences sp, String key, long defValue) {
+    public static long getLong(SharedPreferences sp, String key, long defValue) {
         try {
             return sp.getLong(key, defValue);
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public final class SPUtils {
      * @param defValue
      * @return
      */
-    public float getFloat(SharedPreferences sp, String key, float defValue) {
+    public static float getFloat(SharedPreferences sp, String key, float defValue) {
         try {
             return sp.getFloat(key, defValue);
         } catch (Exception e) {
@@ -206,7 +206,7 @@ public final class SPUtils {
      * @param defValue
      * @return
      */
-    public String getString(SharedPreferences sp, String key, String defValue) {
+    public static String getString(SharedPreferences sp, String key, String defValue) {
         try {
             return sp.getString(key, defValue);
         } catch (Exception e) {
@@ -222,7 +222,7 @@ public final class SPUtils {
      * @param defValue
      * @return
      */
-    public int getInt(SharedPreferences sp, String key, int defValue) {
+    public static int getInt(SharedPreferences sp, String key, int defValue) {
         try {
             return sp.getInt(key, defValue);
         } catch (Exception e) {
@@ -239,7 +239,7 @@ public final class SPUtils {
      * @param <T>
      * @return
      */
-    public <T> T getEncodeObject(SharedPreferences sp, String key, Type type) {
+    public static <T> T getEncodeObject(SharedPreferences sp, String key, Type type) {
         String base64Obj = getString(sp, key, "");
         if (StringUtils.isEmpty(base64Obj)) {
             return null;
@@ -256,7 +256,7 @@ public final class SPUtils {
      * @param <T>
      * @return
      */
-    public <T> T getObject(SharedPreferences sp, String key, Type type) {
+    public static <T> T getObject(SharedPreferences sp, String key, Type type) {
         return JsonUtil.fromJson(getString(sp, key, ""), type);
     }
 
@@ -267,7 +267,7 @@ public final class SPUtils {
      * @param defaultObject
      * @return
      */
-    public Object get(SharedPreferences sp, String key, Object defaultObject) {
+    public static Object get(SharedPreferences sp, String key, Object defaultObject) {
         try {
             if (defaultObject instanceof String) {
                 return sp.getString(key, (String) defaultObject);
@@ -294,7 +294,7 @@ public final class SPUtils {
      * @param key
      * @return
      */
-    public boolean contains(SharedPreferences sp, String key) {
+    public static boolean contains(SharedPreferences sp, String key) {
         return sp.contains(key);
     }
 
@@ -303,7 +303,7 @@ public final class SPUtils {
      * @param sp SharedPreferences实例
      * @return
      */
-    public Map<String, ?> getAll(SharedPreferences sp) {
+    public static Map<String, ?> getAll(SharedPreferences sp) {
         try {
             return sp.getAll();
         } catch (Exception e) {
@@ -312,7 +312,7 @@ public final class SPUtils {
         return null;
     }
 
-    public boolean remove(SharedPreferences sp, String key) {
+    public static boolean remove(SharedPreferences sp, String key) {
         return sp.edit().remove(key).commit();
     }
 
@@ -320,7 +320,7 @@ public final class SPUtils {
      * 清空销毁
      * @param sp SharedPreferences实例
      */
-    public boolean clear(SharedPreferences sp) {
+    public static boolean clear(SharedPreferences sp) {
         return sp.edit().clear().commit();
     }
 

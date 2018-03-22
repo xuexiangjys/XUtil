@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUnbinder = ButterKnife.bind(this);
         initArgs();
         initViews();
-        initListener();
+        initListeners();
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化监听
      */
-    protected abstract void initListener();
+    protected abstract void initListeners();
 
     @Override
     protected void onDestroy() {
