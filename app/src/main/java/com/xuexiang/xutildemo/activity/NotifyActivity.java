@@ -17,12 +17,14 @@
 package com.xuexiang.xutildemo.activity;
 
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import com.xuexiang.xutil.app.PendingIntentUtils;
 import com.xuexiang.xutil.app.notify.NotificationUtils;
 import com.xuexiang.xutil.resource.ResourceUtils;
 import com.xuexiang.xutildemo.R;
+import com.xuexiang.xutildemo.base.BaseActivity;
 import com.xuexiang.xutildemo.receiver.NotifyBroadCastReceiver;
 
 import java.util.HashMap;
@@ -69,11 +71,12 @@ public class NotifyActivity extends BaseActivity {
     void OnClick(View v) {
         switch(v.getId()) {
             case R.id.btn_simple:
-
                 NotificationUtils.buildSimple(1000, R.mipmap.ic_launcher,"我是通知的标题","我是通知的内容",null)
                         .setHeadUp(true)
                         .addAction(R.mipmap.ic_launcher, "确定",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_SUBMIT, 0))
                         .addAction(R.mipmap.ic_launcher, "取消",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_CANCEL, 0))
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setIsPolling(true)
                         .show();
                 break;
             case R.id.btn_pic:
@@ -101,6 +104,7 @@ public class NotifyActivity extends BaseActivity {
                 progresses = 0;
                 mHandler.removeCallbacksAndMessages(null);
                 showProgress();
+//                NotificationUtils.buildProgress(1004, R.mipmap.ic_launcher, "正在下载", 100, progresses).setIndeterminate(true).show();
                 break;
             default:
                 break;

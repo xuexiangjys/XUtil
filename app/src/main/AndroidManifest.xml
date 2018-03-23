@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xuexiang.xutildemo">
 
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"

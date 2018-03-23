@@ -29,7 +29,7 @@ public class ProgressBuilder extends BaseBuilder {
     /**
      * 最大进度
      */
-    public int mMax;
+    public int mMax = 0;
     /**
      * 进度条
      */
@@ -58,6 +58,11 @@ public class ProgressBuilder extends BaseBuilder {
 
     public ProgressBuilder setIndeterminate(boolean indeterminate) {
         mIndeterminate = indeterminate;
+        if (mIndeterminate) {
+            mMax = 0;
+            mProgress = 0;
+            setContentText(null);
+        }
         return this;
     }
 

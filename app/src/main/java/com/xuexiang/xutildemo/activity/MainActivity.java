@@ -25,6 +25,7 @@ import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.display.ColorUtils;
 import com.xuexiang.xutildemo.R;
+import com.xuexiang.xutildemo.base.BaseActivity;
 
 import java.util.HashMap;
 import java.util.Map;

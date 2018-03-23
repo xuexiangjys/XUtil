@@ -152,6 +152,11 @@ public class BaseBuilder {
      */
     private NotificationCompat.Style mStyle;
 
+    /**
+     * 是否一直提示
+     */
+    private boolean mIsPolling = false;
+
 
     public <T extends BaseBuilder> T setBaseInfo(int icon, CharSequence contentTitle, CharSequence contentText) {
         mSmallIcon = icon;
@@ -300,6 +305,11 @@ public class BaseBuilder {
         return (T) this;
     }
 
+    public <T extends BaseBuilder> T setIsPolling(boolean isPolling) {
+        mIsPolling = isPolling;
+        return (T) this;
+    }
+
     /**
      * 构建通知内容
      */
@@ -414,6 +424,9 @@ public class BaseBuilder {
         Notification notification = mBuilder.build();
         if (mIsForGroundService) {
             notification.flags = Notification.FLAG_FOREGROUND_SERVICE;
+        }
+        if (mIsPolling) {
+            notification.flags |= Notification.FLAG_INSISTENT;
         }
 
         NotificationUtils.notify(mId, notification);

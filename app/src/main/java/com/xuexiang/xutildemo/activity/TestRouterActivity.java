@@ -16,13 +16,13 @@
 
 package com.xuexiang.xutildemo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutildemo.R;
+import com.xuexiang.xutildemo.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;

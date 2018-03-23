@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xutildemo.activity;
+package com.xuexiang.xutildemo.base;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
