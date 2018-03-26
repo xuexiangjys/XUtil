@@ -78,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         if (isFinishing()) {
-            release();
+            onRelease();
         }
         super.onStop();
     }
@@ -86,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 资源释放
      */
-    protected void release() {
+    protected void onRelease() {
 
     }
 
