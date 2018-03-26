@@ -20,20 +20,14 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.app.ActivityUtils;
-import com.xuexiang.xutil.app.BroadcastUtils;
-import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.notify.builder.BaseBuilder;
 import com.xuexiang.xutil.app.notify.builder.BigPicBuilder;
 import com.xuexiang.xutil.app.notify.builder.BigTextBuilder;
+import com.xuexiang.xutil.app.notify.builder.CustomViewBuilder;
 import com.xuexiang.xutil.app.notify.builder.MailboxBuilder;
 import com.xuexiang.xutil.app.notify.builder.ProgressBuilder;
-
-import java.util.Map;
 
 /**
  * 通知栏工具类
@@ -132,6 +126,39 @@ public final class NotificationUtils {
 
     }
 
+    /**
+     * 无精确进度的通知
+     *
+     * @param id           通知的ID
+     * @param smallIcon    顶部状态栏的小图标
+     * @param contentTitle 顶部状态栏的小图标
+     * @return
+     */
+    public static ProgressBuilder buildProgress(int id, int smallIcon, CharSequence contentTitle) {
+        return new ProgressBuilder()
+                .setIndeterminate(true)
+                .setId(id)
+                .setSmallIcon(smallIcon)
+                .setContentTitle(contentTitle);
+    }
+
+    /**
+     * 自定义通知
+     *
+     * @param id           通知的ID
+     * @param smallIcon    顶部状态栏的小图标
+     * @param contentTitle 顶部状态栏的小图标
+     * @param packageName  包名
+     * @param layoutId     自定义布局资源id
+     * @return
+     */
+    public static CustomViewBuilder buildCustomView(int id, int smallIcon, CharSequence contentTitle, String packageName, int layoutId) {
+        return new CustomViewBuilder(packageName, layoutId)
+                .setId(id)
+                .setSmallIcon(smallIcon)
+                .setContentTitle(contentTitle);
+    }
+
 
     /**
      * 通知
@@ -144,6 +171,28 @@ public final class NotificationUtils {
             sNotificationManager = getNotificationManager();
         }
         sNotificationManager.notify(id, notification);
+    }
+
+    /**
+     * 取消通知
+     *
+     * @param id 通知ID
+     */
+    public static void cancel(int id) {
+        if (sNotificationManager == null) {
+            sNotificationManager = getNotificationManager();
+        }
+        sNotificationManager.cancel(id);
+    }
+
+    /**
+     * 取消通知
+     */
+    public static void cancelAll() {
+        if (sNotificationManager == null) {
+            sNotificationManager = getNotificationManager();
+        }
+        sNotificationManager.cancelAll();
     }
 
     public static NotificationManager getNotificationManager() {

@@ -25,24 +25,24 @@ import android.support.v4.app.NotificationCompat;
  */
 public class ProgressBuilder extends BaseBuilder {
 
-    public final static String DEFAULT_FORMAT = "进度:%d/%d";
+    private final static String DEFAULT_FORMAT = "进度:%d/%d";
     /**
      * 最大进度
      */
-    public int mMax = 0;
+    private int mMax = 0;
     /**
      * 进度条
      */
-    public int mProgress = 0;
+    private int mProgress = 0;
     /**
      * 是否无进度条
      */
-    public boolean mIndeterminate = false;
+    private boolean mIndeterminate = false;
 
     /**
      * 模版
      */
-    public String mFormat = DEFAULT_FORMAT;
+    private String mFormat = DEFAULT_FORMAT;
 
     public ProgressBuilder setProgress(int max, int progress) {
         mMax = max;

@@ -67,7 +67,7 @@ public class NotifyActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_simple, R.id.btn_pic, R.id.btn_multi, R.id.btn_mailbox, R.id.btn_progress})
+    @OnClick({R.id.btn_simple, R.id.btn_pic, R.id.btn_multi, R.id.btn_mailbox, R.id.btn_progress, R.id.btn_no_progress, R.id.btn_custom_view})
     void OnClick(View v) {
         switch(v.getId()) {
             case R.id.btn_simple:
@@ -98,13 +98,24 @@ public class NotifyActivity extends BaseActivity {
                         .addMsg("11111111111")
                         .addMsg("22222222222")
                         .addMsg("33333333333")
+                        .setForgroundService()
                         .show();
                 break;
             case R.id.btn_progress:
                 progresses = 0;
                 mHandler.removeCallbacksAndMessages(null);
                 showProgress();
-//                NotificationUtils.buildProgress(1004, R.mipmap.ic_launcher, "正在下载", 100, progresses).setIndeterminate(true).show();
+                break;
+            case R.id.btn_no_progress:
+                NotificationUtils.buildProgress(1005, R.mipmap.ic_launcher, "正在下载").show();
+                break;
+            case R.id.btn_custom_view:
+                NotificationUtils.buildCustomView(1006, R.mipmap.ic_launcher, "自定义通知", getPackageName(), R.layout.layout_notification_custom_view)
+                        .setImageViewResource(R.id.iv_icon, R.mipmap.ic_launcher)
+                        .setTextViewText(R.id.tv_title, "我是自定义通知的标题")
+                        .setTextViewText(R.id.tv_content, "我是自定义通知的内容")
+                        .setOnClickPendingIntent(R.id.btn_reply, PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_REPLY, 0))
+                        .show();
                 break;
             default:
                 break;

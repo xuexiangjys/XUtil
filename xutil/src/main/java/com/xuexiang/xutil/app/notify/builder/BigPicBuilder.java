@@ -18,7 +18,7 @@ package com.xuexiang.xutil.app.notify.builder;
 
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.xuexiang.xutil.display.ImageUtils;
 

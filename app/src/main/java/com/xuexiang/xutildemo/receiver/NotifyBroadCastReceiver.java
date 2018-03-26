@@ -30,6 +30,7 @@ public class NotifyBroadCastReceiver extends BroadcastReceiver {
 
     public final static String ACTION_SUBMIT = "com.xuexiang.xutildemo.receiver.action_submit";
     public final static String ACTION_CANCEL = "com.xuexiang.xutildemo.receiver.action_cancel";
+    public final static String ACTION_REPLY = "com.xuexiang.xutildemo.receiver.action_reply";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,6 +39,8 @@ public class NotifyBroadCastReceiver extends BroadcastReceiver {
             ToastUtil.get().toast("ACTION_SUBMIT");
         } else if (ACTION_CANCEL.equals(action)) {
             ToastUtil.get().toast("ACTION_CANCEL");
+        } else if (ACTION_REPLY.equals(action)) {
+            ToastUtil.get().toast("ACTION_REPLY");
         }
     }
 }

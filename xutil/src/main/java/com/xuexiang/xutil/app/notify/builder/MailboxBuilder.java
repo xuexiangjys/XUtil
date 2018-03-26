@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.app.notify.builder;
 
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.List;

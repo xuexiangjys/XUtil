@@ -48,4 +48,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="进度条通知" />
+
+    <Button
+        android:id="@+id/btn_no_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="无进度条通知" />
+
+    <Button
+        android:id="@+id/btn_custom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义通知" />
 </LinearLayout>
