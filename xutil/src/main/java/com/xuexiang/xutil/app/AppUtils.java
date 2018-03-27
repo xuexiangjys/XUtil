@@ -39,12 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/08/02
- *     desc  : App 相关工具类
- * </pre>
+ * App 相关工具类
+ * @author xuexiang
+ * @date 2018/3/27 上午9:53
  */
 public final class AppUtils {
 

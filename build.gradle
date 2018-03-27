@@ -1,19 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
-    repositories {
-        google()
-        jcenter()
-        allprojects {
-            repositories {
-                maven { url 'https://jitpack.io' }
-            }
-        }
-    }
+    apply from: 'versions.gradle'
+    addRepos(repositories) //增加代码仓库
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath deps.android_gradle_plugin
+        classpath deps.android_maven_gradle_plugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,19 +14,13 @@ buildscript {
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+    addRepos(repositories)
+//    repositories {
+//        google()
+//        jcenter()
+//    }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    APP_RELEASE_STORE_FILE = "../keystores/android.keystore"
-    APP_RELEASE_KEY_ALIAS = "android.keystore"
-    APP_RELEASE_STORE_PASSWORD = "xuexiang"
-    APP_RELEASE_KEY_PASSWORD = "xuexiang"
 }
