@@ -36,6 +36,8 @@ versions.gson = "2.8.2"
 versions.okhttp3 = "3.9.1"
 versions.nineoldandroids = "2.4.0"
 versions.calligraphy = "2.3.0"
+versions.godeye = "1.7.4"
+
 def deps = [:]
 
 def support = [:]
@@ -117,8 +119,17 @@ kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 
 deps.kotlin = kotlin
 
+def godeye = [:]
+godeye.core = "cn.hikyson.godeye:godeye-core:$versions.godeye"
+godeye.toolbox = "cn.hikyson.godeye:godeye-toolbox:$versions.godeye"
+godeye.monitor = "cn.hikyson.godeye:godeye-monitor:$versions.godeye"
+godeye.monitor_no_op = "cn.hikyson.godeye:godeye-monitor-no-op:$versions.godeye"
+
+deps.godeye = godeye
+
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.android_maven_gradle_plugin = "com.github.dcendents:android-maven-gradle-plugin:$versions.android_maven_gradle_plugin"
+deps.freeline_gradle_plugin = "com.antfortune.freeline:gradle:0.8.8"
 deps.paging = "android.arch.paging:runtime:$versions.paging"
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"
