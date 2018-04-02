@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.LogUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public final class ActivityUtils {
      */
     public static void startActivity(Intent intent) {
         if (intent == null) {
-            LogUtils.e("[startActivity failed]: intent == null");
+            Logger.e("[startActivity failed]: intent == null");
             return;
         }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
@@ -51,10 +51,10 @@ public final class ActivityUtils {
                 XUtil.getContext().startActivity(intent);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                LogUtils.e(e);
+                Logger.e(e);
             }
         } else {
-            LogUtils.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
+            Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
         }
     }
 
@@ -67,7 +67,7 @@ public final class ActivityUtils {
      */
     public static void startActivityForResult(Activity fromActivity, Intent intent, int requestCode) {
         if (intent == null) {
-            LogUtils.e("[startActivity failed]: intent == null");
+            Logger.e("[startActivity failed]: intent == null");
             return;
         }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
@@ -75,10 +75,10 @@ public final class ActivityUtils {
                 fromActivity.startActivityForResult(intent, requestCode);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                LogUtils.e(e);
+                Logger.e(e);
             }
         } else {
-            LogUtils.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
+            Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
         }
     }
 

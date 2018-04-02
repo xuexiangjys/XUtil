@@ -27,8 +27,8 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.LogUtils;
 import com.xuexiang.xutil.common.ShellUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -259,10 +259,10 @@ public final class NetworkUtils {
         ShellUtils.CommandResult result = ShellUtils.execCommand(String.format("ping -c 1 %s", ip), false);
         boolean ret = result.result == 0;
         if (result.errorMsg != null) {
-            LogUtils.d("NetworkUtils", "isAvailableByPing() called" + result.errorMsg);
+            Logger.d("NetworkUtils", "isAvailableByPing() called" + result.errorMsg);
         }
         if (result.successMsg != null) {
-            LogUtils.d("NetworkUtils", "isAvailableByPing() called" + result.successMsg);
+            Logger.d("NetworkUtils", "isAvailableByPing() called" + result.successMsg);
         }
         return ret;
     }

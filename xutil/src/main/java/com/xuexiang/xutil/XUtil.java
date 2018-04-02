@@ -24,8 +24,7 @@ import android.os.Looper;
 import com.xuexiang.xutil.app.ActivityLifecycleHelper;
 import com.xuexiang.xutil.app.ProcessUtils;
 import com.xuexiang.xutil.app.ServiceUtils;
-import com.xuexiang.xutil.common.LogUtils;
-import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 /**
  * 全局工具管理
@@ -79,7 +78,7 @@ public final class XUtil {
      */
     public static void debug(boolean isDebug) {
         if (isDebug) {
-            debug(LogUtils.DEFAULT_LOG_TAG);
+            debug(Logger.DEFAULT_LOG_TAG);
         } else {
             debug("");
         }
@@ -90,7 +89,7 @@ public final class XUtil {
      * @param tag
      */
     public static void debug(String tag) {
-       LogUtils.debug(tag);
+       Logger.debug(tag);
     }
 
     /**

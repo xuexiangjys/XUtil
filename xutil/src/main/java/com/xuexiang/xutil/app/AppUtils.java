@@ -27,9 +27,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
+
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.LogUtils;
 import com.xuexiang.xutil.common.ShellUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.file.CleanUtils;
 import com.xuexiang.xutil.file.FileUtils;
 import com.xuexiang.xutil.security.EncryptUtils;
@@ -226,7 +227,7 @@ public final class AppUtils {
         ShellUtils.CommandResult result = ShellUtils.execCommand("echo root", true);
         if (result.result == 0) return true;
         if (result.errorMsg != null) {
-            LogUtils.d("AppUtils", "isAppRoot() called" + result.errorMsg);
+            Logger.d("AppUtils", "isAppRoot() called" + result.errorMsg);
         }
         return false;
     }

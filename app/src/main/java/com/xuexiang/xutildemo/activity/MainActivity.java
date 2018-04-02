@@ -17,12 +17,12 @@
 package com.xuexiang.xutildemo.activity;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.router.Router;
+import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.display.ColorUtils;
 import com.xuexiang.xutildemo.R;
 import com.xuexiang.xutildemo.base.BaseActivity;
@@ -66,9 +66,9 @@ public class MainActivity extends BaseActivity {
             case R.id.button:
 //                ToastUtil.get().toast("我们都爱学习！");
 //                Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
-                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getDefaultColor(R.color.nlui_textcolor)));
-                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getEnableColor(R.color.nlui_textcolor)));
-                Log.e("xuexiang", ColorUtils.colorToString(ColorUtils.getDisableColor(R.color.nlui_textcolor)));
+                Logger.e(ColorUtils.colorToString(ColorUtils.getDefaultColor(R.color.nlui_textcolor)));
+                Logger.d(ColorUtils.colorToString(ColorUtils.getEnableColor(R.color.nlui_textcolor)));
+                Logger.i(ColorUtils.colorToString(ColorUtils.getDisableColor(R.color.nlui_textcolor)));
                 break;
             case R.id.router:
 //                ActivityUtils.startActivity(TestRouterActivity.class, "param", "我是内容");

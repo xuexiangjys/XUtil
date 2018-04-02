@@ -31,7 +31,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.LogUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +45,6 @@ import java.util.Set;
  * @date 2018/2/5 上午12:07
  */
 public final class ProcessUtils {
-    public static final String TAG = "ProcessUtils";
 
     private ProcessUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -195,7 +194,7 @@ public final class ProcessUtils {
         if (info == null || info.size() == 0) return true;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (Arrays.asList(aInfo.pkgList).contains(packageName)) {
-                LogUtils.d(TAG, "[killBackgroundProcesses]：" + aInfo.processName);
+                Logger.d("[killBackgroundProcesses]：" + aInfo.processName);
                 am.killBackgroundProcesses(packageName);
             }
         }
@@ -243,7 +242,7 @@ public final class ProcessUtils {
                     // pkgList 得到该进程下运行的包名
                     String[] pkgList = process.pkgList;
                     for (String pkgName : pkgList) {
-                        LogUtils.d(TAG, "======正在杀死包名：" + pkgName);
+                        Logger.d("======正在杀死包名：" + pkgName);
                         try {
                             am.killBackgroundProcesses(pkgName);
                             count++;
@@ -253,7 +252,7 @@ public final class ProcessUtils {
                     }
                 }
             }
-        LogUtils.d(TAG, "清理了" + (getDeviceUsableMemory() - beforeGCDeviceUsableMemory) + "M内存");
+        Logger.d("清理了" + (getDeviceUsableMemory() - beforeGCDeviceUsableMemory) + "M内存");
         return count;
     }
 

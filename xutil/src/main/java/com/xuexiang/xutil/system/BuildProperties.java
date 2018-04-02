@@ -18,7 +18,7 @@ package com.xuexiang.xutil.system;
 
 import android.os.Environment;
 
-import com.xuexiang.xutil.common.LogUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.file.CloseUtils;
 
 import java.io.File;
@@ -58,7 +58,7 @@ public class BuildProperties {
             fileInputStream = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
             properties.load(fileInputStream);
         } catch (IOException e) {
-            LogUtils.e(e);
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(fileInputStream);
         }

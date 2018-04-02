@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import com.xuexiang.xutil.common.LogUtils;
 import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.util.Stack;
 
@@ -24,38 +24,38 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        LogUtils.d("[onActivityCreated]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityCreated]:" + StringUtils.getName(activity));
         addActivity(activity);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        LogUtils.d("[onActivityStarted]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityStarted]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        LogUtils.d("[onActivityResumed]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityResumed]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        LogUtils.d("[onActivityResumed]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityResumed]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        LogUtils.d("[onActivityStopped]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityStopped]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        LogUtils.d("[onActivitySaveInstanceState]:" + StringUtils.getName(activity));
+        Logger.d("[onActivitySaveInstanceState]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        LogUtils.d("[onActivityDestroyed]:" + StringUtils.getName(activity));
+        Logger.d("[onActivityDestroyed]:" + StringUtils.getName(activity));
         removeActivity(activity);
     }
 
@@ -111,7 +111,7 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
                 if (null != mActivityStack.get(i)) {
                     Activity activity = mActivityStack.get(i);
                     if (!activity.isFinishing()) {
-                        LogUtils.d("[FinishActivity]:" + StringUtils.getName(activity));
+                        Logger.d("[FinishActivity]:" + StringUtils.getName(activity));
                         activity.finish();
                     }
                 }

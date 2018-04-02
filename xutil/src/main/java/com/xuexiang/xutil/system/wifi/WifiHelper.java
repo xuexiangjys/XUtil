@@ -22,8 +22,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 
-import com.xuexiang.xutil.common.LogUtils;
 import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.net.NetworkUtils;
 import com.xuexiang.xutil.system.ThreadPoolManager;
 
@@ -215,7 +215,7 @@ public class WifiHelper {
 			}
 			timeCount++;
 		}
-		LogUtils.d("连接路由花费时间：" + timeCount + "秒");
+		Logger.d("连接路由花费时间：" + timeCount + "秒");
 		onCheckWifiStateFinished(true);
 	}
 	

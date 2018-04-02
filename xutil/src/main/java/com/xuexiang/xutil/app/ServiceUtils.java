@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.LogUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,8 +36,6 @@ import java.util.Set;
  * @date 2018/2/5 上午12:10
  */
 public final class ServiceUtils {
-
-    public static final String TAG = ServiceUtils.class.getSimpleName();
 
     private ServiceUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -194,7 +192,7 @@ public final class ServiceUtils {
         List<RunningServiceInfo> servicesList = activityManager.getRunningServices(Integer.MAX_VALUE);
         for (RunningServiceInfo si : servicesList) {
             if (context.getPackageName().equals(si.service.getPackageName())) {
-                LogUtils.d(TAG, "[stopService]:" + si.service.getClassName());
+                Logger.d("[stopService]:" + si.service.getClassName());
                 stopService(si.service.getClassName());
             }
         }

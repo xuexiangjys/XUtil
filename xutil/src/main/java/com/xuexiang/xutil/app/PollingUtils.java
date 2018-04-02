@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.xuexiang.xutil.common.LogUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 /**
  * 轮询服务工具类
@@ -55,8 +55,8 @@ public final class PollingUtils {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
 		if (DEBUG) {
 			if (pendingIntent != null)
-				LogUtils.v(TAG, pendingIntent.toString());
-			LogUtils.v(TAG, pendingIntent != null ? "Exist" : "Not exist");
+				Logger.v(TAG, pendingIntent.toString());
+			Logger.v(TAG, pendingIntent != null ? "Exist" : "Not exist");
 		}
 		return pendingIntent != null;
 	}
