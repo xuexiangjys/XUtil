@@ -19,6 +19,7 @@ package com.xuexiang.xutil.file;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
 
@@ -219,6 +220,22 @@ public final class FileUtils {
      */
     public static boolean isFile(final File file) {
         return file != null && file.exists() && file.isFile();
+    }
+
+    /**
+     * 文件不存在就创建
+     *
+     * @param filePath
+     */
+    public static File isFileNotExistCreate(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return null;
+        }
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 
     /**

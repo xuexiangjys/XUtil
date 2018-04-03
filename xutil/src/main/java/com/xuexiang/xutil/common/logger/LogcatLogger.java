@@ -19,6 +19,7 @@ package com.xuexiang.xutil.common.logger;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+
 /**
  * 默认Logcat日志记录
  *
@@ -37,7 +38,7 @@ public class LogcatLogger implements ILogger {
     /**
      * 日志打印等级
      */
-    private int mLogLevel = Log.ASSERT;
+    private int mLogLevel = Logger.MAX_LOG_LEVEL;
 
     @Override
     public void debug(boolean isDebug) {
@@ -145,6 +146,7 @@ public class LogcatLogger implements ILogger {
 
     /**
      * 能否打印
+     *
      * @param logLevel
      * @return
      */
