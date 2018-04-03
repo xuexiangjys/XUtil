@@ -43,12 +43,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    if (project.getPlugins().hasPlugin('com.android.application') ||
-            project.getPlugins().hasPlugin('com.android.library')) {
-        archives androidSourcesJar
-        archives androidJavadocsJar
-    } else {
-        archives sourcesJar
-        archives javadocJar
-    }
+    archives sourcesJar
+    archives javadocJar
 }
