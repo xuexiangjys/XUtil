@@ -25,112 +25,13 @@ package com.xuexiang.xutil.common.logger;
 public interface ILogger {
 
     /**
-     * 设置是否是调试模式
-     * @param isDebug
+     * 打印信息
+     *
+     * @param priority 优先级
+     * @param tag      标签
+     * @param message  信息
+     * @param t        出错信息
      */
-    void debug(boolean isDebug);
-
-    /**
-     * 设置日志的tag
-     * @param tag
-     */
-    void setTag(String tag);
-
-    /**
-     * 设置打印日志的等级（只打印改等级以上的日志）
-     * @param level
-     */
-    void setLevel(int level);
-
-    /**
-     * 打印任何（所有）信息
-     * @param msg
-     */
-    void v(String msg);
-
-    /**
-     * 打印任何（所有）信息
-     * @param tag
-     * @param msg
-     */
-    void v(String tag, String msg);
-
-    /**
-     * 打印调试信息
-     * @param msg
-     */
-    void d(String msg);
-
-    /**
-     * 打印调试信息
-     * @param tag
-     * @param msg
-     */
-    void d(String tag, String msg);
-
-    /**
-     * 打印提示性的信息
-     * @param msg
-     */
-    void i(String msg);
-
-    /**
-     * 打印提示性的信息
-     * @param tag
-     * @param msg
-     */
-    void i(String tag, String msg);
-
-    /**
-     * 打印warning警告信息
-     * @param msg
-     */
-    void w(String msg);
-
-    /**
-     * 打印warning警告信息
-     * @param tag
-     * @param msg
-     */
-    void w(String tag, String msg);
-
-    /**
-     * 打印出错信息
-     * @param msg
-     */
-    void e(String msg);
-
-    /**
-     * 打印出错信息
-     * @param tag
-     * @param msg
-     */
-    void e(String tag, String msg);
-
-    /**
-     * 打印出错堆栈信息
-     * @param throwable
-     */
-    void e(Throwable throwable);
-
-    /**
-     * 打印出错堆栈信息
-     * @param tag
-     * @param throwable
-     */
-    void e(String tag, Throwable throwable);
-
-    /**
-     * 打印严重的错误信息
-     * @param msg
-     */
-    void wtf(String msg);
-
-    /**
-     * 打印严重的错误信息
-     * @param tag
-     * @param msg
-     */
-    void wtf(String tag, String msg);
+    void log(int priority, String tag, String message, Throwable t);
 
 }
