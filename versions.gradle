@@ -170,7 +170,10 @@ def addRepos(RepositoryHandler handler) {
     handler.mavenCentral()
     //Add the JitPack repository
     handler.maven { url "https://jitpack.io" }
+    //Add the aliyun repository
     handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    //Add the Local repository
+    handler.maven{ url 'LocalRepository'}
 }
 
 ext.addRepos = this.&addRepos
