@@ -259,10 +259,10 @@ public final class NetworkUtils {
         ShellUtils.CommandResult result = ShellUtils.execCommand(String.format("ping -c 1 %s", ip), false);
         boolean ret = result.result == 0;
         if (result.errorMsg != null) {
-            Logger.d("NetworkUtils", "isAvailableByPing() called" + result.errorMsg);
+            Logger.dTag("NetworkUtils", "isAvailableByPing() called" + result.errorMsg);
         }
         if (result.successMsg != null) {
-            Logger.d("NetworkUtils", "isAvailableByPing() called" + result.successMsg);
+            Logger.dTag("NetworkUtils", "isAvailableByPing() called" + result.successMsg);
         }
         return ret;
     }

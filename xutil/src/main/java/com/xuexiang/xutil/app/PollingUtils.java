@@ -55,8 +55,8 @@ public final class PollingUtils {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
 		if (DEBUG) {
 			if (pendingIntent != null)
-				Logger.v(TAG, pendingIntent.toString());
-			Logger.v(TAG, pendingIntent != null ? "Exist" : "Not exist");
+				Logger.vTag(TAG, pendingIntent.toString());
+			Logger.vTag(TAG, pendingIntent != null ? "Exist" : "Not exist");
 		}
 		return pendingIntent != null;
 	}

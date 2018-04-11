@@ -32,7 +32,7 @@ public final class Logger {
     /**
      * 默认tag
      */
-    private final static String DEFAULT_LOG_TAG = "[Logger]";
+    public final static String DEFAULT_LOG_TAG = "[Logger]";
     /**
      * 最大日志优先级【日志优先级为最大等级，所有日志都不打印】
      */

@@ -227,7 +227,7 @@ public final class AppUtils {
         ShellUtils.CommandResult result = ShellUtils.execCommand("echo root", true);
         if (result.result == 0) return true;
         if (result.errorMsg != null) {
-            Logger.d("AppUtils", "isAppRoot() called" + result.errorMsg);
+            Logger.dTag("AppUtils", "isAppRoot() called" + result.errorMsg);
         }
         return false;
     }
