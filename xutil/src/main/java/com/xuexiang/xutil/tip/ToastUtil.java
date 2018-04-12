@@ -98,7 +98,7 @@ public class ToastUtil {
      * @param text 提示信息
      * @param duration 提示长度
      */
-    public void showToast(String text, int duration) {
+    private void showToast(String text, int duration) {
         if (mToast == null) {
             mToast = makeText(XUtil.getContext(), text, duration);
         } else {
@@ -124,14 +124,6 @@ public class ToastUtil {
         tv.setText(msg);
         toast.setDuration(duration);
         return toast;
-    }
-
-    public void showToast(String text) {
-        showToast(text, Toast.LENGTH_SHORT);
-    }
-
-    public void showToast(int resId) {
-        showToast(ResUtils.getString(resId), Toast.LENGTH_SHORT);
     }
 
     public void cancelToast() {
