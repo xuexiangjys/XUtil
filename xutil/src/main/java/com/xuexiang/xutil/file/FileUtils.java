@@ -40,6 +40,7 @@ import java.util.List;
 
 /**
  * 文件相关工具类
+ *
  * @author xuexiang
  * @date 2018/2/20 下午4:49
  */
@@ -61,8 +62,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的缓存目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/cache;<br>
-     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache;
+     * 存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache;
      */
     public static String getDiskCacheDir() {
         return isSDCardExist() && XUtil.getContext().getExternalCacheDir() != null ? XUtil.getContext().getExternalCacheDir().getPath() : XUtil.getContext().getCacheDir().getPath();
@@ -70,8 +72,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的自定义缓存目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/cache/fileDir;<br>
-     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache/fileDir;
+     * 存在: /storage/emulated/0/Android/data/com.xxx.xxx/cache/fileDir;
      */
     public static String getDiskCacheDir(String fileDir) {
         return getDiskCacheDir() + File.separator + fileDir;
@@ -79,8 +82,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的文件目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/files;<br>
-     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files;
+     * 存在: /storage/emulated/0/Android/data/com.xxx.xxx/files;
      */
     public static String getDiskFilesDir() {
         return isSDCardExist() && XUtil.getContext().getExternalFilesDir(null) != null ? XUtil.getContext().getExternalFilesDir(null).getPath() : XUtil.getContext().getFilesDir().getPath();
@@ -88,8 +92,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘的自定义文件目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/files/fileDir;<br>
-     *              存在: /storage/emulated/0/Android/data/com.xxx.xxx/files/fileDir;
+     * 存在: /storage/emulated/0/Android/data/com.xxx.xxx/files/fileDir;
      */
     public static String getDiskFilesDir(String fileDir) {
         return getDiskFilesDir() + File.separator + fileDir;
@@ -97,8 +102,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/fileDir;<br>
-     *              存在: /storage/emulated/0/fileDir; 或者 /storage/sdcard/fileDir
+     * 存在: /storage/emulated/0/fileDir; 或者 /storage/sdcard/fileDir
      */
     public static String getDiskDir(String fileDir) {
         if (isSDCardExist()) {
@@ -110,8 +116,9 @@ public final class FileUtils {
 
     /**
      * 获取磁盘目录
+     *
      * @return SD卡不存在: /data/data/com.xxx.xxx/com.xxx.xxx;<br>
-     *              存在: /storage/emulated/0/com.xxx.xxx; 或者 /storage/sdcard/com.xxx.xxx
+     * 存在: /storage/emulated/0/com.xxx.xxx; 或者 /storage/sdcard/com.xxx.xxx
      */
     public static String getDiskDir() {
         return getDiskDir(XUtil.getContext().getPackageName());
@@ -614,6 +621,7 @@ public final class FileUtils {
 
     /**
      * 安全删除文件.
+     *
      * @param file
      * @return
      */
@@ -1156,7 +1164,7 @@ public final class FileUtils {
     }
 
     /**
-     * 获取全路径中的不带拓展名的文件名
+     * 获取全路径中的不带拓展名的文件名(不带路径）
      *
      * @param file 文件
      * @return 不带拓展名的文件名
@@ -1167,7 +1175,7 @@ public final class FileUtils {
     }
 
     /**
-     * 获取全路径中的不带拓展名的文件名
+     * 获取全路径中的不带拓展名的文件名(不带路径）
      *
      * @param filePath 文件路径
      * @return 不带拓展名的文件名
@@ -1183,6 +1191,36 @@ public final class FileUtils {
             return filePath.substring(lastSep + 1);
         }
         return filePath.substring(lastSep + 1, lastPoi);
+    }
+
+    /**
+     * 获取全路径中的不带拓展名的文件名(带路径）
+     *
+     * @param filePath 文件路径
+     * @return 不带拓展名的文件名(带路径）
+     */
+    public static String getFileNameNoExtensionWithPath(final String filePath) {
+        if (isSpace(filePath)) return filePath;
+        int lastPoi = filePath.lastIndexOf('.');
+        if (lastPoi == -1) {
+            return filePath;
+        }
+        return filePath.substring(0, lastPoi);
+    }
+
+    /**
+     * 改变文件的拓展名
+     *
+     * @param filePath      文件路径
+     * @param extensionName 拓展名 [.xxx]
+     * @return 改变拓展名的文件路径
+     */
+    public static String changeFileExtension(final String filePath, final String extensionName) {
+        if (isSpace(filePath)) return filePath;
+        int lastPoi = filePath.lastIndexOf('.');
+        int lastSep = filePath.lastIndexOf(File.separator);
+        if (lastPoi == -1 || lastSep >= lastPoi) return "";
+        return filePath.substring(0, lastPoi) + extensionName;
     }
 
     /**
