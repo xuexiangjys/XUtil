@@ -14,72 +14,71 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xutildemo.activity;
+package com.xuexiang.xutildemo.fragment;
 
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.view.View;
 
+import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xpage.base.ListSimpleFragment;
 import com.xuexiang.xutil.app.PendingIntentUtils;
 import com.xuexiang.xutil.app.notify.NotificationUtils;
 import com.xuexiang.xutil.resource.ResourceUtils;
 import com.xuexiang.xutildemo.R;
-import com.xuexiang.xutildemo.base.BaseActivity;
+import com.xuexiang.xutildemo.activity.TestRouterActivity;
 import com.xuexiang.xutildemo.receiver.NotifyBroadCastReceiver;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import butterknife.OnClick;
 
 /**
  * @author xuexiang
- * @date 2018/3/20 下午9:33
+ * @date 2018/4/14 上午1:49
  */
-public class NotifyActivity extends BaseActivity {
+@Page(name = "NotificationUtils使用")
+public class NotifyFragment extends ListSimpleFragment {
 
     private int progresses = 0;
 
     private Handler mHandler = new Handler();
+
     /**
-     * 布局的资源id
+     * 初始化例子
      *
+     * @param lists
      * @return
      */
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_notify;
+    protected List<String> initSimpleData(List<String> lists) {
+        lists.add("简单通知");
+        lists.add("图片通知");
+        lists.add("多文本通知");
+        lists.add("消息盒通知");
+        lists.add("进度条通知");
+        lists.add("无进度条通知");
+        lists.add("自定义通知");
+        return lists;
     }
 
     /**
-     * 初始化控件
+     * 条目点击
+     *
+     * @param position
      */
     @Override
-    protected void initViews() {
-
-    }
-
-    /**
-     * 初始化监听
-     */
-    @Override
-    protected void initListeners() {
-
-    }
-
-    @OnClick({R.id.btn_simple, R.id.btn_pic, R.id.btn_multi, R.id.btn_mailbox, R.id.btn_progress, R.id.btn_no_progress, R.id.btn_custom_view})
-    void OnClick(View v) {
-        switch(v.getId()) {
-            case R.id.btn_simple:
-                NotificationUtils.buildSimple(1000, R.mipmap.ic_launcher,"我是通知的标题","我是通知的内容",null)
-                        .setHeadUp(true)
-                        .addAction(R.mipmap.ic_launcher, "确定",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_SUBMIT, 0))
-                        .addAction(R.mipmap.ic_launcher, "取消",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_CANCEL, 0))
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setIsPolling(true)
-                        .show();
+    protected void onItemClick(int position) {
+        switch(position) {
+            case 0:
+            NotificationUtils.buildSimple(1000, R.mipmap.ic_launcher,"我是通知的标题","我是通知的内容",null)
+                    .setHeadUp(true)
+                    .addAction(R.mipmap.ic_launcher, "确定",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_SUBMIT, 0))
+                    .addAction(R.mipmap.ic_launcher, "取消",  PendingIntentUtils.buildBroadcastIntent(NotifyBroadCastReceiver.class, NotifyBroadCastReceiver.ACTION_CANCEL, 0))
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setIsPolling(true)
+                    .show();
                 break;
-            case R.id.btn_pic:
+            case 1:
                 Map<String, Object> params = new HashMap<>();
                 params.put("param1", "我是参数1");
                 params.put("param2", 123);
@@ -88,12 +87,11 @@ public class NotifyActivity extends BaseActivity {
                         .setContentIntent(PendingIntentUtils.buildActivityIntent(TestRouterActivity.class, params))
                         .show();
                 break;
-            case R.id.btn_multi:
+            case 2:
                 NotificationUtils.buildBigText(1002, R.mipmap.ic_launcher,"我是通知的标题", ResourceUtils.getFileFromRaw(R.raw.test))
                         .show();
                 break;
-
-            case R.id.btn_mailbox:
+            case 3:
                 NotificationUtils.buildMailBox(1003, R.mipmap.ic_launcher,"我是通知的标题")
                         .addMsg("11111111111")
                         .addMsg("22222222222")
@@ -101,16 +99,16 @@ public class NotifyActivity extends BaseActivity {
                         .setForgroundService()
                         .show();
                 break;
-            case R.id.btn_progress:
+            case 4:
                 progresses = 0;
                 mHandler.removeCallbacksAndMessages(null);
                 showProgress();
                 break;
-            case R.id.btn_no_progress:
+            case 5:
                 NotificationUtils.buildProgress(1005, R.mipmap.ic_launcher, "正在下载").show();
                 break;
-            case R.id.btn_custom_view:
-                NotificationUtils.buildCustomView(1006, R.mipmap.ic_launcher, "自定义通知", getPackageName(), R.layout.layout_notification_custom_view)
+            case 6:
+                NotificationUtils.buildCustomView(1006, R.mipmap.ic_launcher, "自定义通知", getActivity().getPackageName(), R.layout.layout_notification_custom_view)
                         .setImageViewResource(R.id.iv_icon, R.mipmap.ic_launcher)
                         .setTextViewText(R.id.tv_title, "我是自定义通知的标题")
                         .setTextViewText(R.id.tv_content, "我是自定义通知的内容")
@@ -121,7 +119,6 @@ public class NotifyActivity extends BaseActivity {
                 break;
         }
     }
-
 
     private void showProgress() {
         mHandler.postDelayed(new Runnable() {

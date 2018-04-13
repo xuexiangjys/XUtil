@@ -4,7 +4,7 @@
 
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".MyApp"
@@ -30,12 +30,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.NotifyActivity"/>
-
         <receiver android:name=".receiver.NotifyBroadCastReceiver">
             <intent-filter>
-                <action android:name="com.xuexiang.xutildemo.receiver.action_submit"/>
-                <action android:name="com.xuexiang.xutildemo.receiver.action_cancel"/>
+                <action android:name="com.xuexiang.xutildemo.receiver.action_submit" />
+                <action android:name="com.xuexiang.xutildemo.receiver.action_cancel" />
             </intent-filter>
         </receiver>
 

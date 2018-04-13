@@ -17,77 +17,19 @@
 package com.xuexiang.xutildemo.activity;
 
 import android.content.Intent;
-import android.view.View;
+import android.os.Bundle;
 
-import com.xuexiang.xutil.app.ActivityUtils;
+import com.xuexiang.xpage.base.BaseActivity;
 import com.xuexiang.xutil.app.IntentUtils;
-import com.xuexiang.xutil.app.router.Router;
-import com.xuexiang.xutil.common.logger.Logger;
-import com.xuexiang.xutil.display.ColorUtils;
-import com.xuexiang.xutildemo.R;
-import com.xuexiang.xutildemo.base.BaseActivity;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.OnClick;
+import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutildemo.fragment.MainFragment;
 
 public class MainActivity extends BaseActivity {
 
-    /**
-     * 布局的资源id
-     *
-     * @return
-     */
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
-    /**
-     * 初始化控件
-     */
-    @Override
-    protected void initViews() {
-
-    }
-
-    /**
-     * 初始化监听
-     */
-    @Override
-    protected void initListeners() {
-
-    }
-
-    @OnClick({R.id.button, R.id.router, R.id.btn_notify})
-    void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.button:
-//                ToastUtil.get().toast("我们都爱学习！");
-//                Log.e("xuexiang", ResourceUtils.getFileFromRaw(R.raw.test));
-                Logger.e(ColorUtils.colorToString(ColorUtils.getDefaultColor(R.color.nlui_textcolor)));
-                Logger.d(ColorUtils.colorToString(ColorUtils.getEnableColor(R.color.nlui_textcolor)));
-                Logger.i(ColorUtils.colorToString(ColorUtils.getDisableColor(R.color.nlui_textcolor)));
-                break;
-            case R.id.router:
-//                ActivityUtils.startActivity(TestRouterActivity.class, "param", "我是内容");
-                Map<String, Object> params = new HashMap<>();
-                params.put("param1", "我是参数1");
-                params.put("param2", 123);
-//                ActivityUtils.startActivity(TestRouterActivity.class, params);
-//                ActivityUtils.startActivity("com.xuexiang.TestRouter", "param", "我是内容");
-//                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100);
-//                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
-//                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
-                Router.newIntent(this).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
-                break;
-            case R.id.btn_notify:
-                ActivityUtils.startActivity(NotifyActivity.class);
-                break;
-            default:
-                break;
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        openPage(MainFragment.class);
     }
 
     @Override
@@ -96,5 +38,9 @@ public class MainActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
         }
+    }
+
+    protected void toast(String msg) {
+        ToastUtil.get().toast(msg);
     }
 }

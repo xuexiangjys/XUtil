@@ -1164,7 +1164,8 @@ public final class FileUtils {
     }
 
     /**
-     * 获取全路径中的不带拓展名的文件名(不带路径）
+     * <p>获取全路径中的不带拓展名的文件名(不带路径)</p>
+     * <p>例如:aa/bb/cc.png  --> cc </p>
      *
      * @param file 文件
      * @return 不带拓展名的文件名
@@ -1175,7 +1176,8 @@ public final class FileUtils {
     }
 
     /**
-     * 获取全路径中的不带拓展名的文件名(不带路径）
+     * <p>获取全路径中的不带拓展名的文件名(不带路径)</p>
+     * <p>例如:aa/bb/cc.png  --> cc </p>
      *
      * @param filePath 文件路径
      * @return 不带拓展名的文件名
@@ -1196,6 +1198,8 @@ public final class FileUtils {
     /**
      * 获取全路径中的不带拓展名的文件名(带路径）
      *
+     * <p>例如:aa/bb/cc.png  --> aa/bb/cc </p>
+     *
      * @param filePath 文件路径
      * @return 不带拓展名的文件名(带路径）
      */
@@ -1210,6 +1214,8 @@ public final class FileUtils {
 
     /**
      * 改变文件的拓展名
+     *
+     * <p>例如:aa/bb/cc.png  --> aa/bb/cc.xxx </p>
      *
      * @param filePath      文件路径
      * @param extensionName 拓展名 [.xxx]
