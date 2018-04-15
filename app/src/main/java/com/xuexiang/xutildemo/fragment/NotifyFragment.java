@@ -20,7 +20,7 @@ import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xpage.base.ListSimpleFragment;
+import com.xuexiang.xpage.base.SimpleListFragment;
 import com.xuexiang.xutil.app.PendingIntentUtils;
 import com.xuexiang.xutil.app.notify.NotificationUtils;
 import com.xuexiang.xutil.resource.ResourceUtils;
@@ -37,7 +37,7 @@ import java.util.Map;
  * @date 2018/4/14 上午1:49
  */
 @Page(name = "NotificationUtils使用")
-public class NotifyFragment extends ListSimpleFragment {
+public class NotifyFragment extends SimpleListFragment {
 
     private int progresses = 0;
 

@@ -20,7 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xpage.base.ListSimpleFragment;
+import com.xuexiang.xpage.base.SimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutildemo.MyApp;
@@ -36,7 +36,7 @@ import java.util.Map;
  * @date 2018/4/14 上午1:42
  */
 @Page(name = "XUtil")
-public class MainFragment extends ListSimpleFragment {
+public class MainFragment extends SimpleListFragment {
     /**
      * 初始化例子
      *
