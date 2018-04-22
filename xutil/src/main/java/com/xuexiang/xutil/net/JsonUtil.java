@@ -34,11 +34,13 @@ import java.lang.reflect.Type;
 public final class JsonUtil {
 
 	/**
-	 * 解析Json字符串
-	 * @param json Json字符串
-	 * @param classOfT 类
-	 * @param <T>
-	 * @return
+	 * 把 JSON 字符串 转换为 单个指定类型的对象
+	 *
+	 * @param json
+	 *            包含了单个对象数据的JSON字符串
+	 * @param classOfT
+	 *            指定类型对象的Class
+	 * @return 指定类型对象
 	 */
 	public static <T> T fromJson(String json, Class<T> classOfT) {
 		try {

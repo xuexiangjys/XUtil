@@ -252,7 +252,7 @@ public class WifiAPHelper {
      * @return
      */
     public boolean isWifiConnectSuccess(String ssid) {
-        return mWifiManager.isWifiEnabled() && checkSSIDState(ssid) && NetworkUtils.IsHaveInternet();
+        return mWifiManager.isWifiEnabled() && checkSSIDState(ssid) && NetworkUtils.isHaveInternet();
     }
 
     /**

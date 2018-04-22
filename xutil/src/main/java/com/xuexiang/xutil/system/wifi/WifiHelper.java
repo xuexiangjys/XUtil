@@ -411,7 +411,7 @@ public class WifiHelper {
 	 * @return
 	 */
 	public boolean isConnectSuccess(String wifiSsid) {
-		return checkState() && checkSSIDState(wifiSsid) && NetworkUtils.IsHaveInternet();
+		return checkState() && checkSSIDState(wifiSsid) && NetworkUtils.isHaveInternet();
 	}
 	
 	//============================================wifi路由扫描===============================================================//

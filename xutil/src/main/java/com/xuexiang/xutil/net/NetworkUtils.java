@@ -106,7 +106,7 @@ public final class NetworkUtils {
      *
      * @return
      */
-    public static boolean IsHaveInternet() {
+    public static boolean isHaveInternet() {
         try {
             ConnectivityManager connectivity = getConnectivityManager();
             if (connectivity != null) {

@@ -409,7 +409,7 @@ public final class StringUtils {
      * @param str
      * @return
      */
-    public static String replaceSpecialCharacter(String str) {
+    public static String replaceSpecialCharacter(final String str) {
         String dest = "";
         if (str != null) {
             String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
@@ -426,7 +426,7 @@ public final class StringUtils {
      * @param str
      * @return
      */
-    public static String replaceBracket(String str) {
+    public static String replaceBracket(final String str) {
         String dest = "";
         if (str != null) {
             String regEx = "[\\[\\]]";
@@ -442,7 +442,7 @@ public final class StringUtils {
      * @param str
      * @return
      */
-    public static String replaceBlank(String str) {
+    public static String replaceBlank(final String str) {
         String dest = "";
         if (str != null) {
             Pattern p = Pattern.compile("\\s*|\t|\r|\n");
@@ -455,12 +455,13 @@ public final class StringUtils {
     /**
      * 根据分隔符将String转换为List
      *
+     * <p>例如:aa,bb,cc --> {"aa","bb","cc"}</p>
      * @param str
      * @param separator
      *            分隔符
      * @return
      */
-    public List<String> stringToList(String str, String separator) {
+    public static List<String> stringToList(final String str, final String separator) {
         List<String> list = Arrays.asList(str.split(separator));
         return list;
     }
@@ -472,7 +473,7 @@ public final class StringUtils {
      * @param separator
      * @return
      */
-    public String listToString(List<String> list, String separator) {
+    public static String listToString(final List<String> list, final String separator) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             sb.append(list.get(i)).append(separator);
@@ -485,7 +486,7 @@ public final class StringUtils {
      * @param object
      * @return
      */
-    public static String getSimpleName(Object object) {
+    public static String getSimpleName(final Object object) {
         return object != null ? object.getClass().getSimpleName() : "NULL";
     }
 
@@ -494,7 +495,7 @@ public final class StringUtils {
      * @param object
      * @return
      */
-    public static String getName(Object object) {
+    public static String getName(final Object object) {
         return object != null ? object.getClass().getName() : "NULL";
     }
 
@@ -504,7 +505,7 @@ public final class StringUtils {
      * @param str 字符串
      * @return
      */
-    public static String format2Decimals(String str) {
+    public static String format2Decimals(final String str) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");// 构造方法的字符格式这里如果小数不足2位,会以0补足.
         if (isEmpty(str)) {
             return "";
