@@ -23,7 +23,7 @@ import com.xuexiang.xutil.common.StringUtils;
  * @author xuexiang
  * @date 2018/2/20 下午2:56
  */
-public class ROMUtils {
+public final class ROMUtils {
 
     public static ROMType sROMType;
 
@@ -45,6 +45,9 @@ public class ROMUtils {
     private static final String KEY_FLYME_SETUP_FALG = "ro.meizu.setupwizard.flyme";
     private static final String KEY_FLYME_PUBLISH_FALG = "ro.flyme.published";
 
+    private ROMUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     public static ROMType getROMType() {
         if (sROMType == null) {

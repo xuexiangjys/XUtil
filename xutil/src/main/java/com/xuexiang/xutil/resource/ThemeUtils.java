@@ -40,6 +40,14 @@ import com.xuexiang.xutil.display.ColorUtils;
 public final class ThemeUtils {
 
     /**
+     * Don't let anyone instantiate this class.
+     */
+    private ThemeUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+
+    /**
      * 解析主题的Color属性
      *
      * @param context

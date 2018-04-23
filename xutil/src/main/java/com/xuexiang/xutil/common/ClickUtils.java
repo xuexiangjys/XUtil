@@ -18,47 +18,59 @@ package com.xuexiang.xutil.common;
 
 import android.view.View;
 
-public class ClickUtils {
+/**
+ * <pre>
+ *     desc   :	快速点击工具类
+ *     author : xuexiang
+ *     time   : 2018/4/23 下午2:45
+ * </pre>
+ */
+public final class ClickUtils {
 
-	/**
-	 * 最近一次点击的时间
-	 */
-	private static long sLastClickTime;
-	/**
-	 * 最近一次点击的控件ID
-	 */
-	private static int sLastClickViewId;
+    /**
+     * 默认点击时间间期（毫秒）
+     */
+    private final static long DEFAULT_INTERVAL_MILLIS = 1000;
+    /**
+     * 最近一次点击的时间
+     */
+    private static long sLastClickTime;
+    /**
+     * 最近一次点击的控件ID
+     */
+    private static int sLastClickViewId;
 
-	/**
-	 * 是否是快速点击
-	 * 
-	 * @param v
-	 *            点击的控件
-	 * @return true:是，false:不是
-	 */
-	public static boolean isFastDoubleClick(View v) {
-		return isFastDoubleClick(v, 1F);
-	}
+    private ClickUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
-	/**
-	 * 是否是快速点击
-	 * 
-	 * @param v
-	 *            点击的控件
-	 * @param interval
-	 *            时间间期（秒）
-	 * @return
-	 */
-	public static boolean isFastDoubleClick(View v, float interval) {
-		long time = System.currentTimeMillis();
-		int viewId = v.getId();
-		long timeD = time - sLastClickTime;
-		if (0 < timeD && timeD < (interval * 1000) && viewId == sLastClickViewId) {
-			return true;
-		} else {
-			sLastClickTime = time;
-			sLastClickViewId = viewId;
-			return false;
-		}
-	}
+    /**
+     * 是否是快速点击
+     *
+     * @param v 点击的控件
+     * @return true:是，false:不是
+     */
+    public static boolean isFastDoubleClick(View v) {
+        return isFastDoubleClick(v, DEFAULT_INTERVAL_MILLIS);
+    }
+
+    /**
+     * 是否是快速点击
+     *
+     * @param v              点击的控件
+     * @param intervalMillis 时间间期（毫秒）
+     * @return
+     */
+    public static boolean isFastDoubleClick(View v, long intervalMillis) {
+        long time = System.currentTimeMillis();
+        int viewId = v.getId();
+        long timeD = time - sLastClickTime;
+        if (0 < timeD && timeD < intervalMillis && viewId == sLastClickViewId) {
+            return true;
+        } else {
+            sLastClickTime = time;
+            sLastClickViewId = viewId;
+            return false;
+        }
+    }
 }

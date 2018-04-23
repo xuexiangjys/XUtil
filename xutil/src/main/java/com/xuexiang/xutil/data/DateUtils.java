@@ -116,6 +116,14 @@ public final class DateUtils {
     //============================时间类型转化================================//
 
     /**
+     * Don't let anyone instantiate this class.
+     */
+    private DateUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+
+    /**
      * 将时间戳转为时间字符串
      * <p>格式为 format</p>
      *

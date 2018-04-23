@@ -32,6 +32,13 @@ import java.io.Serializable;
  */
 public final class CloneUtils {
 
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private CloneUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     public static <T> T deepClone(final Serializable data) {
         if (data == null) return null;
         return (T) bytes2Object(serializable2Bytes(data));

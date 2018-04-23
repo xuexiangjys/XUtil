@@ -42,7 +42,14 @@ import com.xuexiang.xutil.XUtil;
  * @author XUE
  * @date 2017/9/8 10:13
  */
-public class ResUtils {
+public final class ResUtils {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private ResUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     /**
      * 获取resources对象

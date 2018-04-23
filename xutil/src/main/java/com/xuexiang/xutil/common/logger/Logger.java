@@ -28,6 +28,13 @@ import android.util.Log;
  */
 public final class Logger {
 
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private Logger() {
+        throw new UnsupportedOperationException("Do not need instantiate!");
+    }
+
     //==============常量================//
     /**
      * 默认tag

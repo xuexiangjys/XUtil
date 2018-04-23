@@ -35,6 +35,13 @@ import java.util.Map;
  */
 public final class SPUtils {
 
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private SPUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
     //==================================SharedPreferences实例获取==================================================//
     /**
      * 获取默认SharedPreferences实例

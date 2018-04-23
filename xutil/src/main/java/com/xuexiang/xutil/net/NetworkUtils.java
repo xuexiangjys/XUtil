@@ -58,6 +58,14 @@ import java.util.regex.Pattern;
 public final class NetworkUtils {
 
     /**
+     * Don't let anyone instantiate this class.
+     */
+    private NetworkUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+
+    /**
      * 打开网络设置界面
      */
     public static void openWirelessSettings() {

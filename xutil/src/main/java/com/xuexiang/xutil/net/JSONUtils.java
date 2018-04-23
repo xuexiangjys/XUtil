@@ -33,7 +33,7 @@ public final class JSONUtils {
     public static boolean isPrintException = true;
 
     private JSONUtils() {
-        throw new Error("Do not need instantiate!");
+        throw new UnsupportedOperationException("Do not need instantiate!");
     }
 
     /**

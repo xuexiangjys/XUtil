@@ -26,11 +26,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * 热点工具类
- * @author xuexiang
- * @date 2018/2/17 下午4:53
+ * <pre>
+ *     desc   :	热点工具类
+ *     author : xuexiang
+ *     time   : 2018/4/23 下午2:45
+ * </pre>
  */
-public class WifiAPUtil {
+public final class WifiAPUtil {
 	public static int WIFI_AP_STATE_DISABLING = 0;
 	public static int WIFI_AP_STATE_DISABLED = 1;
 	public static int WIFI_AP_STATE_ENABLING = 2;
@@ -53,6 +55,10 @@ public class WifiAPUtil {
 			WIFI_AP_STATE_FAILED = 14;
 		}
 	}
+
+	private WifiAPUtil() {
+		throw new UnsupportedOperationException("u can't instantiate me...");
+	}
 	
 
 	/**
@@ -66,15 +72,7 @@ public class WifiAPUtil {
 			Method method = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
 			WifiConfiguration netConfig = getWifiApConfig(wifiAPSsid, wifiAPPassword);
 			method.invoke(wifiManager, netConfig, true);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
 
@@ -91,15 +89,7 @@ public class WifiAPUtil {
 			Method method = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
 			WifiConfiguration netConfig = getWifiApConfig(wifiAPSsid, wifiAPPassword);
 			method.invoke(wifiManager, netConfig, false);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
 	}
@@ -166,11 +156,7 @@ public class WifiAPUtil {
 		int securityType = 0;
 		try {
 			securityType = (Integer)(KeyMgmt.class.getField("WPA2_PSK").get(null));
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
 			e.printStackTrace();
 		}
 		return securityType;

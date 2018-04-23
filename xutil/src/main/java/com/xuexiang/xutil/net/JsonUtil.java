@@ -34,6 +34,14 @@ import java.lang.reflect.Type;
 public final class JsonUtil {
 
 	/**
+	 * Don't let anyone instantiate this class.
+	 */
+	private JsonUtil() {
+		throw new UnsupportedOperationException("u can't instantiate me...");
+	}
+
+
+	/**
 	 * 把 JSON 字符串 转换为 单个指定类型的对象
 	 *
 	 * @param json

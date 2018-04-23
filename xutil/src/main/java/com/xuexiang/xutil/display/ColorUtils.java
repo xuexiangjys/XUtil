@@ -40,6 +40,13 @@ public final class ColorUtils {
     private static final int FOCUSED_ATTR = android.R.attr.state_focused;
 
     /**
+     * Don't let anyone instantiate this class.
+     */
+    private ColorUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    /**
      * 矫正颜色的透明度
      *
      * @param color
