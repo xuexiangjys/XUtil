@@ -16,6 +16,7 @@
 
 package com.xuexiang.xutildemo.fragment;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -23,6 +24,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.SimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xutil.app.router.Router;
+import com.xuexiang.xutil.data.DateUtils;
 import com.xuexiang.xutildemo.MyApp;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
 
@@ -69,6 +71,9 @@ public class MainFragment extends SimpleListFragment {
 //                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
 //                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
                 Router.newIntent(getActivity()).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
+
+                Log.e("xuexiang", DateUtils.nDaysAfterToday(2, true));
+                Log.e("xuexiang", DateUtils.nDaysBeforeToday(2, true));
                 break;
             case 1:
                openPage(NotifyFragment.class);

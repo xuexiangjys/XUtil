@@ -259,6 +259,37 @@ public final class DateUtils {
     }
 
     //===============================时间计算==================================//
+    /**
+     * 获取当前日期n天前的日期，返回String
+     * <p>例如：今天是2018-4-24，day=2， return 2018-4-22</p>
+     * <p>day=-2， return 2018-4-26</p>
+     * @param day 【-1：1天后， 1：1天前】
+     * @param day
+     * @param isNeedHMS:是否需要时分秒
+     * @return
+     */
+    public static String nDaysBeforeToday(int day, boolean isNeedHMS) {
+        return nDaysAfterToday(-day, isNeedHMS);
+    }
+
+    /**
+     * 获取当前日期n天后的日期，返回String
+     * <p>例如：今天是2018-4-24，day=2， return 2018-4-26</p>
+     * <p>day=-2， return 2018-4-22</p>
+     * @param day 【-1：1天前， 1：1天后】
+     * @param isNeedHMS:是否需要时分秒
+     * @return
+     */
+    public static String nDaysAfterToday(int day, boolean isNeedHMS) {
+        Calendar rightNow = Calendar.getInstance();
+        rightNow.setTimeInMillis(System.currentTimeMillis());
+        rightNow.add(Calendar.DAY_OF_MONTH, day);
+        if (isNeedHMS) {
+            return DateUtils.date2String(rightNow.getTime(), yyyyMMddHHmmss.get());
+        } else {
+            return DateUtils.date2String(rightNow.getTime(), yyyyMMdd.get());
+        }
+    }
 
     /**
      * 计算距离今天的天数
