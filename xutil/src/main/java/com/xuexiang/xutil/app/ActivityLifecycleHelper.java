@@ -11,6 +11,7 @@ import java.util.Stack;
 
 /**
  * activity生命周期管理
+ *
  * @author xuexiang
  * @date 2018/2/4 下午3:37
  */
@@ -73,10 +74,14 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
      * 获取当前Activity（堆栈中最后一个压入的）
      */
     public Activity getCurrentActivity() {
-        Activity activity = mActivityStack.lastElement();
-        return activity;
+        return mActivityStack.lastElement();
     }
 
+    /**
+     * 获取上一个Activity
+     *
+     * @return
+     */
     public Activity getPreActivity() {
         int size = mActivityStack.size();
         if (size < 2) return null;
@@ -86,9 +91,8 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     /**
      * 结束当前Activity（堆栈中最后一个压入的）
      */
-    public void finishActivity() {
-        Activity activity = mActivityStack.lastElement();
-        finishActivity(activity);
+    public void finishCurrentActivity() {
+        finishActivity(getCurrentActivity());
     }
 
     /**
@@ -108,8 +112,8 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     public void finishAllActivity() {
         if (mActivityStack != null) {
             for (int i = 0, size = mActivityStack.size(); i < size; i++) {
-                if (null != mActivityStack.get(i)) {
-                    Activity activity = mActivityStack.get(i);
+                Activity activity = mActivityStack.get(i);
+                if (activity != null) {
                     if (!activity.isFinishing()) {
                         Logger.d("[FinishActivity]:" + StringUtils.getName(activity));
                         activity.finish();
@@ -124,11 +128,6 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
         if (activity != null) {
             mActivityStack.remove(activity);
         }
-    }
-
-    public void removeAllWithoutItself(Activity activity) {
-        mActivityStack.clear();
-        addActivity(activity);
     }
 
     /**

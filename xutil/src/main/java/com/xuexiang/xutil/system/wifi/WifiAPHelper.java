@@ -136,8 +136,8 @@ public class WifiAPHelper {
      * 开启热点线程
      */
     private void startWifiApTh() {
-        if (!WifiAPUtil.isWifiApEnable()) {
-            WifiAPUtil.startWifiAp(mWifiAPSsid, mWifiAPPassword);
+        if (!WifiAPUtils.isWifiApEnable()) {
+            WifiAPUtils.startWifiAp(mWifiAPSsid, mWifiAPPassword);
         }
         mStartWifiApRunnable = new StartWifiApRunnable();
         ThreadPoolManager.get().addTask(mStartWifiApRunnable);
@@ -181,8 +181,8 @@ public class WifiAPHelper {
      */
     private class StartWifiApRunnable implements Runnable {
         public void run() {
-            int state = WifiAPUtil.getWifiApState();
-            if (state == WifiAPUtil.WIFI_AP_STATE_FAILED) {
+            int state = WifiAPUtils.getWifiApState();
+            if (state == WifiAPUtils.WIFI_AP_STATE_FAILED) {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -192,11 +192,11 @@ public class WifiAPHelper {
                         }
                     }
                 });
-            } else if (state == WifiAPUtil.WIFI_AP_STATE_DISABLED) {
+            } else if (state == WifiAPUtils.WIFI_AP_STATE_DISABLED) {
                 mWifiHandler.postDelayed(mStartWifiApRunnable, 100);
-            } else if (state == WifiAPUtil.WIFI_AP_STATE_ENABLING) {
+            } else if (state == WifiAPUtils.WIFI_AP_STATE_ENABLING) {
                 mWifiHandler.postDelayed(mStartWifiApRunnable, 100);
-            } else if (state == WifiAPUtil.WIFI_AP_STATE_ENABLED) {
+            } else if (state == WifiAPUtils.WIFI_AP_STATE_ENABLED) {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -216,13 +216,13 @@ public class WifiAPHelper {
     private class CloseWifiApRunnable implements Runnable {
         @Override
         public void run() {
-            int state = WifiAPUtil.getWifiApState();
-            if (state == WifiAPUtil.WIFI_AP_STATE_ENABLED) {
-                WifiAPUtil.stopWifiAp(mWifiAPSsid, mWifiAPPassword);
+            int state = WifiAPUtils.getWifiApState();
+            if (state == WifiAPUtils.WIFI_AP_STATE_ENABLED) {
+                WifiAPUtils.stopWifiAp(mWifiAPSsid, mWifiAPPassword);
                 mWifiHandler.postDelayed(mCloseWifiApRunnable, 100);
-            } else if (state == WifiAPUtil.WIFI_AP_STATE_DISABLING || state == WifiAPUtil.WIFI_AP_STATE_FAILED) {
+            } else if (state == WifiAPUtils.WIFI_AP_STATE_DISABLING || state == WifiAPUtils.WIFI_AP_STATE_FAILED) {
                 mWifiHandler.postDelayed(mCloseWifiApRunnable, 100);
-            } else if (state == WifiAPUtil.WIFI_AP_STATE_DISABLED) {
+            } else if (state == WifiAPUtils.WIFI_AP_STATE_DISABLED) {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {

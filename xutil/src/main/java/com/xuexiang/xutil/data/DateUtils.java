@@ -218,16 +218,10 @@ public final class DateUtils {
      * @return 转换成功：新时间格式，转换失败：{@link StringUtils#EMPTY}
      */
     public static String translateDateFormat(final String time, final DateFormat oldFormat, final DateFormat newFormat) {
-        if (StringUtils.isEmpty(time)) {
-            return EMPTY;
-        }
+        if (StringUtils.isSpace(time)) return EMPTY;
 
-        Date date = string2Date(time, oldFormat);
-        if (date != null) {
-            return date2String(date, newFormat);
-        } else {
-            return EMPTY;
-        }
+        Date date = string2Date(time, oldFormat); //String -> Date
+        return date != null ? date2String(date, newFormat) : EMPTY; //Date -> String
     }
 
     /**

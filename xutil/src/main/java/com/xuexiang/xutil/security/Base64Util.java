@@ -16,6 +16,7 @@
 package com.xuexiang.xutil.security;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 /**
  * Base64工具类
@@ -23,8 +24,18 @@ import java.io.UnsupportedEncodingException;
  * @date 2018/2/9 上午1:33
  */
 public final class Base64Util {
-	
-    /** The Constant base64EncodeChars. */
+
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
+
+	/**
+	 * Don't let anyone instantiate this class.
+	 */
+	private Base64Util() {
+		throw new UnsupportedOperationException("u can't instantiate me...");
+	}
+
+
+	/** The Constant base64EncodeChars. */
     private static final char[] base64EncodeChars = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
 			'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -37,7 +48,27 @@ public final class Base64Util {
 			-1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 			21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
 			39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1};
-	
+
+	/**
+	 * Encode.(加密）
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
+	public static final String encode(String str) {
+		return encode(str, UTF_8.name(), 0);
+	}
+
+	/**
+	 * Decode.(解密）
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
+	public static final String decode(String str) {
+		return decode(str, UTF_8.name());
+	}
+
     /**
      * Encode.
      *

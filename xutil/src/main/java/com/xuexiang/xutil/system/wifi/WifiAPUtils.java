@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
  *     time   : 2018/4/23 下午2:45
  * </pre>
  */
-public final class WifiAPUtil {
+public final class WifiAPUtils {
 	public static int WIFI_AP_STATE_DISABLING = 0;
 	public static int WIFI_AP_STATE_DISABLED = 1;
 	public static int WIFI_AP_STATE_ENABLING = 2;
@@ -56,7 +56,7 @@ public final class WifiAPUtil {
 		}
 	}
 
-	private WifiAPUtil() {
+	private WifiAPUtils() {
 		throw new UnsupportedOperationException("u can't instantiate me...");
 	}
 	

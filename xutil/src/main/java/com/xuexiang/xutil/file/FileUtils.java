@@ -124,8 +124,7 @@ public final class FileUtils {
         return getDiskDir(XUtil.getContext().getPackageName());
     }
 
-    //=========================================//
-
+    //=================判断文件是否存在========================//
     /**
      * 根据文件路径获取文件
      *
@@ -156,39 +155,28 @@ public final class FileUtils {
         return file != null && file.exists();
     }
 
+
     /**
-     * 重命名文件
+     * 判断文件目录是否存在
      *
-     * @param filePath 文件路径
-     * @param newName  新名称
-     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     * @param dirPath 文件目录路径
+     * @return
      */
-    public static boolean rename(final String filePath, final String newName) {
-        return rename(getFileByPath(filePath), newName);
+    public static boolean isFolderExist(final String dirPath) {
+        return isFolderExist(getFileByPath(dirPath));
     }
 
     /**
-     * 重命名文件
+     * 判断文件目录是否存在
      *
-     * @param file    文件
-     * @param newName 新名称
-     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     * @param dir
+     * @return
      */
-    public static boolean rename(final File file, final String newName) {
-        // 文件为空返回 false
-        if (file == null) return false;
-        // 文件不存在返回 false
-        if (!file.exists()) return false;
-        // 新的文件名为空返回 false
-        if (isSpace(newName)) return false;
-        // 如果文件名没有改变返回 true
-        if (newName.equals(file.getName())) return true;
-        File newFile = new File(file.getParent() + File.separator + newName);
-        // 如果重命名的文件已存在返回 false
-        return !newFile.exists()
-                && file.renameTo(newFile);
+    public static boolean isFolderExist(final File dir) {
+        return dir != null && dir.exists() && dir.isDirectory();
     }
 
+    //======================文件判断=======================//
     /**
      * 判断是否是目录
      *
@@ -229,20 +217,61 @@ public final class FileUtils {
         return file != null && file.exists() && file.isFile();
     }
 
+    //=======================重命名文件=======================//
     /**
-     * 文件不存在就创建
+     * 重命名文件
+     *
+     * @param filePath 文件路径
+     * @param newName  新名称
+     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     */
+    public static boolean rename(final String filePath, final String newName) {
+        return rename(getFileByPath(filePath), newName);
+    }
+
+    /**
+     * 重命名文件
+     *
+     * @param file    文件
+     * @param newName 新名称
+     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     */
+    public static boolean rename(final File file, final String newName) {
+        // 文件为空返回 false
+        if (file == null) return false;
+        // 文件不存在返回 false
+        if (!file.exists()) return false;
+        // 新的文件名为空返回 false
+        if (isSpace(newName)) return false;
+        // 如果文件名没有改变返回 true
+        if (newName.equals(file.getName())) return true;
+        File newFile = new File(file.getParent() + File.separator + newName);
+        // 如果重命名的文件已存在返回 false
+        return !newFile.exists()
+                && file.renameTo(newFile);
+    }
+
+    //=======================创建文件=======================//
+    /**
+     * 文件不存在就创建，存在则返回文件，不存在则创建并返回文件
      *
      * @param filePath
+     * @return 文件
      */
-    public static File isFileNotExistCreate(String filePath) {
-        if (TextUtils.isEmpty(filePath)) {
+    public static File isFileNotExistCreate(final String filePath) {
+        File file = getFileByPath(filePath);
+        if (file == null) return null;
+        // 如果存在，是文件则返回
+        if (file.exists()) return file;
+        //目录没有创建成功，直接返回null
+        if (!createOrExistsDir(file.getParentFile())) return null;
+        try {
+            file.createNewFile();
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
-        File file = new File(filePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return file;
     }
 
     /**
@@ -325,6 +354,7 @@ public final class FileUtils {
         }
     }
 
+    //=======================文件复制或移动=======================//
     /**
      * 复制或移动目录
      *
@@ -451,6 +481,7 @@ public final class FileUtils {
         }
     }
 
+    //=======================文件复制=======================//
     /**
      * 复制目录
      *
@@ -507,6 +538,7 @@ public final class FileUtils {
         return copyOrMoveFile(srcFile, destFile, listener, false);
     }
 
+    //=======================文件移动=======================//
     /**
      * 移动目录
      *
@@ -563,6 +595,7 @@ public final class FileUtils {
         return copyOrMoveFile(srcFile, destFile, listener, true);
     }
 
+    //=======================文件删除=======================//
     /**
      * 删除目录
      *
@@ -726,6 +759,7 @@ public final class FileUtils {
         return true;
     }
 
+    //=======================文件遍历、过滤、获取=======================//
     /**
      * 获取目录下所有文件
      * <p>不递归进子目录</p>
@@ -843,6 +877,7 @@ public final class FileUtils {
         return list;
     }
 
+    //=======================文件信息（修改时间、大小、编码格式等）=======================//
     /**
      * 获取文件最后修改的毫秒时间戳
      *
@@ -1197,7 +1232,7 @@ public final class FileUtils {
 
     /**
      * 获取全路径中的不带拓展名的文件名(带路径）
-     *
+     * <p>
      * <p>例如:aa/bb/cc.png  --> aa/bb/cc </p>
      *
      * @param filePath 文件路径
@@ -1214,7 +1249,7 @@ public final class FileUtils {
 
     /**
      * 改变文件的拓展名
-     *
+     * <p>
      * <p>例如:aa/bb/cc.png  --> aa/bb/cc.xxx </p>
      *
      * @param filePath      文件路径

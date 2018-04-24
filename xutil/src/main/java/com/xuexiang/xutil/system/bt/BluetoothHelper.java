@@ -115,7 +115,7 @@ public class BluetoothHelper {
                     }
                 }
 
-            } else if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (mOnBluetoothDeviceListener != null) {
                     mOnBluetoothDeviceListener.onBondStateChanged(device, intent);
@@ -323,11 +323,7 @@ public class BluetoothHelper {
         if (BluetoothAdapter.checkBluetoothAddress(address)) { // 检查蓝牙地址是否有效
             BluetoothDevice device = getBluetoothDevice(address);
             if (isCorrectDevice(device)) {
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    result = device.createBond();
-                } else {
-                    result = true;
-                }
+                result = device.getBondState() == BluetoothDevice.BOND_BONDED || device.createBond();
             }
         }
         return result;

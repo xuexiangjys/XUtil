@@ -74,7 +74,7 @@ public final class KeyboardUtils {
     public static void showSoftInput(final View view) {
         InputMethodManager imm =
                 (InputMethodManager) XUtil.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) return;
+        if (imm == null || view == null) return;
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
         view.requestFocus();

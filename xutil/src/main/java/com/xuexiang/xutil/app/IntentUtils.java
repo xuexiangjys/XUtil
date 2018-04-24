@@ -16,7 +16,6 @@
 
 package com.xuexiang.xutil.app;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.content.FileProvider;
@@ -40,7 +38,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
 
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.ANY;
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.AUDIO;
