@@ -37,6 +37,7 @@ import java.util.List;
 
 /**
  * 文件读写相关工具类
+ *
  * @author xuexiang
  * @date 2018/2/8 上午1:25
  */
@@ -48,7 +49,12 @@ public final class FileIOUtils {
 
     private static final String LINE_SEP = System.getProperty("line.separator");
 
+    /**
+     * io读写的buffer大小，默认和BufferedOutputStream默认的大小相等
+     */
     private static int sBufferSize = 8192;
+
+    //=====================写流文件=========================//
 
     /**
      * 将输入流写入文件
@@ -106,6 +112,7 @@ public final class FileIOUtils {
             while ((len = is.read(data, 0, sBufferSize)) != -1) {
                 os.write(data, 0, len);
             }
+            os.flush();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,6 +121,8 @@ public final class FileIOUtils {
             CloseUtils.closeIO(is, os);
         }
     }
+
+    //========================写Bytes文件（通过流）============================//
 
     /**
      * 将字节数组写入文件
@@ -167,6 +176,7 @@ public final class FileIOUtils {
         try {
             bos = new BufferedOutputStream(new FileOutputStream(file, append));
             bos.write(bytes);
+            bos.flush();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,6 +184,20 @@ public final class FileIOUtils {
         } finally {
             CloseUtils.closeIO(bos);
         }
+    }
+
+    //=========================写Bytes文件（通过FileChannel）===========================//
+
+    /**
+     * 将字节数组写入文件
+     *
+     * @param filePath 文件路径
+     * @param bytes    字节数组
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileFromBytesByChannel(final String filePath,
+                                                      final byte[] bytes) {
+        return writeFileFromBytesByChannel(getFileByPath(filePath), bytes, false, true);
     }
 
     /**
@@ -204,6 +228,18 @@ public final class FileIOUtils {
                                                       final boolean append,
                                                       final boolean isForce) {
         return writeFileFromBytesByChannel(getFileByPath(filePath), bytes, append, isForce);
+    }
+
+    /**
+     * 将字节数组写入文件
+     *
+     * @param file  文件
+     * @param bytes 字节数组
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileFromBytesByChannel(final File file,
+                                                      final byte[] bytes) {
+        return writeFileFromBytesByChannel(file, bytes, false, true);
     }
 
     /**
@@ -249,6 +285,20 @@ public final class FileIOUtils {
         }
     }
 
+    //=========================写Bytes文件（通过MappedByteBuffer内存映射（大文件操作））===========================//
+
+    /**
+     * 将字节数组写入文件
+     *
+     * @param filePath 文件路径
+     * @param bytes    字节数组
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileFromBytesByMap(final String filePath,
+                                                  final byte[] bytes) {
+        return writeFileFromBytesByMap(filePath, bytes, false, true);
+    }
+
     /**
      * 将字节数组写入文件
      *
@@ -277,6 +327,18 @@ public final class FileIOUtils {
                                                   final boolean append,
                                                   final boolean isForce) {
         return writeFileFromBytesByMap(getFileByPath(filePath), bytes, append, isForce);
+    }
+
+    /**
+     * 将字节数组写入文件
+     *
+     * @param file  文件
+     * @param bytes 字节数组
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileFromBytesByMap(final File file,
+                                                  final byte[] bytes) {
+        return writeFileFromBytesByMap(file, bytes, false, true);
     }
 
     /**
@@ -321,6 +383,8 @@ public final class FileIOUtils {
             CloseUtils.closeIO(fc);
         }
     }
+
+    //=========================写String字符串（通过BufferedWriter进行写操作）===========================//
 
     /**
      * 将字符串写入文件
@@ -557,9 +621,7 @@ public final class FileIOUtils {
             if (isSpace(charsetName)) {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             } else {
-                reader = new BufferedReader(
-                        new InputStreamReader(new FileInputStream(file), charsetName)
-                );
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charsetName));
             }
             String line;
             if ((line = reader.readLine()) != null) {
@@ -570,6 +632,39 @@ public final class FileIOUtils {
             }
             return sb.toString();
         } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            CloseUtils.closeIO(reader);
+        }
+    }
+
+    /**
+     * 读取输入流到字符串中
+     *
+     * @param is  输入流
+     * @return 字符串
+     */
+    public static String readInputStream2String(InputStream is, final String charsetName) {
+        if (is == null) return null;
+
+        StringBuilder sb = new StringBuilder();
+        BufferedReader reader = null;
+        try {
+            if (isSpace(charsetName)) {
+                reader = new BufferedReader(new InputStreamReader(is));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(is, charsetName));
+            }
+            String line;
+            if ((line = reader.readLine()) != null) {
+                sb.append(line);
+                while ((line = reader.readLine()) != null) {
+                    sb.append(LINE_SEP).append(line);
+                }
+            }
+            return sb.toString();
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         } finally {
@@ -688,7 +783,7 @@ public final class FileIOUtils {
      * @param bufferSize 缓冲区大小
      */
     public static void setBufferSize(final int bufferSize) {
-        sBufferSize = bufferSize;
+        FileIOUtils.sBufferSize = bufferSize;
     }
 
     private static File getFileByPath(final String filePath) {

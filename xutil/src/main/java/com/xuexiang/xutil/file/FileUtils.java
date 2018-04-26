@@ -399,7 +399,7 @@ public final class FileUtils {
         // 源文件不存在或者不是目录则返回 false
         if (!srcDir.exists() || !srcDir.isDirectory()) return false;
         if (destDir.exists()) {
-            if (listener.onReplace()) {// 需要覆盖则删除旧目录
+            if (listener == null || listener.onReplace()) {// 需要覆盖则删除旧目录
                 if (!deleteAllInDir(destDir)) {// 删除文件失败的话返回 false
                     return false;
                 }
@@ -462,7 +462,7 @@ public final class FileUtils {
         // 源文件不存在或者不是文件则返回 false
         if (!srcFile.exists() || !srcFile.isFile()) return false;
         if (destFile.exists()) {// 目标文件存在
-            if (listener.onReplace()) {// 需要覆盖则删除旧文件
+            if (listener == null || listener.onReplace()) {// 需要覆盖则删除旧文件
                 if (!destFile.delete()) {// 删除文件失败的话返回 false
                     return false;
                 }
@@ -719,7 +719,7 @@ public final class FileUtils {
     }
 
     /**
-     * 删除目录下所有过滤的文件
+     * 删除目录下所有过滤的文件【目录不删除】
      *
      * @param dirPath 目录路径
      * @param filter  过滤器
@@ -731,7 +731,7 @@ public final class FileUtils {
     }
 
     /**
-     * 删除目录下所有过滤的文件
+     * 删除目录下所有过滤的文件【目录不删除】
      *
      * @param dir    目录
      * @param filter 过滤器

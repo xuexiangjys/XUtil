@@ -116,7 +116,7 @@ public class ToastUtil {
      * @return
      */
     private Toast makeText(Context context, String msg, int duration) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_toast, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.xutil_layout_toast, null);
         Toast toast = new Toast(context);
         toast.setView(view);
         TextView tv = (TextView) view.findViewById(R.id.tv_info);

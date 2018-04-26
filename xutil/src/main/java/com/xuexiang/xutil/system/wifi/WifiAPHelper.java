@@ -169,7 +169,7 @@ public class WifiAPHelper {
                     @Override
                     public void run() {
                         startWifiApTh();
-                        ToastUtil.get().toast(R.string.tip_close_wifi_success);
+                        ToastUtil.get().toast(R.string.xutil_tip_close_wifi_success);
                     }
                 });
             }
@@ -186,7 +186,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.tip_open_wifiap_failed);
+                        ToastUtil.get().toast(R.string.xutil_tip_open_wifiap_failed);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(false);
                         }
@@ -200,7 +200,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.tip_open_wifiap_success);
+                        ToastUtil.get().toast(R.string.xutil_tip_open_wifiap_success);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(true);
                         }
@@ -226,7 +226,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.tip_close_wifiap_success);
+                        ToastUtil.get().toast(R.string.xutil_tip_close_wifiap_success);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(false);
                         }
