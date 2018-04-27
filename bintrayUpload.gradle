@@ -19,7 +19,7 @@ apply plugin: 'com.jfrog.bintray'
 
 // load properties
 Properties properties = new Properties()
-File localPropertiesFile = project.file("local.properties");
+File localPropertiesFile = project.file("../local.properties");
 if (localPropertiesFile.exists()) {
     properties.load(localPropertiesFile.newDataInputStream())
 }
@@ -33,7 +33,7 @@ def projectName = properties.getProperty("project.name")
 def projectBintrayRepository = properties.getProperty("project.bintrayRepository")
 def projectGroupId = properties.getProperty("project.groupId")
 def projectArtifactId = properties.getProperty("project.artifactId")
-def projectVersionName = android.defaultConfig.versionName
+def projectVersionName = properties.getProperty("project.version")
 def projectPackaging = properties.getProperty("project.packaging")
 def projectSiteUrl = properties.getProperty("project.siteUrl")
 def projectGitUrl = properties.getProperty("project.gitUrl")
@@ -155,3 +155,39 @@ bintray {
         publish = true
     }
 }
+
+/*
+ * *********************************************************
+ *
+ *  1.在项目中新建project.properties文件，然后配置如下属性：
+ *
+ *  #project dependency info
+ *  project.groupId=com.github.xuexiangjys     //组名
+ *  project.artifactId=xutil-core              //项目名
+ *  project.version=1.0.0                      //版本名
+ *
+ *  compile 'groupId:artifactId:version'
+ *
+ *  #project description
+ *  project.name=XUtil
+ *  project.bintrayRepository=maven
+ *  project.packaging=aar
+ *  project.siteUrl=https://github.com/xuexiangjys/XUtil
+ *  project.gitUrl=https://github.com/xuexiangjys/XUtil.git
+ *
+ *  #javadoc
+ *  javadoc.name=XUtil
+ *
+ * *********************************************************
+ *
+ *  2.在项目根目录中的local.properties文件，配置如下属性：
+ *
+ *  #bintray
+ *  bintray.user=
+ *  bintray.apikey=
+ *
+ *  #developer
+ *  developer.id=
+ *  developer.name=
+ *  developer.email=
+ */
