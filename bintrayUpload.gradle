@@ -20,17 +20,17 @@ apply plugin: 'com.jfrog.bintray'
 // load properties
 Properties properties = new Properties()
 File localPropertiesFile = project.file("local.properties");
-if(localPropertiesFile.exists()){
+if (localPropertiesFile.exists()) {
     properties.load(localPropertiesFile.newDataInputStream())
 }
 File projectPropertiesFile = project.file("project.properties");
-if(projectPropertiesFile.exists()){
+if (projectPropertiesFile.exists()) {
     properties.load(projectPropertiesFile.newDataInputStream())
 }
 
 // read properties
 def projectName = properties.getProperty("project.name")
-def projectBintrayRepo = properties.getProperty("project.bintrayRepo")
+def projectBintrayRepository = properties.getProperty("project.bintrayRepository")
 def projectGroupId = properties.getProperty("project.groupId")
 def projectArtifactId = properties.getProperty("project.artifactId")
 def projectVersionName = android.defaultConfig.versionName
@@ -83,18 +83,35 @@ install {
     }
 }
 
-// This generates sources.jar
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        failOnError false
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
 }
 
-// This generates javadoc.jar
+// 制作文档(Javadoc)
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -105,9 +122,16 @@ artifacts {
     archives sourcesJar
 }
 
+//解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
 // javadoc configuration
 javadoc {
-    options{
+    options {
         encoding "UTF-8"
         charSet 'UTF-8'
         author true
@@ -123,7 +147,7 @@ bintray {
     key = bintrayApikey
     configurations = ['archives']
     pkg {
-        repo = projectBintrayRepo
+        repo = projectBintrayRepository
         name = projectName
         websiteUrl = projectSiteUrl
         vcsUrl = projectGitUrl

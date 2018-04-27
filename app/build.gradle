@@ -65,7 +65,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation deps.support.app_compat
     testImplementation deps.junit
-    implementation project(':xutil')
+    implementation project(':xutil-core')
 
     //butterknife的sdk
     implementation deps.butterknife.runtime

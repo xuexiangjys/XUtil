@@ -1,1 +1,1 @@
-include ':app', ':xutil'
+include ':app', ':xutil-core'
