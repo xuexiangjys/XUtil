@@ -45,7 +45,7 @@ public final class ThreadPoolUtils {
     /**
      * 固定大小的线程池
      */
-    public static final int FixedThread  = 0;
+    public static final int FixedThread = 0;
     /**
      * 带缓存功能的线程池
      */
@@ -63,7 +63,7 @@ public final class ThreadPoolUtils {
     /**
      * 线程池
      */
-    private ExecutorService          exec;
+    private ExecutorService exec;
     /**
      * 周期性执行任务的线程池
      */
@@ -85,7 +85,8 @@ public final class ThreadPoolUtils {
 
     /**
      * 初始化线程池
-     * @param type 线程池类型
+     *
+     * @param type         线程池类型
      * @param corePoolSize 只对Fixed和Scheduled线程池起效
      */
     public void initThreadPool(final @Type int type, final int corePoolSize) {
@@ -387,6 +388,7 @@ public final class ThreadPoolUtils {
 
     /**
      * 获取线程池
+     *
      * @return
      */
     public ExecutorService getExecutorService() {
@@ -395,6 +397,7 @@ public final class ThreadPoolUtils {
 
     /**
      * 获取周期执行任务的线程池
+     *
      * @return
      */
     public ScheduledExecutorService getScheduledExecutorService() {
@@ -404,6 +407,7 @@ public final class ThreadPoolUtils {
 
     /**
      * 是否是主线程
+     *
      * @return
      */
     public static boolean isMainLooper() {
@@ -412,6 +416,7 @@ public final class ThreadPoolUtils {
 
     /**
      * 是否是主线程
+     *
      * @return
      */
     public static boolean isMainThread() {

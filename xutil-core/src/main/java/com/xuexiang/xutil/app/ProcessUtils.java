@@ -40,9 +40,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 进程相关工具类
- * @author xuexiang
- * @date 2018/2/5 上午12:07
+ * <pre>
+ *     desc   : 进程相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:35
+ * </pre>
  */
 public final class ProcessUtils {
 

@@ -25,9 +25,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 /**
- * 编码解码相关工具类
- * @author xuexiang
- * @date 2018/2/9 上午12:07
+ * <pre>
+ *     desc   : 编码解码相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午1:12
+ * </pre>
  */
 public final class EncodeUtils {
 

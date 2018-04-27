@@ -35,9 +35,11 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * 加密解密相关的工具类
- * @author xuexiang
- * @date 2018/2/9 上午12:10
+ * <pre>
+ *     desc   : 加密解密相关的工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午1:12
+ * </pre>
  */
 public final class EncryptUtils {
 

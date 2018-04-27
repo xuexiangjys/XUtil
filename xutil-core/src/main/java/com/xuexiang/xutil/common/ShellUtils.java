@@ -23,7 +23,12 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- * ShellUtils
+ *
+ * <pre>
+ *     desc   : ShellUtils
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:42
+ * </pre>
  * <ul>
  * <strong>Check root</strong>
  * <li>{@link ShellUtils#checkRootPermission()}</li>
@@ -38,8 +43,6 @@ import java.util.List;
  * <li>{@link ShellUtils#execCommand(String[], boolean, boolean)}</li>
  * </ul>
  *
- * @author xuexiang
- * @date 2018/2/4 下午6:31
  */
 public final class ShellUtils {
 

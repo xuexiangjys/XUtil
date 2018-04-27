@@ -20,9 +20,11 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * 关闭相关工具类
- * @author xuexiang
- * @date 2018/2/8 上午1:19
+ * <pre>
+ *     desc   : 关闭相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:52
+ * </pre>
  */
 public final class CloseUtils {
 

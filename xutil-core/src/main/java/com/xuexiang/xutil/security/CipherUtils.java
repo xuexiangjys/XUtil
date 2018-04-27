@@ -26,9 +26,11 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 /**
- * 加密与解密的工具类
- * @author xuexiang
- * @date 2018/2/9 上午12:16
+ * <pre>
+ *     desc   : 加密与解密的工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午1:12
+ * </pre>
  */
 public final class CipherUtils {
 

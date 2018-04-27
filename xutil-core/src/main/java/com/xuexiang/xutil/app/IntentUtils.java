@@ -45,9 +45,11 @@ import static com.xuexiang.xutil.app.IntentUtils.DocumentType.IMAGE;
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.VIDEO;
 
 /**
- * 意图相关工具类
- * @author xuexiang
- * @date 2018/2/20 下午1:43
+ * <pre>
+ *     desc   : 意图相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:34
+ * </pre>
  */
 public final class IntentUtils {
 

@@ -40,9 +40,11 @@ import com.xuexiang.xutil.XUtil;
 import java.lang.reflect.Method;
 
 /**
- * 栏相关工具类
- * @author xuexiang
- * @date 2018/2/15 下午1:27
+ * <pre>
+ *     desc   : 状态栏工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:48
+ * </pre>
  */
 public final class BarUtils {
 

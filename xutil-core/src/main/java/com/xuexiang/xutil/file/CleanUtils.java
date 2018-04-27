@@ -24,9 +24,11 @@ import com.xuexiang.xutil.common.StringUtils;
 import java.io.File;
 
 /**
- * 清除相关工具类
- * @author xuexiang
- * @date 2018/2/16 下午2:35
+ * <pre>
+ *     desc   : 清除相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:52
+ * </pre>
  */
 public final class CleanUtils {
 

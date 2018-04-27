@@ -33,10 +33,11 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 压缩相关工具类
- *
- * @author xuexiang
- * @date 2018/2/17 下午6:49
+ * <pre>
+ *     desc   : 压缩相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:53
+ * </pre>
  */
 public final class ZipUtils {
 

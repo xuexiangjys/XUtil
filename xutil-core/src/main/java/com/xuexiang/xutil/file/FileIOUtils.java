@@ -36,10 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 文件读写相关工具类
- *
- * @author xuexiang
- * @date 2018/2/8 上午1:25
+ * <pre>
+ *     desc   : 文件读写相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:53
+ * </pre>
  */
 public final class FileIOUtils {
 

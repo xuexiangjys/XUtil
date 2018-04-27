@@ -159,6 +159,11 @@ bintray {
 /*
  * *********************************************************
  *
+ *   ./gradlew install
+ *   ./gradlew bintrayUpload
+ *
+ * *********************************************************
+ *
  *  1.在项目中新建project.properties文件，然后配置如下属性：
  *
  *  #project dependency info

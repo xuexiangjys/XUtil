@@ -39,10 +39,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 文件相关工具类
- *
- * @author xuexiang
- * @date 2018/2/20 下午4:49
+ * <pre>
+ *     desc   : 文件相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:53
+ * </pre>
  */
 public final class FileUtils {
 

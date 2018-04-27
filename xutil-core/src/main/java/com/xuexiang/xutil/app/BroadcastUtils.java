@@ -29,10 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 广播工具类
- *
- * @author xuexiang
- * @date 2018/2/26 上午12:37
+ * <pre>
+ *     desc   : 广播工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:26
+ * </pre>
  */
 public final class BroadcastUtils {
 

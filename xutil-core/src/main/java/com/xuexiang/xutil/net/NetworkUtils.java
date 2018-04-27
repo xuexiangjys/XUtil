@@ -24,11 +24,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiManager;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;
 import com.xuexiang.xutil.common.logger.Logger;
+import com.xuexiang.xutil.file.CloseUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,6 +43,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
@@ -49,11 +53,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.INTERNET;
+
 /**
- * 网络工具类
- *
- * @author xuexiang
- * @date 2018/2/17 下午6:16
+ * <pre>
+ *     desc   : 网络工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:53
+ * </pre>
  */
 public final class NetworkUtils {
 
@@ -80,7 +90,7 @@ public final class NetworkUtils {
      *
      * @return NetworkInfo
      */
-    @SuppressLint("MissingPermission")
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager manager = getConnectivityManager();
         if (manager == null) return null;
@@ -90,16 +100,20 @@ public final class NetworkUtils {
     /**
      * 判断网络连接是否打开,包括移动数据连接
      *
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
+     *
      * @return 是否联网
      */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isNetworkAvailable() {
         boolean netState = false;
         ConnectivityManager manager = getConnectivityManager();
         if (manager != null) {
             NetworkInfo[] info = manager.getAllNetworkInfo();
             if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == State.CONNECTED) {
+                for (NetworkInfo anInfo : info) {
+                    if (anInfo.getState() == State.CONNECTED) {
                         netState = true;
                         break;
                     }
@@ -110,10 +124,14 @@ public final class NetworkUtils {
     }
 
     /**
-     * 判断是否有网
+     * 判断当前是否有网
      *
-     * @return
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
+     *
+     * @return {@code true}: 有网<br>{@code false}: 无网
      */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isHaveInternet() {
         try {
             ConnectivityManager connectivity = getConnectivityManager();
@@ -136,8 +154,10 @@ public final class NetworkUtils {
      * Gps是否打开
      * 需要<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />权限
      *
-     * @return true, if is gps enabled
+     * @return {@code true}: enabled<br>{@code false}: disabled
      */
+    @SuppressLint("MissingPermission")
+    @RequiresPermission(ACCESS_FINE_LOCATION)
     public static boolean isGpsEnabled() {
         LocationManager lm = (LocationManager) XUtil.getContext().getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -147,8 +167,12 @@ public final class NetworkUtils {
     /**
      * 判断当前网络是否是移动数据网络.
      *
-     * @return boolean
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
+     *
+     * @return {@code true}: enabled<br>{@code false}: disabled
      */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isMobile() {
         NetworkInfo activeNetInfo = getActiveNetworkInfo();
         return activeNetInfo != null && activeNetInfo.isAvailable() && activeNetInfo.getType() == ConnectivityManager.TYPE_MOBILE;
@@ -156,9 +180,12 @@ public final class NetworkUtils {
 
     /**
      * 检测当前打开的网络类型是否WIFI
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return 是否是Wifi上网
+     * @return {@code true}: connected<br>{@code false}: disconnected
      */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isWifi() {
         NetworkInfo activeNetInfo = getActiveNetworkInfo();
         return activeNetInfo != null && activeNetInfo.isAvailable() && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI;
@@ -176,32 +203,14 @@ public final class NetworkUtils {
 
     /**
      * 检测当前开打的网络类型是否4G
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
      * @return 是否是4G上网
      */
     public static boolean is4G() {
         NetworkInfo activeNetInfo = getActiveNetworkInfo();
-        if (activeNetInfo != null && activeNetInfo.isConnectedOrConnecting()) {
-            if (activeNetInfo.getType() == TelephonyManager.NETWORK_TYPE_LTE) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 只是判断WIFI
-     *
-     * @return 是否打开Wifi
-     */
-    public static boolean isWiFi() {
-        ConnectivityManager manager = getConnectivityManager();
-        State wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        if (wifi == State.CONNECTED || wifi == State.CONNECTING) {
-            return true;
-        } else {
-            return false;
-        }
+        return activeNetInfo != null && activeNetInfo.isConnectedOrConnecting() && activeNetInfo.getType() == TelephonyManager.NETWORK_TYPE_LTE;
     }
 
     /**
@@ -338,81 +347,66 @@ public final class NetworkUtils {
     //==================================================================IP相关====================================================================//
 
     /**
-     * 获取本地Ip地址
+     * 遍历获取本地Ip地址
      *
-     * @return local ip adress or null if not found
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />}</p>
+     *
+     * @return 设备本地Ip地址
      */
+    @RequiresPermission(ACCESS_WIFI_STATE)
     public static InetAddress getLocalInetAddress() {
-        WifiManager wifiMgr = (WifiManager) XUtil.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (isWiFi()) {
-            int ipAsInt = wifiMgr.getConnectionInfo().getIpAddress();
-            if (ipAsInt == 0) {
-                return null;
-            } else {
-                return intToInet(ipAsInt);
-            }
+        WifiManager wifiManager = getWifiManager();
+        if (wifiManager != null && isWifi()) {
+            return getWifiInetAddress(wifiManager);
         } else {
-            try {
-                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-                while (networkInterfaces.hasMoreElements()) {
-                    NetworkInterface networkInterface = networkInterfaces.nextElement();
-                    Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-                    while (addresses.hasMoreElements()) {
-                        InetAddress address = addresses.nextElement();
-                        if (!address.isLoopbackAddress() && !address.isLinkLocalAddress()) {
-                            return address;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
+            return getInetAddressByEnumerate();
         }
     }
 
     /**
-     * IP地址校验
-     *
-     * @param ip 待校验是否是IP地址的字符串
-     * @return 是否是IP地址
-     */
-    public static boolean isIP(String ip) {
-        Pattern pattern = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
-        Matcher matcher = pattern.matcher(ip);
-        return matcher.matches();
-    }
-
-    /**
-     * IP转化成int数字
-     *
-     * @param addr IP地址
-     * @return Integer
-     */
-    public static int ipToInt(String addr) {
-        String[] addrArray = addr.split("\\.");
-        int num = 0;
-        for (int i = 0; i < addrArray.length; i++) {
-            int power = 3 - i;
-            num += ((Integer.parseInt(addrArray[i]) % 256 * Math.pow(256, power)));
-        }
-        return num;
-    }
-
-    /**
-     * IP转化成String显示
-     *
-     * @param addr
+     * 通过枚举网络接口获取ip地址
      * @return
      */
-    public static String ipToString(int addr) {
-        if (addr == 0) {
-            return null;
+    @Nullable
+    private static InetAddress getInetAddressByEnumerate() {
+        Enumeration<NetworkInterface> networkInterfaces = null;
+        try {
+            networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
-        return ipToString(addr, ".");
+        if (networkInterfaces != null) {
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (!address.isLoopbackAddress() && !address.isLinkLocalAddress()) {
+                        return address;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
-    public static InetAddress intToInet(int value) {
+    /**
+     * 获取wifi的ip地址
+     * @param wifiManager
+     * @return
+     */
+    @Nullable
+    private static InetAddress getWifiInetAddress(WifiManager wifiManager) {
+        int ipAsInt = wifiManager.getConnectionInfo().getIpAddress();
+        if (ipAsInt == 0) {
+            return null;
+        } else {
+            return intToInet(ipAsInt);
+        }
+    }
+
+    private static InetAddress intToInet(int value) {
         byte[] bytes = new byte[4];
         for (int i = 0; i < 4; i++) {
             bytes[i] = byteOfInt(value, i);
@@ -420,6 +414,50 @@ public final class NetworkUtils {
         try {
             return InetAddress.getByAddress(bytes);
         } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * IP转化成int数字
+     *
+     * @param address IP地址
+     * @return Integer
+     */
+    public static int ipToInt(String address) {
+        String[] addressArray = address.split("\\.");
+        int num = 0;
+        for (int i = 0; i < addressArray.length; i++) {
+            int power = 3 - i;
+            num += ((Integer.parseInt(addressArray[i]) % 256 * Math.pow(256, power)));
+        }
+        return num;
+    }
+
+    /**
+     * IP转化成String显示
+     *
+     * @param address ip地址
+     * @return
+     */
+    public static String ipToString(int address) {
+        if (address == 0) {
+            return null;
+        }
+        return ipToString(address, ".");
+    }
+
+    private static String ipToString(int address, String sep) {
+        if (address > 0) {
+            StringBuffer buf = new StringBuffer();
+            buf.
+                    append(byteOfInt(address, 0)).append(sep).
+                    append(byteOfInt(address, 1)).append(sep).
+                    append(byteOfInt(address, 2)).append(sep).
+                    append(byteOfInt(address, 3));
+            return buf.toString();
+        } else {
             return null;
         }
     }
@@ -427,20 +465,6 @@ public final class NetworkUtils {
     private static byte byteOfInt(int value, int which) {
         int shift = which * 8;
         return (byte) (value >> shift);
-    }
-
-    private static String ipToString(int addr, String sep) {
-        if (addr > 0) {
-            StringBuffer buf = new StringBuffer();
-            buf.
-                    append(byteOfInt(addr, 0)).append(sep).
-                    append(byteOfInt(addr, 1)).append(sep).
-                    append(byteOfInt(addr, 2)).append(sep).
-                    append(byteOfInt(addr, 3));
-            return buf.toString();
-        } else {
-            return null;
-        }
     }
 
     //==============================================================网络状态==========================================================================//
@@ -454,10 +478,21 @@ public final class NetworkUtils {
 
 
     /**
-     * 判断当前是否网络连接
+     * 判断当前是否网络连接,返回网络的类型
+     ** <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return 状态码
+     * @return type of network
+     * <ul>
+     * <li>{@link NetworkUtils.NetState#NET_WIFI   } </li>
+     * <li>{@link NetworkUtils.NetState#NET_4G     } </li>
+     * <li>{@link NetworkUtils.NetState#NET_3G     } </li>
+     * <li>{@link NetworkUtils.NetState#NET_2G     } </li>
+     * <li>{@link NetworkUtils.NetState#NET_UNKNOWN} </li>
+     * <li>{@link NetworkUtils.NetState#NET_NO     } </li>
+     * </ul>
      */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
     public static NetState isConnected() {
         NetState stateCode = NetState.NET_NO;
         ConnectivityManager cm = getConnectivityManager();
@@ -597,12 +632,28 @@ public final class NetworkUtils {
     }
 
     /**
+     * IP地址校验
+     *
+     * @param ip 待校验是否是IP地址的字符串
+     * @return 是否是IP地址
+     */
+    public static boolean isIP(String ip) {
+        Pattern pattern = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
+
+    /**
      * 从Url中下载文件
+     *
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
      *
      * @param urlStr   资源地址
      * @param fileName 文件名
      * @param savePath 文件保存路径
      */
+    @RequiresPermission(INTERNET)
     public static void downLoadFileByUrl(String urlStr, String fileName, String savePath) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -622,12 +673,7 @@ public final class NetworkUtils {
         File file = new File(saveDir + File.separator + fileName);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
-        if (fos != null) {
-            fos.close();
-        }
-        if (inputStream != null) {
-            inputStream.close();
-        }
+        CloseUtils.closeIO(fos, inputStream);
     }
 
     /**
@@ -638,8 +684,8 @@ public final class NetworkUtils {
      * @throws IOException
      */
     private static byte[] readInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[1024];
-        int len = 0;
+        byte[] buffer = new byte[8192];
+        int len;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         while ((len = inputStream.read(buffer)) != -1) {
             bos.write(buffer, 0, len);

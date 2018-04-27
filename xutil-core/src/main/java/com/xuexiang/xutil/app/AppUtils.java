@@ -40,9 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * App 相关工具类
- * @author xuexiang
- * @date 2018/3/27 上午9:53
+ * <pre>
+ *     desc   : App 相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:26
+ * </pre>
  */
 public final class AppUtils {
 

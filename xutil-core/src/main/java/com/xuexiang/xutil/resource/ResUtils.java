@@ -37,10 +37,11 @@ import android.view.animation.AnimationUtils;
 import com.xuexiang.xutil.XUtil;
 
 /**
- * 获取res中的资源
- *
- * @author XUE
- * @date 2017/9/8 10:13
+ * <pre>
+ *     desc   : 获取res中的资源
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:54
+ * </pre>
  */
 public final class ResUtils {
 

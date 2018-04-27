@@ -68,8 +68,7 @@ public class DeviceStatusUtils {
      * @return true：自动；false：手动；默认：true
      */
     public static boolean isScreenBrightnessModeAuto(Context context) {
-        return getScreenBrightnessModeState(context) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC ? true
-                : false;
+        return getScreenBrightnessModeState(context) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
     }
 
     /**
@@ -120,9 +119,8 @@ public class DeviceStatusUtils {
                 brightness = 255;
             }
         }
-        boolean result = Settings.System.putInt(context.getContentResolver(),
+        return Settings.System.putInt(context.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS, brightness);
-        return result;
     }
 
     /**
@@ -211,7 +209,7 @@ public class DeviceStatusUtils {
      * @return true：打开；false：关闭；默认关闭
      */
     public static boolean isAirplaneModeOpen(Context context) {
-        return getAirplaneModeState(context) == 1 ? true : false;
+        return getAirplaneModeState(context) == 1;
     }
 
     /**
@@ -279,11 +277,7 @@ public class DeviceStatusUtils {
     public static boolean isOpenBluetooth() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter
                 .getDefaultAdapter();
-        if (bluetoothAdapter != null) {
-            return bluetoothAdapter.isEnabled();
-        } else {
-            return false;
-        }
+        return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
     }
 
     /**
@@ -320,11 +314,7 @@ public class DeviceStatusUtils {
      */
     public static boolean isBluetoothBonded(String address) {
         BluetoothDevice device = getBluetoothDevice(address);
-        if (device != null) {
-            return device.getBondState() == BluetoothDevice.BOND_BONDED;
-        } else {
-            return false;
-        }
+        return device != null && device.getBondState() == BluetoothDevice.BOND_BONDED;
     }
 
     /**

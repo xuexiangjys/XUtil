@@ -28,9 +28,11 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * SharedPreferences管理工具基类
- * @author xuexiang
- * @date 2018/2/9 上午12:28
+ * <pre>
+ *     desc   :	SharedPreferences管理工具基类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:45
+ * </pre>
  */
 public class BaseSPUtil {
 

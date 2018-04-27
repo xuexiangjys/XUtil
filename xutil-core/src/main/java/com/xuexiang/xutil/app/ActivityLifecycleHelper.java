@@ -10,10 +10,11 @@ import com.xuexiang.xutil.common.logger.Logger;
 import java.util.Stack;
 
 /**
- * activity生命周期管理
- *
- * @author xuexiang
- * @date 2018/2/4 下午3:37
+ * <pre>
+ *     desc   : activity生命周期管理
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:26
+ * </pre>
  */
 public class ActivityLifecycleHelper implements Application.ActivityLifecycleCallbacks {
 

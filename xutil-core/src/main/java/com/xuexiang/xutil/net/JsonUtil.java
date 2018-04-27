@@ -27,9 +27,11 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 
 /**
- * json转化工具
- * @author xuexiang
- * @date 2018/2/9 上午1:24
+ * <pre>
+ *     desc   :	json转化工具
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:53
+ * </pre>
  */
 public final class JsonUtil {
 

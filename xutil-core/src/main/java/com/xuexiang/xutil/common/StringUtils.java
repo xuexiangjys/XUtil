@@ -29,10 +29,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
- * 字符串相关工具类
- * @author xuexiang
- * @date 2018/2/4 下午6:37
+ * <pre>
+ *     desc   : 相关工具类
+ *     author : xuexiang
+ *     time   : 2018/2/4 下午6:37
+ * </pre>
  */
 public final class StringUtils {
 

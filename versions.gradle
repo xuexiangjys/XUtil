@@ -10,10 +10,10 @@ versions.gradle_bintray_plugin = "1.8.0"
 versions.arch_core = "1.1.0"
 versions.room = "1.1.0-alpha1"
 versions.lifecycle = "1.1.0"
-versions.support = "26.1.0"
+versions.support = "27.1.1"
 versions.dagger = "2.11"
 versions.junit = "4.12"
-versions.espresso = "3.0.1"
+versions.espresso = "3.0.2"
 versions.retrofit = "2.3.0"
 versions.okhttp_logging_interceptor = "3.9.0"
 versions.mockwebserver = "3.8.1"
@@ -152,7 +152,7 @@ ext.deps = deps
 
 def build_versions = [:]
 build_versions.min_sdk = 19
-build_versions.target_sdk = 26
+build_versions.target_sdk = 27
 build_versions.build_tools = "27.0.3"
 ext.build_versions = build_versions
 

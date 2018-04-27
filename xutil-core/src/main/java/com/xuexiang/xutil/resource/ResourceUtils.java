@@ -34,14 +34,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
 
 /**
- * 资源工具类
- *
- * @author xuexiang
- * @date 2018/2/20 下午3:28
+ * <pre>
+ *     desc   : 资源工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:52
+ * </pre>
  */
 public final class ResourceUtils {
 
@@ -72,19 +74,18 @@ public final class ResourceUtils {
      * @return
      */
     public static String readStringFromAssert(String fileName, String encodingCode) {
-        String resultString = "";
         InputStream inputStream = null;
         try {
             inputStream = openAssetsFile(fileName);
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
-            resultString = new String(buffer, encodingCode);
+            return new String(buffer, encodingCode);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             CloseUtils.closeIO(inputStream);
         }
-        return resultString;
+        return EMPTY;
     }
 
     /**
@@ -210,52 +211,58 @@ public final class ResourceUtils {
 
     /**
      * 从Assets中读取图片
+     *
+     * @param fileName 文件名
      */
+    @Nullable
     public static Bitmap getImageFromAssetsFile(String fileName) {
-        Bitmap image = null;
+        InputStream is = null;
         AssetManager am = getAssetManager();
         try {
-            InputStream is = am.open(fileName);
-            image = BitmapFactory.decodeStream(is);
-            is.close();
+            is = am.open(fileName);
+            return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            CloseUtils.closeIO(is);
         }
-        return image;
+        return null;
     }
 
     /**
      * 从Assets中读取图片
+     *
+     * @param fileName 文件名
      */
+    @Nullable
     public static Bitmap getImageFromAssets(String fileName) {
-        Bitmap image = null;
         InputStream is = null;
         try {
             is = openAssetsFileWithException(RUtils.DRAWABLE + "/" + fileName);
-            image = BitmapFactory.decodeStream(is);
+            return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             CloseUtils.closeIO(is);
         }
-        return image;
+        return null;
     }
 
     /**
      * 从Assets中读取图片
      */
+    @Nullable
     public static Drawable getImageDrawableFromAssets(Context context, String fileName) {
-        Drawable drawable = null;
         InputStream is = null;
         try {
             is = openAssetsFileWithException(RUtils.DRAWABLE + "/" + fileName);
-            drawable = ImageUtils.bitmap2Drawable(BitmapFactory.decodeStream(is));
+            return ImageUtils.bitmap2Drawable(BitmapFactory.decodeStream(is));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             CloseUtils.closeIO(is);
         }
-        return drawable;
+        return null;
     }
 
     /**
@@ -297,6 +304,28 @@ public final class ResourceUtils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * 从assets目录中复制指定文件至指定目录下
+     *
+     * @param fileName     需要复制的文件名
+     * @param assetsSrcDir 文件在assets下的目录
+     * @param destDir      复制后的目录
+     * @return 复制后的文件路径
+     */
+    public static String getCopyFileFromAssets(String fileName, String assetsSrcDir, String destDir) {
+        try {
+            if (FileUtils.createOrExistsDir(destDir)) {
+                String copyFilePath = destDir + File.separator + fileName;
+                if (FileIOUtils.writeFileFromIS(copyFilePath, getAssetManager().open(assetsSrcDir + File.separator + fileName))) {
+                    return copyFilePath;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

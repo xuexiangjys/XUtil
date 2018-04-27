@@ -19,9 +19,11 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
- * Base64工具类
- * @author xuexiang
- * @date 2018/2/9 上午1:33
+ * <pre>
+ *     desc   :	Base64工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午1:12
+ * </pre>
  */
 public final class Base64Util {
 

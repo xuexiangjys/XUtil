@@ -16,9 +16,11 @@
 package com.xuexiang.xutil.display;
 
 /**
- * 颜色工具类 包括常用的色值
- * @author xuexiang
- * @date 2018/2/4 下午3:51
+ * <pre>
+ *     desc   : 颜色工具类 包括常用的色值
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:49
+ * </pre>
  */
 public final class Colors {
 

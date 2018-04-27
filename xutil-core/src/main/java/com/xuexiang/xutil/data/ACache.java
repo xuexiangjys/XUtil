@@ -55,9 +55,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 缓存相关工具类【键值对存储】
- * @author xuexiang
- * @date 2018/2/16 下午2:14
+ * <pre>
+ *     desc   : 缓存相关工具类【键值对存储】
+ *     author : xuexiang
+ *     time   : 2018/2/16 下午2:14
+ * </pre>
  */
 public final class ACache {
 

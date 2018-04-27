@@ -66,11 +66,10 @@ dependencies {
     implementation deps.support.app_compat
     testImplementation deps.junit
     implementation project(':xutil-core')
-
+    implementation project(':xutil-sub')
     //butterknife的sdk
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler
-
     //XPage
     implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.1.4'
     annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.1.4'
@@ -78,4 +77,5 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
 }

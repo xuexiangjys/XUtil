@@ -18,9 +18,11 @@ package com.xuexiang.xutil.resource;
 import android.content.Context;
 
 /**
- * R资源反射工具类
- * @author xuexiang
- * @date 2018/2/4 下午5:00
+ * <pre>
+ *     desc   : R资源反射工具类
+ *     author : xuexiang
+ *     time   : 2018/4/28 上午12:55
+ * </pre>
  */
 public final class RUtils {
 
