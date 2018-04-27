@@ -41,3 +41,6 @@ dependencies {
     androidTestImplementation deps.espresso.core
     compileOnly project(':xutil-core')
 }
+
+apply from: "https://raw.githubusercontent.com/xuexiangjys/XUtil/master/JitPackUpload.gradle"
+
