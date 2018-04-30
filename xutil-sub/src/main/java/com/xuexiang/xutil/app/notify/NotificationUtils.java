@@ -40,11 +40,14 @@ public final class NotificationUtils {
 
     private static NotificationManager sNotificationManager;
 
+    private NotificationUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     //==================通知的api======================//
 
     /**
-     * 简单的通知
+     * 构建简单的通知
      *
      * @param id            通知的ID
      * @param smallIcon     顶部状态栏的小图标
@@ -61,7 +64,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 带图片的通知
+     * 构建带图片的通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -78,7 +81,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 多文本通知
+     * 构建多文本通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -93,7 +96,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 带多条消息合并的消息盒通知
+     * 构建带多条消息合并的消息盒通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -109,7 +112,7 @@ public final class NotificationUtils {
 
 
     /**
-     * 带进度条的通知
+     * 构建带进度条的通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -128,7 +131,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 无精确进度的通知
+     * 构建无精确进度的通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -144,7 +147,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 自定义通知
+     * 构建自定义通知
      *
      * @param id           通知的ID
      * @param smallIcon    顶部状态栏的小图标
@@ -187,7 +190,7 @@ public final class NotificationUtils {
     }
 
     /**
-     * 取消通知
+     * 取消所有通知
      */
     public static void cancelAll() {
         if (sNotificationManager == null) {

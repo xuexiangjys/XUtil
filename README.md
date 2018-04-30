@@ -21,7 +21,6 @@
 * 收录了常用的Android Gradle脚本：[bintrayUpload.gradle](./bintrayUpload.gradle)、[JitPackUpload.gradle](./JitPackUpload.gradle)、[localRepositoryUpload.gradle](./localRepositoryUpload.gradle)、[versions.gradle](./versions.gradle)。
 
 
-
 ## 如何使用
 
 ### 添加Gradle依赖
