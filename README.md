@@ -6,6 +6,22 @@
 
 ------------------------------------
 
+## 关于我
+
+[![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)
+
+## 特点
+
+* 收录了Android开发过程中常用的工具类，并进行简单的分类，易于查询使用。
+
+* 工具类被分为xutil-core和xutil-sub两个，防止xutil工具类过于臃肿。
+
+* 收录了常用的[代码混淆配置](./xutil-core/base-proguard-rules.pro)。
+
+* 收录了常用的Android Gradle脚本：[bintrayUpload.gradle](./bintrayUpload.gradle)、[JitPackUpload.gradle](./JitPackUpload.gradle)、[localRepositoryUpload.gradle](./localRepositoryUpload.gradle)、[versions.gradle](./versions.gradle)。
+
+
+
 ## 如何使用
 
 ### 添加Gradle依赖
