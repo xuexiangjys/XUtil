@@ -20,6 +20,7 @@ afterEvaluate { project ->
     uploadArchives {
         repositories {
             mavenDeployer {
+                // 指定默认的本地仓库地址为项目根目录，需要结合version.gradle使用仓库。
                 repository(url: uri('../LocalRepository'))
                 pom.groupId = GROUP
                 pom.artifactId = POM_ARTIFACT_ID
