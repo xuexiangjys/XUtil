@@ -221,3 +221,32 @@ getUri    : 获取剪贴板的 uri
 copyIntent: 复制意图到剪贴板
 getIntent : 获取剪贴板的意图
 ```
+
+* ### EditTextShakeHelper -> 输入框震动效果帮助类（单例）
+
+```
+setShakeAnimation           : 设置震动动画
+shake                       : 开始震动
+```
+
+* ### PhoneUtils -> 手机相关工具类
+
+```
+isPhone                 : 判断设备是否是手机
+getIMEI                 : 获取 IMEI 码
+getIMSI                 : 获取 IMSI 码
+getPhoneType            : 获取移动终端类型
+isSimCardReady          : 判断 sim 卡是否准备好
+getSimOperatorName      : 获取 Sim 卡运营商名称
+getPhoneInfo            : 获取手机状态信息
+dial                    : 跳至拨号界面
+call                    : 拨打电话
+sendSms                 : 跳至发送短信界面
+sendSmsSilent           : 静默发送短信
+```
+
+* ### ROMUtils -> 定制系统识别工具类
+
+```
+getROMType              : 获得ROM的类型
+```

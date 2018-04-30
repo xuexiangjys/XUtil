@@ -51,6 +51,10 @@ public final class ROMUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+    /**
+     * 获得ROM的类型
+     * @return
+     */
     public static ROMType getROMType() {
         if (sROMType == null) {
             sROMType = parseROMType();

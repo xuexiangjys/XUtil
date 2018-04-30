@@ -178,7 +178,7 @@ public final class PhoneUtils {
      * VoiceMailNumber = *86<br>
      */
     @SuppressLint({"HardwareIds", "MissingPermission"})
-    public static String getPhoneStatus() {
+    public static String getPhoneInfo() {
         TelephonyManager tm = getTelephonyManager();
         if (tm == null) return "";
         String str = "";
