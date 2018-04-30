@@ -67,9 +67,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * 图片相关工具类
- * @author xuexiang
- * @date 2018/2/20 下午4:29
+ * <pre>
+ *     desc   : 图片相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:23
+ * </pre>
  */
 public final class ImageUtils {
 

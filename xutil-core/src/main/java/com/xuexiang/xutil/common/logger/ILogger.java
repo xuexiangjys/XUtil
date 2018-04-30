@@ -17,10 +17,11 @@
 package com.xuexiang.xutil.common.logger;
 
 /**
- * 简易的日志记录接口
- *
- * @author xuexiang
- * @date 2018/3/8 下午9:00
+ * <pre>
+ *     desc   : 简易的日志记录接口
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:18
+ * </pre>
  */
 public interface ILogger {
 

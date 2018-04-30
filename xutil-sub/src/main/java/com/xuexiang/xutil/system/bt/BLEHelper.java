@@ -34,7 +34,7 @@ import java.util.List;
  * </pre>
  */
 @SuppressLint("NewApi") 
-public class BLEHelper{
+public final class BLEHelper{
 	/**
 	 * 默认超时时间
 	 */

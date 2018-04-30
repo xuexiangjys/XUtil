@@ -21,9 +21,13 @@ import com.xuexiang.xutil.common.StringUtils;
 import java.util.Locale;
 
 /**
- * 转换相关工具类 
- * (【小端】低位在前，高位在后) 
- * (【大端】高位在前，低位在后) 符合我们正常的阅读习惯，在默认情况下，一般都是大端存储。
+ * <pre>
+ *     desc   :	 <p>转换相关工具类</p>
+ * 				(【小端】低位在前，高位在后)
+ * 				<p>(【大端】高位在前，低位在后) 符合我们正常的阅读习惯，在默认情况下，一般都是大端存储。</p>
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:19
+ * </pre>
  */
 public final class ConvertTools {
 

@@ -27,10 +27,11 @@ import com.xuexiang.xutil.resource.ResUtils;
 import java.util.Random;
 
 /**
- * 颜色工具
- *
- * @author xuexiang
- * @date 2018/2/4 下午3:52
+ * <pre>
+ *     desc   : 颜色工具
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:23
+ * </pre>
  */
 public final class ColorUtils {
 

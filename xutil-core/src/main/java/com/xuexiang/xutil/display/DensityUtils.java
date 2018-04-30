@@ -22,9 +22,11 @@ import android.util.TypedValue;
 import com.xuexiang.xutil.resource.ResUtils;
 
 /**
- * 屏幕密度工具类
- * @author XUE
- * @date 2017/9/8 10:26
+ * <pre>
+ *     desc   : 屏幕密度工具类
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:23
+ * </pre>
  */
 public final class DensityUtils {
     /**

@@ -31,7 +31,7 @@ public interface IBluetoothDeviceFilter {
      * 是否是指定的蓝牙设备
      *
      * @param device 蓝牙设备
-     * @return
+     * @return 是否是满足条件的蓝牙设备
      */
     boolean isCorrect(BluetoothDevice device);
 }

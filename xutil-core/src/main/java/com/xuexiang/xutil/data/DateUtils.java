@@ -17,6 +17,7 @@
 package com.xuexiang.xutil.data;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.Nullable;
 
 import com.xuexiang.constant.DateFormatConstants;
 import com.xuexiang.constant.TimeConstants;
@@ -28,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.xuexiang.constant.TimeConstants.DAY;
 import static com.xuexiang.constant.TimeConstants.HOUR;
@@ -35,12 +38,13 @@ import static com.xuexiang.constant.TimeConstants.MIN;
 import static com.xuexiang.constant.TimeConstants.SEC;
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
 
-/**
- * 日期工具
- *
- * @author xuexiang
- * @date 2018/2/16 下午3:21
- */
+ /**
+  * <pre>
+  *     desc   : 日期工具
+  *     author : xuexiang
+  *     time   : 2018/4/30 下午12:22
+  * </pre>
+  */
 public final class DateUtils {
 
     /**
@@ -106,11 +110,11 @@ public final class DateUtils {
     /**
      * yyyy-MM-dd HH:mm
      */
-    public static final ThreadLocal<DateFormat> yyyyMMddHHmmss2 = new ThreadLocal<DateFormat>() {
+    public static final ThreadLocal<DateFormat> yyyyMMddHHmm = new ThreadLocal<DateFormat>() {
         @SuppressLint("SimpleDateFormat")
         @Override
         protected DateFormat initialValue() {
-            return new SimpleDateFormat(DateFormatConstants.yyyyMMddHHmmss2);
+            return new SimpleDateFormat(DateFormatConstants.yyyyMMddHHmm);
         }
     };
     /**
@@ -246,27 +250,42 @@ public final class DateUtils {
         return translateDateFormat(time, new SimpleDateFormat(oldFormatType), new SimpleDateFormat(newFormatType));
     }
 
-    /**
-     * 判断解析时间是否成功
-     *
-     * @param time   时间字符串
-     * @param format 解析的格式
-     * @return
-     */
-    public static boolean isDateValid(final String time, final DateFormat format) {
-        if (StringUtils.isEmpty(time)) {
-            return false;
-        }
-        try {
-            if (format != null) {
-                format.parse(time);
-                return true;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+     /**
+      * 判断时间字符串的格式是否正确
+      *
+      * @param time   时间字符串
+      * @param format 时间的格式
+      * @return
+      */
+     public static boolean isDateFormatRight(final String time, final DateFormat format) {
+         //内容和格式出错，直接返回false
+         if (StringUtils.isSpace(time) || format == null) return false;
+
+         try {
+             Date date = format.parse(time);
+             String s = format.format(date);
+             return time.equals(s);
+         } catch (ParseException e) {
+             e.printStackTrace();
+             return false;
+         }
+     }
+
+     /**
+      * 将时间字符串转换为文件名称
+      *
+      * @param dateTime 时间字符串
+      * @param suffix   文件名后缀
+      * @return
+      */
+     @Nullable
+     public static String convertTimeToFileName(String dateTime, String suffix) {
+         if (StringUtils.isSpace(dateTime)) return null;
+
+         Pattern p = Pattern.compile("[^\\d]+");
+         Matcher m = p.matcher(dateTime);
+         return m.replaceAll("").trim() + suffix;
+     }
 
     //===============================时间计算==================================//
     /**
@@ -325,59 +344,6 @@ public final class DateUtils {
         rightNow.setTimeInMillis(System.currentTimeMillis());
         rightNow.add(Calendar.DAY_OF_MONTH, day);
         return rightNow.getTime();
-    }
-
-    /**
-     * 计算距离今天的天数
-     *
-     * @param date
-     *            比较的时间
-     * @return
-     */
-    public static long calculateNumberofDays(final Date date) {
-        return calculateTimeDistanceByUnit(date, TimeConstants.DAY);
-    }
-
-    /**
-     * 计算距离现在多少分钟
-     *
-     * @param date
-     *            比较的时间
-     * @return
-     */
-    public static long calculateNumberofMinutes(final Date date) {
-        return calculateTimeDistanceByUnit(date, TimeConstants.MIN);
-    }
-
-    /**
-     * 计算距离现在多少秒
-     *
-     * @param date
-     *            比较的时间
-     * @return
-     */
-    public static long calculateNumberofSecond(final Date date) {
-        return calculateTimeDistanceByUnit(date, TimeConstants.SEC);
-    }
-
-    /**
-     * 计算时间距离
-     * @param date 时间
-     * @param unit 单位时间
-     * @return
-     */
-    public static long calculateTimeDistanceByUnit(final Date date, @TimeConstants.Unit final int unit) {
-        return calculateTimeDistance(date, unit);
-    }
-
-    /**
-     * 计算时间距离
-     * @param date 时间
-     * @param unitInterval 单位时间
-     * @return
-     */
-    public static long calculateTimeDistance(final Date date, final int unitInterval) {
-        return (getNowMills() - date.getTime()) / unitInterval;
     }
 
     /**
@@ -717,6 +683,84 @@ public final class DateUtils {
         return cal.getTimeInMillis();
     }
 
+     private static final int YEAR = 365 * 24 * 60 * 60;// 年
+     private static final int MONTH = 30 * 24 * 60 * 60;// 月
+     private static final int DAY = 24 * 60 * 60;// 天
+     private static final int HOUR = 60 * 60;// 小时
+     private static final int MINUTE = 60;// 分钟
+
+     /**
+      * 根据时间戳获取模糊型的时间描述。
+      *
+      * @param time   时间字符串
+      * @param format 时间格式
+      * @return 模糊型的与当前时间的差
+      * <ul>
+      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+      * <li>如果在 1 小时内，显示 XXX分钟前</li>
+      * <li>如果在 1 天内，显示XXX小时前</li>
+      * <li>如果在 1 月内，显示XXX天前</li>
+      * <li>如果在 1 年内，显示XXX月前</li>
+      * <li>如果在 1 年外，显示XXX年前</li>
+      * </ul>
+      */
+     public static String getFuzzyTimeDescriptionByNow(final String time, final DateFormat format) {
+         return getFuzzyTimeDescriptionByNow(string2Millis(time, format));
+     }
+
+     /**
+      * 根据时间戳获取模糊型的时间描述。
+      *
+      * @param date Date 类型时间
+      * @return 模糊型的与当前时间的差
+      * <ul>
+      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+      * <li>如果在 1 小时内，显示 XXX分钟前</li>
+      * <li>如果在 1 天内，显示XXX小时前</li>
+      * <li>如果在 1 月内，显示XXX天前</li>
+      * <li>如果在 1 年内，显示XXX月前</li>
+      * <li>如果在 1 年外，显示XXX年前</li>
+      * </ul>
+      */
+     public static String getFuzzyTimeDescriptionByNow(final Date date) {
+         return getFuzzyTimeDescriptionByNow(date.getTime());
+     }
+
+     /**
+      * 根据时间戳获取模糊型的时间描述。
+      *
+      * @param timestamp 时间戳 单位为毫秒
+      * @return 模糊型的与当前时间的差
+      * <ul>
+      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+      * <li>如果在 1 小时内，显示 XXX分钟前</li>
+      * <li>如果在 1 天内，显示XXX小时前</li>
+      * <li>如果在 1 月内，显示XXX天前</li>
+      * <li>如果在 1 年内，显示XXX月前</li>
+      * <li>如果在 1 年外，显示XXX年前</li>
+      * </ul>
+      */
+     public static String getFuzzyTimeDescriptionByNow(final long timestamp) {
+         long currentTime = System.currentTimeMillis();
+         long timeGap = (currentTime - timestamp) / 1000;// 与现在时间相差秒数
+         String timeStr;
+         long span;
+         if ((span = Math.round((float) timeGap / YEAR)) > 0) {
+             timeStr = span + "年前";
+         } else if ((span = Math.round((float) timeGap / MONTH)) > 0) {
+             timeStr = span + "个月前";
+         } else if ((span = Math.round((float) timeGap / DAY)) > 0) {// 1天以上
+             timeStr = span + "天前";
+         } else if ((span = Math.round((float) timeGap / HOUR)) > 0) {// 1小时-24小时
+             timeStr = span + "小时前";
+         } else if ((span = Math.round((float) timeGap / MINUTE)) > 0) {// 1分钟-59分钟
+             timeStr = span + "分钟前";
+         } else {// 1秒钟-59秒钟
+             timeStr = "刚刚";
+         }
+         return timeStr;
+     }
+
     private static long timeSpan2Millis(final long timeSpan, @TimeConstants.Unit final int unit) {
         return timeSpan * unit;
     }
@@ -746,6 +790,52 @@ public final class DateUtils {
         }
         return sb.toString();
     }
+
+     /**
+      * 生日期获取年龄
+      *
+      * @param birthDay 出生日期字符串
+      * @param format   日期格式
+      * @return 计算出的年龄
+      */
+     public static int getAgeByBirthDay(final String birthDay, final DateFormat format) throws IllegalArgumentException {
+         return getAgeByBirthDay(DateUtils.string2Date(birthDay, format));
+     }
+
+     /**
+      * 根据出生日期获取年龄
+      *
+      * @param birthDay 出生日期
+      * @return 计算出的年龄
+      */
+     public static int getAgeByBirthDay(Date birthDay) throws IllegalArgumentException {
+         Calendar cal = Calendar.getInstance();
+
+         if (cal.before(birthDay)) {
+             throw new IllegalArgumentException("The birthDay is before Now.It's unbelievable!");
+         }
+         int yearNow = cal.get(Calendar.YEAR);
+         int monthNow = cal.get(Calendar.MONTH);
+         int dayNow = cal.get(Calendar.DAY_OF_MONTH);
+
+         cal.setTime(birthDay);
+         int yearBirth = cal.get(Calendar.YEAR);
+         int monthBirth = cal.get(Calendar.MONTH);
+         int dayBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+         int age = yearNow - yearBirth;
+
+         if (monthNow <= monthBirth) {
+             if (monthNow == monthBirth) {
+                 if (dayNow < dayBirth) {
+                     age--;
+                 }
+             } else {
+                 age--;
+             }
+         }
+         return age;
+     }
 
     //==============================时间获取===============================//
 

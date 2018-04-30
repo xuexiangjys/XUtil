@@ -36,9 +36,11 @@ import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.resource.ResUtils;
 
 /**
- * 屏幕相关工具类
- * @author xuexiang
- * @date 2018/2/17 下午6:57
+ * <pre>
+ *     desc   : 屏幕相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:23
+ * </pre>
  */
 public final class ScreenUtils {
 

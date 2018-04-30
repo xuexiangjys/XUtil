@@ -26,8 +26,11 @@ import com.xuexiang.xutil.XUtil;
 import java.util.Map;
 
 /**
- * @author xuexiang
- * @date 2018/3/22 下午11:39
+ * <pre>
+ *     desc   :
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:10
+ * </pre>
  */
 public final class PendingIntentUtils {
 

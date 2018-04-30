@@ -29,9 +29,11 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * SharedPreferences工具类
- * @author xuexiang
- * @date 2018/2/15 下午2:03
+ * <pre>
+ *     desc   : SharedPreferences工具类
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:22
+ * </pre>
  */
 public final class SPUtils {
 

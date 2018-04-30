@@ -32,10 +32,11 @@ import android.util.TypedValue;
 import com.xuexiang.xutil.display.ColorUtils;
 
 /**
- * 主题工具（R.attr.xx)
- *
- * @author xuexiang
- * @date 2018/2/4 下午3:45
+ * <pre>
+ *     desc   : 主题工具（R.attr.xx)
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:24
+ * </pre>
  */
 public final class ThemeUtils {
 

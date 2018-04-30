@@ -26,9 +26,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * 克隆相关工具类
- * @author xuexiang
- * @date 2018/2/20 下午3:16
+ * <pre>
+ *     desc   : 克隆相关工具类
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:18
+ * </pre>
  */
 public final class CloneUtils {
 

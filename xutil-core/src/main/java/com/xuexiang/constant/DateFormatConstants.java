@@ -50,7 +50,7 @@ public class DateFormatConstants {
     /**
      * yyyy-MM-dd HH:mm
      */
-    public static final String yyyyMMddHHmmss2 = "yyyy-MM-dd HH:mm";
+    public static final String yyyyMMddHHmm = "yyyy-MM-dd HH:mm";
     /**
      * yyyy-MM-dd HH:mm:ss:SSS
      */

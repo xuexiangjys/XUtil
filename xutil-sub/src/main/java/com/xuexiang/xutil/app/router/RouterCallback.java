@@ -18,11 +18,12 @@ package com.xuexiang.xutil.app.router;
 
 import android.app.Activity;
 
-
 /**
- * 路由回调接口
- * @author xuexiang
- * @date 2018/3/18 下午2:07
+ * <pre>
+ *     desc   : 路由回调接口
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:10
+ * </pre>
  */
 public interface RouterCallback {
 

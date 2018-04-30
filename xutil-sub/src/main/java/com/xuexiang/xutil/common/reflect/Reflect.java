@@ -48,7 +48,7 @@ import java.util.Map;
  * @author Irek Matysiewicz
  * @author Thomas Darimont
  */
-public class Reflect {
+public final class Reflect {
 
 	// ---------------------------------------------------------------------
 	// Static API used as entrance points to the fluent API
