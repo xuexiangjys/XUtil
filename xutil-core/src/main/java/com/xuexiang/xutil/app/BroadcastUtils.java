@@ -339,7 +339,7 @@ public final class BroadcastUtils {
     //=======================广播注册、注销=================================//
 
     /**
-     * 广播注册
+     * 注册广播接收器
      *
      * @param context
      * @param receiver

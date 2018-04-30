@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;
@@ -38,6 +39,8 @@ import com.xuexiang.xutil.security.EncryptUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.Manifest.permission.PACKAGE_USAGE_STATS;
 
 /**
  * <pre>
@@ -259,7 +262,7 @@ public final class AppUtils {
     }
 
     /**
-     * 退出程序
+     * 退出 App
      */
     public static void exitApp() {
         if (XUtil.get().getActivityLifecycleHelper() != null) {
@@ -563,6 +566,7 @@ public final class AppUtils {
      * @param packageName 包名
      * @return {@code true}: 是<br>{@code false}: 否
      */
+    @RequiresPermission(PACKAGE_USAGE_STATS)
     public static boolean isAppForeground(final String packageName) {
         return !isSpace(packageName) && packageName.equals(ProcessUtils.getForegroundProcessName());
     }

@@ -18,6 +18,12 @@ package com.xuexiang.xutil.common;
 
 import android.view.View;
 
+import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.tip.ToastUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * <pre>
  *     desc   :	快速点击工具类
@@ -71,6 +77,30 @@ public final class ClickUtils {
             sLastClickTime = time;
             sLastClickViewId = viewId;
             return false;
+        }
+    }
+
+    /**
+     * 双击退出函数
+     */
+    private static boolean sIsExit = false;
+
+    /**
+     * 双击返回退出程序
+     */
+    public static void exitBy2Click() {
+        if (!sIsExit) {
+            sIsExit = true; // 准备退出
+            ToastUtil.get().toast("再按一次退出程序");
+            Timer tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    sIsExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+        } else {
+            XUtil.get().exitApp();
         }
     }
 }

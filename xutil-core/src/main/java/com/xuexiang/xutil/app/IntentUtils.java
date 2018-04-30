@@ -550,18 +550,18 @@ public final class IntentUtils {
      * @param key
      * @return
      */
-    public static <T> T getSerializable(Intent intent, String key) {
+    public static <T> T getSerializableExtra(Intent intent, String key) {
         return intent != null ? (T) intent.getSerializableExtra(key) : null;
     }
 
     /**
-     * 获取附加数据中的Serializable数据
+     * 获取Intent中的Bundle携带的Serializable数据
      *
      * @param intent
      * @param key
      * @return
      */
-    public static <T> T getExtrasSerializable(Intent intent, String key) {
+    public static <T> T getBundleSerializable(Intent intent, String key) {
         Bundle bundle = getExtras(intent);
         return bundle != null ? (T) bundle.getSerializable(key) : null;
     }

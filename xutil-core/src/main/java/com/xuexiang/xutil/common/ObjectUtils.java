@@ -43,7 +43,7 @@ public final class ObjectUtils {
     }
 
     /**
-     * Return whether object is empty.
+     * 返回object是否为空
      *
      * @param obj The object.
      * @return {@code true}: yes<br>{@code false}: no

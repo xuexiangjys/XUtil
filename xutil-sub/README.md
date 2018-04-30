@@ -74,6 +74,24 @@ startPollingService             : 开启轮询服务
 stopPollingService              : 停止轮询服务
 ```
 
+* ### Reflect -> 反射工具类
+
+```
+on                              : 包裹某个类或对象
+accessible                      : 将类或者对象的某个成员变为可访问
+set                             : 设置某个字段的值
+get                             : 获取某个字段的值
+field                           : 获取某个字段
+fields                          : 获取所有字段的集合
+call                            : 执行某个方法
+exactMethod                     : 精准地获取某个方法
+similarMethod                   : 获取某个相似签名的方法
+create                          : 执行构造方法
+as                              : 创建一个类对象的代理，这样就可以安全地执行代理定义的接口方法
+type                            : 获取包裹对象的类型
+
+```
+
 * ### RandomUtils -> 随机生成工具
 
 ```

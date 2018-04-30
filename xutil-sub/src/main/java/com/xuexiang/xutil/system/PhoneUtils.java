@@ -31,7 +31,9 @@ import com.xuexiang.xutil.common.StringUtils;
 
 import java.util.List;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.SEND_SMS;
 
 /**
  * <pre>
@@ -177,7 +179,8 @@ public final class PhoneUtils {
      * SubscriberId(IMSI) = 460030419724900<br>
      * VoiceMailNumber = *86<br>
      */
-    @SuppressLint({"HardwareIds", "MissingPermission"})
+    @SuppressLint("MissingPermission")
+    @RequiresPermission(READ_PHONE_STATE)
     public static String getPhoneInfo() {
         TelephonyManager tm = getTelephonyManager();
         if (tm == null) return "";
@@ -215,6 +218,7 @@ public final class PhoneUtils {
      *
      * @param phoneNumber 电话号码
      */
+    @RequiresPermission(CALL_PHONE)
     public static void call(final String phoneNumber) {
         XUtil.getContext().startActivity(IntentUtils.getCallIntent(phoneNumber, true));
     }
@@ -236,6 +240,7 @@ public final class PhoneUtils {
      * @param phoneNumber 接收号码
      * @param content     短信内容
      */
+    @RequiresPermission(SEND_SMS)
     public static void sendSmsSilent(final String phoneNumber, final String content) {
         if (StringUtils.isEmpty(content)) return;
         PendingIntent sentIntent = PendingIntent.getBroadcast(XUtil.getContext(), 0, new Intent(), 0);
