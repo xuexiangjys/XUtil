@@ -38,6 +38,7 @@ dependencies {
     compileOnly deps.support.app_compat
     compileOnly deps.support.design
     testImplementation deps.junit
+
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
     compileOnly project(':xutil-core')

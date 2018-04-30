@@ -27,17 +27,17 @@ import java.util.Map;
 
 /**
  * <pre>
- *     desc   :
+ *     desc   : 跳转意图
  *     author : xuexiang
  *     time   : 2018/4/30 下午12:10
  * </pre>
  */
 public final class PendingIntentUtils {
 
-    //==================构建点击跳转Activity的意图======================//
+    //==================构建跳转Activity的意图======================//
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz
      * @return
@@ -47,7 +47,7 @@ public final class PendingIntentUtils {
     }
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz
      * @return
@@ -57,7 +57,7 @@ public final class PendingIntentUtils {
     }
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz
      * @return
@@ -67,7 +67,7 @@ public final class PendingIntentUtils {
     }
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz       Activity类
      * @param requestCode 请求码
@@ -77,12 +77,11 @@ public final class PendingIntentUtils {
     public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, int requestCode, int flags) {
         Intent intent = ActivityUtils.getActivityIntent(clazz);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
+        return PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
     }
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz       Activity类
      * @param key
@@ -94,12 +93,11 @@ public final class PendingIntentUtils {
     public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, String key, Object param, int requestCode, int flags) {
         Intent intent = ActivityUtils.getActivityIntent(clazz, key, param);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
+        return PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
     }
 
     /**
-     * 构建点击跳转Activity的意图
+     * 构建跳转Activity的意图
      *
      * @param clazz       Activity类
      * @param map         携带的数据
@@ -110,8 +108,7 @@ public final class PendingIntentUtils {
     public static PendingIntent buildActivityIntent(Class<? extends Activity> clazz, Map<String, Object> map, int requestCode, int flags) {
         Intent intent = ActivityUtils.getActivityIntent(clazz, map);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pi = PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
-        return pi;
+        return PendingIntent.getActivity(XUtil.getContext(), requestCode, intent, flags);
     }
 
     //==================构建广播的意图======================//
@@ -125,8 +122,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(String action, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(action);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -138,8 +134,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -154,8 +149,7 @@ public final class PendingIntentUtils {
     public static PendingIntent buildBroadcastIntent(String action, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(action);
         intent = IntentUtils.putExtra(intent, key, param);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -170,8 +164,7 @@ public final class PendingIntentUtils {
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls);
         intent = IntentUtils.putExtra(intent, key, param);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -184,8 +177,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String action, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls, action);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -201,8 +193,7 @@ public final class PendingIntentUtils {
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String action, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls, action);
         intent = IntentUtils.putExtra(intent, key, param);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -216,8 +207,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String action, Map<String, Object> map, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls, action, map);
-        PendingIntent pi = PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }

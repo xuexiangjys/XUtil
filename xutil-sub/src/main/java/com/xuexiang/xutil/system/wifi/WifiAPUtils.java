@@ -100,7 +100,7 @@ public final class WifiAPUtils {
 	 * @param wifiApPassword  热点的连接密码
 	 * @return
 	 */
-	public static WifiConfiguration getWifiApConfig(String wifiApSsid, String wifiApPassword) {
+	private static WifiConfiguration getWifiApConfig(String wifiApSsid, String wifiApPassword) {
 		WifiConfiguration netConfig = new WifiConfiguration();
 		int securityType = getSecurityType();//通过反射，获取被隐藏的安全类型WPA2_PSK
 		//wifi热点名字

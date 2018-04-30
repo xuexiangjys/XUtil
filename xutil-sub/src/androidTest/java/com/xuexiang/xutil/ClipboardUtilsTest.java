@@ -16,14 +16,17 @@
 
 package com.xuexiang.xutil;
 
-import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.xuexiang.xutil.system.ClipboardUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -31,12 +34,29 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+public class ClipboardUtilsTest {
+    static {
+        XUtil.init(InstrumentationRegistry.getTargetContext());
+    }
 
-        assertEquals("com.xuexiang.xutil.test", appContext.getPackageName());
+    @Test
+    public void testText() throws Exception {
+        ClipboardUtils.copyText("test");
+        assertEquals("test", ClipboardUtils.getText());
+    }
+
+    @Test
+    public void testUri() throws Exception {
+        ClipboardUtils.copyUri(Uri.parse("http://www.blankj.com"));
+        System.out.println((ClipboardUtils.getUri()));
+    }
+
+    @Test
+    public void testIntent() throws Exception {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_DIAL);
+        ClipboardUtils.copyIntent(intent);
+        System.out.println(ClipboardUtils.getText());
     }
 }

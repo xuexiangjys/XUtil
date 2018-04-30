@@ -134,7 +134,7 @@ public class BluetoothHelper {
     /**
      * 注册蓝牙广播接收器
      */
-    public void registerBTReceiver() {
+    private void registerBTReceiver() {
         if (mReceiver == null) {
             mReceiver = new BlueToothReceiver();
         }
@@ -417,7 +417,7 @@ public class BluetoothHelper {
     // ================================================set/get================================================//
 
     /**
-     * 设备蓝牙设备监听
+     * 设置蓝牙设备监听
      *
      * @param listener
      */

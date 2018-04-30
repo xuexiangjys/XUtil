@@ -57,6 +57,14 @@ public final class XUtil {
     }
 
     /**
+     * 初始化工具
+     * @param context
+     */
+    public static void init(Context context) {
+        sContext = context.getApplicationContext();
+    }
+
+    /**
      * 获取全局上下文
      * @return
      */

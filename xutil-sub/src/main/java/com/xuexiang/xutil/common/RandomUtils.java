@@ -15,6 +15,7 @@
  */
 package com.xuexiang.xutil.common;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import java.util.Random;
@@ -69,7 +70,7 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of uppercase, lowercase letters and numbers
+     * 在数字和英文字母中获取一个定长的随机字符串
      *
      * @param length 长度
      * @return 随机字符串
@@ -80,7 +81,7 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of numbers
+     * 在数字中获取一个定长的随机字符串
      *
      * @param length 长度
      * @return 随机数字符串
@@ -91,7 +92,7 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of uppercase and lowercase letters
+     * 在英文字母中获取一个定长的随机字符串
      *
      * @param length 长度
      * @return 随机字母字符串
@@ -102,10 +103,10 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of uppercase letters
+     * 在大写英文字母中获取一个定长的随机字符串
      *
      * @param length 长度
-     * @return 随机字符串 包括大写字母
+     * @return 随机字符串 只包含大写字母
      * @see RandomUtils#getRandom(String source, int length)
      */
     public static String getRandomCapitalLetters(int length) {
@@ -113,10 +114,10 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of lowercase letters
+     * 在小写英文字母中获取一个定长的随机字符串
      *
      * @param length 长度
-     * @return 随机字符串 包括小写字母
+     * @return 随机字符串 只包含小写字母
      * @see RandomUtils#getRandom(String source, int length)
      */
     public static String getRandomLowerCaseLetters(int length) {
@@ -124,7 +125,7 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of chars in source
+     * 在一个字符数组源中获取一个定长的随机字符串
      *
      * @param source 源字符串
      * @param length 长度
@@ -138,9 +139,9 @@ public final class RandomUtils {
     }
 
     /**
-     * get a fixed-length random string, its a mixture of chars in sourceChar
+     * 在一个字符数组源中获取一个定长的随机字符串
      *
-     * @param sourceChar 源
+     * @param sourceChar 字符数组源
      * @param length     长度
      * @return <ul>
      * <li>if sourceChar is null or empty, return null</li>
@@ -195,7 +196,20 @@ public final class RandomUtils {
     }
 
     /**
-     * Shuffling algorithm, Randomly permutes the specified array using a default source of randomness
+     * 获取随机颜色
+     *
+     * @return
+     */
+    public static int getRandomColor() {
+        Random random = new Random();
+        int r = random.nextInt(256);
+        int g = random.nextInt(256);
+        int b = random.nextInt(256);
+        return Color.rgb(r, g, b);
+    }
+
+    /**
+     * 随机打乱数组中的内容
      *
      * @param objArray
      * @return
@@ -209,7 +223,7 @@ public final class RandomUtils {
     }
 
     /**
-     * Shuffling algorithm, Randomly permutes the specified array
+     * 随机打乱数组中的内容
      *
      * @param objArray
      * @param shuffleCount
@@ -231,7 +245,7 @@ public final class RandomUtils {
     }
 
     /**
-     * Shuffling algorithm, Randomly permutes the specified int array using a default source of randomness
+     * 随机打乱数组中的内容
      *
      * @param intArray
      * @return
@@ -245,7 +259,7 @@ public final class RandomUtils {
     }
 
     /**
-     * Shuffling algorithm, Randomly permutes the specified int array
+     * 随机打乱数组中的内容
      *
      * @param intArray
      * @param shuffleCount
