@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 /**
  * <pre>
- *     desc   : 相关工具类
+ *     desc   : String相关工具类
  *     author : xuexiang
  *     time   : 2018/2/4 下午6:37
  * </pre>
@@ -322,7 +322,7 @@ public final class StringUtils {
     }
 
     /**
-     * 字符串连接，将参数列表拼接为一个字符串
+     * 字符串连接，将参数列表通过分隔符拼接为一个字符串
      * @param split
      * @param more
      * @return 回拼接后的字符串
@@ -388,20 +388,6 @@ public final class StringUtils {
             return Arrays.deepToString((Object[]) object);
         }
         return "Couldn't find a correct type for the object";
-    }
-
-    /**
-     * 获取全路径中的文件拓展名
-     *
-     * @param filePath 文件路径
-     * @return 文件拓展名
-     */
-    public static String getFileExtension(final String filePath) {
-        if (isSpace(filePath)) return filePath;
-        int lastPoi = filePath.lastIndexOf('.');
-        int lastSep = filePath.lastIndexOf(File.separator);
-        if (lastPoi == -1 || lastSep >= lastPoi) return "";
-        return filePath.substring(lastPoi + 1);
     }
 
     /**

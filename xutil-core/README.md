@@ -148,3 +148,90 @@ getOrDefault                        : 返回一个非空的对象或者默认值
 checkRootPermission                 : 验证是否获取root权限
 execCommand                         : 执行shell命令
 ```
+
+* ### StringUtils -> String相关工具类
+
+```
+isEmpty                             : 判断字符串是否为 null 或长度为 0
+isEmptyTrim                         : 判断字符串是否为 null 或全为空格
+toInt                               : String转Int（防止崩溃）
+toFloat                             : String转Float（防止崩溃）
+toShort                             : String转Short（防止崩溃）
+toLong                              : String转Long（防止崩溃）
+toDouble                            : String转Double（防止崩溃）
+toBoolean                           : String转Boolean（防止崩溃）
+getString                           : 获取String内容
+isInteger                           : 判断字符串是否是整数
+isDouble                            : 判断字符串是否是双精度浮点数
+isNumber                            : 判断字符串是否是数字
+isSpace                             : 判断字符串是否为 null 或全为空白字符
+equals                              : 判断两字符串是否相等
+equalsIgnoreCase                    : 判断两字符串忽略大小写是否相等
+length                              : 返回字符串长度
+upperFirstLetter                    : 首字母大写
+lowerFirstLetter                    : 首字母小写
+reverse                             : 反转字符串
+getStackTraceString                 : 获取异常栈信息，不同于Log.getStackTraceString()，该方法不会过滤掉UnknownHostException.
+concat                              : 字符串连接，将参数列表拼接为一个字符串
+concatSpiltWith                     : 字符串连接，将参数列表通过分隔符拼接为一个字符串
+contains                            : 判断一个数组里是否包含指定对象
+toString                            : 将对象转化为String
+replaceSpecialCharacter             : 过滤字符串中所有的特殊字符
+replaceBracket                      : 过滤字符串中的[和]
+replaceBlank                        : 过滤字符串中的空格
+stringToList                        : 根据分隔符将String转换为List
+listToString                        : 根据分隔符将List转换为String
+getSimpleName                       : 获取对象的类名
+format2Decimals                     : 将字符串格式化为带两位小数的字符串
+compareVersionName                  : 比较两个版本号
+```
+
+* ### ACache -> 缓存相关工具类【键值对存储】
+
+```
+get             : 获取缓存实例
+get().put            : 缓存中写入数据
+get().getBytes       : 缓存中读取字节数组
+get().getString      : 缓存中读取 String
+get().getJSONObject  : 缓存中读取 JSONObject
+get().getJSONArray   : 缓存中读取 JSONArray
+get().getBitmap      : 缓存中读取 Bitmap
+get().getDrawable    : 缓存中读取 Drawable
+get().getParcelable  : 缓存中读取 Parcelable
+get().getSerializable: 缓存中读取 Serializable
+get().getCacheSize   : 获取缓存大小
+get().getCacheCount  : 获取缓存个数
+get().remove         : 根据键值移除缓存
+get().clear          : 清除所有缓存
+```
+
+* ### CloneUtils -> 克隆相关工具类
+
+```
+deepClone                       : 深度克隆对象
+```
+
+* ### ConvertTools -> 转换相关工具类
+
+```
+byte2HexString                      : 一个byte转16进制String
+bytes2HexString                     : byte数组转16进制String
+hexStringToByteArray                : 16进制表示的字符串转换为字节数组
+byteToIntUnSigned                   : 一位byte转int【无符号】
+byteToIntSigned                     : 一位byte转int【有符号】
+intToByte                           : int转Byte 【仅对0~255的整型有效】
+intToBytesLittleEndian              : 将int数值转换为占四个字节的byte数组，本方法适用于(【小端】低位在前，高位在后)的顺序。
+fillIntToBytesLittleEndian          : 将int数值填充至byte数组的指定位置，本方法适用于(【小端】低位在前，高位在后)的顺序。
+intToBytesBigEndian                 : 将int数值转换为占四个字节的byte数组，本方法适用于(【大端】高位在前，低位在后)的顺序。
+fillIntToBytesBigEndian             : 将int数值填充至byte数组的指定位置，本方法适用于(【大端】高位在前，低位在后)的顺序。
+bytesToIntLittleEndian              : byte数组中取int数值，本方法适用于(【小端】低位在前，高位在后)的顺序
+bytesToIntBigEndian                 : byte数组中取int数值，本方法适用于(【大端】高位在前，低位在后)的顺序。
+shortToBytesLittleEndian            : 将short数值转换为占两个字节的byte数组，本方法适用于(【小端】低位在前，高位在后)的顺序。
+fillShortToBytesLittleEndian        : 将short数值填充至byte数组的指定位置，本方法适用于(【小端】低位在前，高位在后)的顺序
+fillUnsignedShortToBytesLittleEndian : 将无符号short数值填充至byte数组的指定位置，本方法适用于(【小端】低位在前，高位在后)的顺序
+shortToBytesBigEndian               : 将short数值转换为占两个字节的byte数组，本方法适用于(【大端】高位在前，低位在后)的顺序。
+fillShortToBytesBigEndian           : 将short数值填充至byte数组的指定位置，本方法适用于(【大端】高位在前，低位在后)的顺序
+fillUnsignedShortToBytesBigEndian   : 将无符号short数值填充至byte数组的指定位置，本方法适用于(【大端】高位在前，低位在后)的顺序
+bytesToShortLittleEndian            : byte数组中取short数值，本方法适用于(【小端】低位在前，高位在后)的顺序
+bytesToShortBigEndian               : byte数组中取short数值，本方法适用于(【大端】高位在前，低位在后)的顺序
+```

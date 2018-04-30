@@ -42,7 +42,7 @@ public final class ConvertTools {
 	}
 
 	/**
-	 * byteArr转hexString
+	 * byte数组转16进制String
 	 * <p>
 	 * 例如：
 	 * </p>

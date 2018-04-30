@@ -63,13 +63,13 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public final class ACache {
 
-    private static final long DEFAULT_MAX_SIZE  = Long.MAX_VALUE;
-    private static final int  DEFAULT_MAX_COUNT = Integer.MAX_VALUE;
+    private static final long DEFAULT_MAX_SIZE = Long.MAX_VALUE;
+    private static final int DEFAULT_MAX_COUNT = Integer.MAX_VALUE;
 
-    public static final int SEC  = 1;
-    public static final int MIN  = 60;
+    public static final int SEC = 1;
+    public static final int MIN = 60;
     public static final int HOUR = 3600;
-    public static final int DAY  = 86400;
+    public static final int DAY = 86400;
 
     private static final SimpleArrayMap<String, ACache> CACHE_MAP = new SimpleArrayMap<>();
     private CacheManager mCacheManager;
@@ -616,13 +616,13 @@ public final class ACache {
     }
 
     private class CacheManager {
-        private final AtomicLong    cacheSize;
+        private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
-        private final long          sizeLimit;
-        private final int           countLimit;
+        private final long sizeLimit;
+        private final int countLimit;
         private final Map<File, Long> lastUsageDates
                 = Collections.synchronizedMap(new HashMap<File, Long>());
-        private final File   cacheDir;
+        private final File cacheDir;
         private final Thread mThread;
 
         private CacheManager(final File cacheDir, final long sizeLimit, final int countLimit) {
@@ -786,6 +786,7 @@ public final class ACache {
 
         /**
          * 是否过期
+         *
          * @param data
          * @return
          */
@@ -796,6 +797,7 @@ public final class ACache {
 
         /**
          * 获取过期时间
+         *
          * @param data
          * @return
          */
@@ -813,6 +815,7 @@ public final class ACache {
 
         /**
          * 获取没有过期时间的数据
+         *
          * @param data
          * @return
          */
@@ -833,6 +836,7 @@ public final class ACache {
 
         /**
          * 是否含有时间信息
+         *
          * @param data
          * @return
          */
@@ -847,6 +851,7 @@ public final class ACache {
 
         /**
          * 写入数据到文件
+         *
          * @param file
          * @param bytes
          */
