@@ -250,3 +250,23 @@ sendSmsSilent           : 静默发送短信
 ```
 getROMType              : 获得ROM的类型
 ```
+
+* ### ThreadPoolManager -> 线程池管理类（单例）
+
+```
+updateThreadPool      : 更新线程池
+execute               : 在未来某个时间执行给定的命令
+execute               : 在未来某个时间执行给定的命令链表
+shutDown              : 待以前提交的任务执行完毕后关闭线程池
+shutDownNow           : 试图停止所有正在执行的活动任务
+isShutDown            : 判断线程池是否已关闭
+isTerminated          : 关闭线程池后判断所有任务是否都已完成
+awaitTermination      : 请求关闭、发生超时或者当前线程中断
+submit                : 提交一个 Callable 任务用于执行
+submit                : 提交一个 Runnable 任务用于执行
+invokeAll, invokeAny  : 执行给定的任务
+schedule              : 延迟执行 Runnable 命令
+schedule              : 延迟执行 Callable 命令
+scheduleWithFixedRate : 延迟并循环执行命令
+scheduleWithFixedDelay: 延迟并以固定休息时间循环执行命令
+```
