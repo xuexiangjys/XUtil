@@ -40,7 +40,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.Manifest.permission.INSTALL_PACKAGES;
 import static android.Manifest.permission.PACKAGE_USAGE_STATS;
+import static android.Manifest.permission.REQUEST_INSTALL_PACKAGES;
 
 /**
  * <pre>
@@ -89,6 +91,7 @@ public final class AppUtils {
      * @param authority 7.0 及以上安装需要传入清单文件中的{@code <provider>}的 authorities 属性
      *                  <br>参看 https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      */
+    @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final String filePath, final String authority) {
         installApp(FileUtils.getFileByPath(filePath), authority);
     }
@@ -102,6 +105,7 @@ public final class AppUtils {
      * @param authority 7.0 及以上安装需要传入清单文件中的{@code <provider>}的 authorities 属性
      *                  <br>参看 https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      */
+    @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final File file, final String authority) {
         if (!FileUtils.isFileExists(file)) return;
         XUtil.getContext().startActivity(IntentUtils.getInstallAppIntent(file, authority, true));
@@ -118,6 +122,7 @@ public final class AppUtils {
      *                    <br>参看 https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      * @param requestCode 请求值
      */
+    @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final Activity activity,
                                   final String filePath,
                                   final String authority,
@@ -136,6 +141,7 @@ public final class AppUtils {
      *                    <br>参看 https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      * @param requestCode 请求值
      */
+    @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final Activity activity,
                                   final File file,
                                   final String authority,
@@ -153,6 +159,7 @@ public final class AppUtils {
      * @param filePath 文件路径
      * @return {@code true}: 安装成功<br>{@code false}: 安装失败
      */
+    @RequiresPermission(INSTALL_PACKAGES)
     public static boolean installAppSilent(final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
         if (!FileUtils.isFileExists(file)) return false;
