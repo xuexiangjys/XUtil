@@ -21,7 +21,7 @@ import android.os.Bundle;
 
 import com.xuexiang.xpage.base.BaseActivity;
 import com.xuexiang.xutil.app.IntentUtils;
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.fragment.MainFragment;
 
 public class MainActivity extends BaseActivity {
@@ -41,6 +41,6 @@ public class MainActivity extends BaseActivity {
     }
 
     protected void toast(String msg) {
-        ToastUtil.get().toast(msg);
+        ToastUtils.toast(msg);
     }
 }

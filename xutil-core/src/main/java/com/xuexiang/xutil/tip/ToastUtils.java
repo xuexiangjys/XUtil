@@ -33,7 +33,7 @@ import com.xuexiang.xutil.resource.ResUtils;
  *     time   : 2018/4/27 下午8:38
  * </pre>
  */
-public final class ToastUtil {
+public final class ToastUtils {
 
     private static Toast mToast = null;
 

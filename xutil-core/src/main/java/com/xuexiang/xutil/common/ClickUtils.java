@@ -19,7 +19,7 @@ package com.xuexiang.xutil.common;
 import android.view.View;
 
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,7 +91,7 @@ public final class ClickUtils {
     public static void exitBy2Click() {
         if (!sIsExit) {
             sIsExit = true; // 准备退出
-            ToastUtil.get().toast("再按一次退出程序");
+            ToastUtils.toast("再按一次退出程序");
             Timer tExit = new Timer();
             tExit.schedule(new TimerTask() {
                 @Override

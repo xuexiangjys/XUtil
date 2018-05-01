@@ -27,7 +27,7 @@ import android.content.IntentFilter;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.system.ThreadPoolManager;
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -274,7 +274,7 @@ public class BluetoothHelper {
                 mOnBluetoothDeviceListener.onStartDiscovery();
             }
         } else {
-            ToastUtil.get().toast("蓝牙扫描异常，正在重试");
+            ToastUtils.toast("蓝牙扫描异常，正在重试");
             openBluetooth(true);
         }
 

@@ -744,7 +744,7 @@ scheduleWithFixedRate : 延迟并循环执行命令
 scheduleWithFixedDelay: 延迟并以固定休息时间循环执行命令
 ```
 
-* ### ToastUtil -> 管理toast的类，整个app用该类来显示toast
+* ### ToastUtils -> 管理toast的类，整个app用该类来显示toast
 
 ```
 toast                   : 显示toast在主线程中

@@ -24,6 +24,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.SimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xutil.app.router.Router;
+import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.data.DateUtils;
 import com.xuexiang.xutildemo.MyApp;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
@@ -89,7 +90,7 @@ public class MainFragment extends SimpleListFragment {
         return super.initTitleBar().setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApp.exitBy2Click();
+                ClickUtils.exitBy2Click();
             }
         });
     }
@@ -101,7 +102,7 @@ public class MainFragment extends SimpleListFragment {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            MyApp.exitBy2Click();
+            ClickUtils.exitBy2Click();
         }
         return true;
     }

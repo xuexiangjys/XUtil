@@ -24,7 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -92,7 +92,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void toast(String msg) {
-        ToastUtil.get().toast(msg);
+        ToastUtils.toast(msg);
     }
 
 }

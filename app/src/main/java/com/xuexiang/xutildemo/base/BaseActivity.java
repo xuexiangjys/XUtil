@@ -21,7 +21,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -91,6 +91,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void toast(String msg) {
-        ToastUtil.get().toast(msg);
+        ToastUtils.toast(msg);
     }
 }

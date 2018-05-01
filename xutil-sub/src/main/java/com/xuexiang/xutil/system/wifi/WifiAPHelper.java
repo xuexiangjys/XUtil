@@ -24,7 +24,7 @@ import android.os.Looper;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.net.NetworkUtils;
 import com.xuexiang.xutil.system.ThreadPoolManager;
-import com.xuexiang.xutil.tip.ToastUtil;
+import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutil_sub.R;
 
 /**
@@ -171,7 +171,7 @@ public class WifiAPHelper {
                     @Override
                     public void run() {
                         startWifiApTh();
-                        ToastUtil.get().toast(R.string.xutil_tip_close_wifi_success);
+                        ToastUtils.toast(R.string.xutil_tip_close_wifi_success);
                     }
                 });
             }
@@ -188,7 +188,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.xutil_tip_open_wifiap_failed);
+                        ToastUtils.toast(R.string.xutil_tip_open_wifiap_failed);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(false);
                         }
@@ -202,7 +202,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.xutil_tip_open_wifiap_success);
+                        ToastUtils.toast(R.string.xutil_tip_open_wifiap_success);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(true);
                         }
@@ -228,7 +228,7 @@ public class WifiAPHelper {
                 mWifiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.get().toast(R.string.xutil_tip_close_wifiap_success);
+                        ToastUtils.toast(R.string.xutil_tip_close_wifiap_success);
                         if (mListener != null) {
                             mListener.onWifiAPStatusChanged(false);
                         }
