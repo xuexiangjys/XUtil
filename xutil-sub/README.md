@@ -2,6 +2,10 @@
 
 附加功能的Android工具类库
 
+## 在线文档
+
+[点击查看【v1.1.2】](https://jitpack.io/com/github/xuexiangjys/XUtil/xutil-sub/1.1.2/javadoc/)
+
 ## APIs
 
 * ### NotificationUtils -> 通知栏工具类

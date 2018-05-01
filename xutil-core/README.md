@@ -2,6 +2,10 @@
 
 核心基础的Android工具类库
 
+## 在线文档
+
+[点击查看【v1.1.2】](https://jitpack.io/com/github/xuexiangjys/XUtil/xutil-core/1.1.2/javadoc/)
+
 ## APIs
 
 * ### ActivityUtils -> Activity页面跳转工具类
