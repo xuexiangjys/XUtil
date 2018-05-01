@@ -53,17 +53,11 @@ XUtil.init(this);
 
 ## 文档
 
-### 基础工具类内容(xutil-core)
+* [基础工具类内容(xutil-core)](https://github.com/xuexiangjys/XUtil/blob/master/xutil-core/README.md)
 
-[点击查看](./xutil-core/README.md)
+* [附加工具类内容(xutil-sub)](https://github.com/xuexiangjys/XUtil/blob/master/xutil-sub/README.md)
 
-### 附加工具类内容(xutil-sub)
-
-[点击查看](./xutil-sub/README.md)
-
-### 如何使用Gradle脚本进行代码上传
-
-[点击查看](./README_UPLOAD.md)
+* [如何使用Gradle脚本进行代码上传](https://github.com/xuexiangjys/XUtil/blob/master/README_UPLOAD.md)
 
 ## 特别感谢
 
