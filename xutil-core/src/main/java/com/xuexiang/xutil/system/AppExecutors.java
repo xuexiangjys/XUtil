@@ -21,6 +21,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -34,15 +35,24 @@ public class AppExecutors {
 
     private static AppExecutors sInstance;
 
-    private final Executor mDiskIO;
+    /**
+     * 单线程池
+     */
+    private final ExecutorService mSingleIO;
 
-    private final Executor mNetworkIO;
+    /**
+     * 多线程池
+     */
+    private final ExecutorService mPoolIO;
 
+    /**
+     * 主线程
+     */
     private final Executor mMainThread;
 
-    private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
-        mDiskIO = diskIO;
-        mNetworkIO = networkIO;
+    private AppExecutors(ExecutorService singleIO, ExecutorService poolIO, Executor mainThread) {
+        mSingleIO = singleIO;
+        mPoolIO = poolIO;
         mMainThread = mainThread;
     }
 
@@ -53,6 +63,7 @@ public class AppExecutors {
 
     /**
      * 获取线程管理实例
+     *
      * @return
      */
     public static AppExecutors get() {
@@ -66,14 +77,42 @@ public class AppExecutors {
         return sInstance;
     }
 
-    public Executor diskIO() {
-        return mDiskIO;
+    /**
+     * 获取单线程池
+     * @return
+     */
+    public ExecutorService singleIO() {
+        return mSingleIO;
     }
 
-    public Executor networkIO() {
-        return mNetworkIO;
+    /**
+     * 获取磁盘单线程池
+     * @return
+     */
+    public ExecutorService diskIO() {
+        return mSingleIO;
     }
 
+    /**
+     * 获取多线程池
+     * @return
+     */
+    public ExecutorService poolIO() {
+        return mPoolIO;
+    }
+
+    /**
+     * 获取网络请求多线程池
+     * @return
+     */
+    public ExecutorService networkIO() {
+        return mPoolIO;
+    }
+
+    /**
+     * 获取主线程
+     * @return
+     */
     public Executor mainThread() {
         return mMainThread;
     }

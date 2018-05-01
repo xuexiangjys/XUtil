@@ -213,7 +213,7 @@ public final class KeyboardUtils {
      * @param activity 窗口
      * @return
      */
-    public static void dispatchTouchEvent(MotionEvent ev, Activity activity) {
+    public static void onClickBlankArea2HideSoftInput(MotionEvent ev, Activity activity) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = activity.getCurrentFocus();
             if (isShouldHideKeyboard(v, ev)) {
@@ -230,7 +230,7 @@ public final class KeyboardUtils {
      * @param dialog 窗口
      * @return
      */
-    public static void dispatchTouchEvent(MotionEvent ev, Dialog dialog) {
+    public static void onClickBlankArea2HideSoftInput(MotionEvent ev, Dialog dialog) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = dialog.getCurrentFocus();
             if (isShouldHideKeyboard(v, ev)) {
@@ -247,7 +247,7 @@ public final class KeyboardUtils {
      * @param window 窗口
      * @return
      */
-    public static void dispatchTouchEvent(MotionEvent ev, Window window) {
+    public static void onClickBlankArea2HideSoftInput(MotionEvent ev, Window window) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = window.getCurrentFocus();
             if (isShouldHideKeyboard(v, ev)) {
@@ -264,7 +264,7 @@ public final class KeyboardUtils {
      * @param focusView 聚焦的控件
      * @return
      */
-    public static void dispatchTouchEvent(MotionEvent ev, View focusView) {
+    public static void onClickBlankArea2HideSoftInput(MotionEvent ev, View focusView) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             if (isShouldHideKeyboard(focusView, ev)) {
                 hideSoftInput(focusView);
@@ -285,7 +285,7 @@ public final class KeyboardUtils {
      * @param keyCode
      * @return
      */
-    public static boolean onKeyDown(int keyCode) {
+    public static boolean onDisableBackKeyDown(int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 return false;
@@ -302,7 +302,7 @@ public final class KeyboardUtils {
      * @param event
      * @return
      */
-    public static boolean isShouldHideKeyboard(View v, MotionEvent event) {
+    private static boolean isShouldHideKeyboard(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] l = {0, 0};
             v.getLocationInWindow(l);

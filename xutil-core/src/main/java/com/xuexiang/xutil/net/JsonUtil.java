@@ -78,7 +78,7 @@ public final class JsonUtil {
 	}
 	
 	/**
-	 * 对象转json
+	 * 把 单个指定类型的对象 转换为 JSON 字符串
 	 * @param src
 	 * @return
 	 */
@@ -87,7 +87,7 @@ public final class JsonUtil {
 	}
 
 	/**
-	 * 对象转JSONObject
+	 * 把 单个指定类型的对象 转换为 JSONObject对象
 	 * @param src
 	 * @return
 	 */
@@ -96,7 +96,7 @@ public final class JsonUtil {
 	}
 
 	/**
-	 * json转JSONObject
+	 * 把 JSON 字符串 转换为 JSONObject对象
 	 * @param json
 	 * @return
 	 */

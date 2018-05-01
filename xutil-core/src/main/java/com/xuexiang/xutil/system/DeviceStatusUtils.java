@@ -25,10 +25,14 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresPermission;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.xuexiang.xutil.common.StringUtils;
+
+import static android.Manifest.permission.WRITE_APN_SETTINGS;
+import static android.Manifest.permission.WRITE_SETTINGS;
 
 /**
  * <pre>
@@ -55,6 +59,7 @@ public class DeviceStatusUtils {
      * SCREEN_BRIGHTNESS_MODE_AUTOMATIC
      * ：手动；默认：System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static int getScreenBrightnessModeState(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
@@ -67,6 +72,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return true：自动；false：手动；默认：true
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static boolean isScreenBrightnessModeAuto(Context context) {
         return getScreenBrightnessModeState(context) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
     }
@@ -78,6 +84,7 @@ public class DeviceStatusUtils {
      * @param auto    自动
      * @return 是否设置成功
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static boolean setScreenBrightnessMode(Context context, boolean auto) {
         boolean result = true;
         if (isScreenBrightnessModeAuto(context) != auto) {
@@ -95,6 +102,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return 亮度，范围是0-255；默认255
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static int getScreenBrightness(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS, 255);
@@ -108,6 +116,7 @@ public class DeviceStatusUtils {
      * @param screenBrightness 亮度，范围是0-255
      * @return 设置是否成功
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static boolean setScreenBrightness(Context context,
                                               int screenBrightness) {
         int brightness = screenBrightness;
@@ -153,6 +162,7 @@ public class DeviceStatusUtils {
      * @param screenBrightness 亮度，范围是0-255
      * @return 设置是否成功
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static boolean setScreenBrightnessAndApply(Activity activity,
                                                       int screenBrightness) {
         boolean result = true;
@@ -169,6 +179,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return 屏幕休眠时间，单位毫秒，默认30000
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static int getScreenDormantTime(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT, 30000);
@@ -180,6 +191,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return 设置是否成功
      */
+    @RequiresPermission(WRITE_SETTINGS)
     public static boolean setScreenDormantTime(Context context, int millis) {
         return Settings.System.putInt(context.getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT, millis);
@@ -192,6 +204,7 @@ public class DeviceStatusUtils {
      * @return 1：打开；0：关闭；默认：关闭
      */
     @SuppressWarnings("deprecation")
+    @RequiresPermission(WRITE_APN_SETTINGS)
     public static int getAirplaneModeState(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return Settings.System.getInt(context.getContentResolver(),
@@ -208,6 +221,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return true：打开；false：关闭；默认关闭
      */
+    @RequiresPermission(WRITE_APN_SETTINGS)
     public static boolean isAirplaneModeOpen(Context context) {
         return getAirplaneModeState(context) == 1;
     }
@@ -221,6 +235,7 @@ public class DeviceStatusUtils {
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @SuppressWarnings("deprecation")
+    @RequiresPermission(WRITE_APN_SETTINGS)
     public static boolean setAirplaneMode(Context context, boolean enable) {
         boolean result = true;
         // 如果飞行模式当前的状态与要设置的状态不一样
@@ -341,6 +356,7 @@ public class DeviceStatusUtils {
      * @param context 上下文
      * @return 铃声音量，取值范围为0-7；默认为0
      */
+    @RequiresPermission(WRITE_APN_SETTINGS)
     public static int getRingVolume(Context context) {
         return ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).getStreamVolume(AudioManager.STREAM_RING);
     }

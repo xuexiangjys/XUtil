@@ -179,7 +179,7 @@ public final class NetworkUtils {
     }
 
     /**
-     * 检测当前打开的网络类型是否WIFI
+     * 检测当前打开的网络类型是否是WIFI
      * <p>需添加权限
      * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
@@ -192,7 +192,7 @@ public final class NetworkUtils {
     }
 
     /**
-     * 检测当前打开的网络类型是否3G
+     * 检测当前打开的网络类型是否是3G
      *
      * @return 是否是3G上网
      */
@@ -202,7 +202,7 @@ public final class NetworkUtils {
     }
 
     /**
-     * 检测当前开打的网络类型是否4G
+     * 检测当前开打的网络类型是否是4G
      * <p>需添加权限
      * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
@@ -467,6 +467,65 @@ public final class NetworkUtils {
         return (byte) (value >> shift);
     }
 
+    /**
+     * 获取ip地址
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
+     *
+     * @param useIPv4 True to use ipv4, false otherwise.
+     * @return the ip address
+     */
+    @RequiresPermission(INTERNET)
+    public static String getIPAddress(final boolean useIPv4) {
+        try {
+            Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+            while (nis.hasMoreElements()) {
+                NetworkInterface ni = nis.nextElement();
+                // To prevent phone of xiaomi return "10.0.2.15"
+                if (!ni.isUp()) continue;
+                Enumeration<InetAddress> addresses = ni.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress inetAddress = addresses.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String hostAddress = inetAddress.getHostAddress();
+                        boolean isIPv4 = hostAddress.indexOf(':') < 0;
+                        if (useIPv4) {
+                            if (isIPv4) return hostAddress;
+                        } else {
+                            if (!isIPv4) {
+                                int index = hostAddress.indexOf('%');
+                                return index < 0
+                                        ? hostAddress.toUpperCase()
+                                        : hostAddress.substring(0, index).toUpperCase();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 获取域名 ip 地址
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
+     *
+     * @param domain The name of domain.
+     * @return the domain address
+     */
+    @RequiresPermission(INTERNET)
+    public static String getDomainAddress(final String domain) {
+        InetAddress inetAddress;
+        try {
+            inetAddress = InetAddress.getByName(domain);
+            return inetAddress.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     //==============================================================网络状态==========================================================================//
 
     /**
@@ -478,7 +537,7 @@ public final class NetworkUtils {
 
 
     /**
-     * 判断当前是否网络连接,返回网络的类型
+     * 判断当前是否网络连接,返回当前网络状态的类型
      ** <p>需添加权限
      * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
@@ -493,7 +552,7 @@ public final class NetworkUtils {
      * </ul>
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
-    public static NetState isConnected() {
+    public static NetState getNetStateType() {
         NetState stateCode = NetState.NET_NO;
         ConnectivityManager cm = getConnectivityManager();
         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -606,6 +665,7 @@ public final class NetworkUtils {
     }
 
     /**
+     * 解析网络请求的url
      * 解析前：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult?appId=10101
      * 解析后：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult
      * @param url

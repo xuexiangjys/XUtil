@@ -22,7 +22,7 @@ import android.preference.PreferenceManager;
 
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.net.JsonUtil;
-import com.xuexiang.xutil.security.Base64Util;
+import com.xuexiang.xutil.security.Base64Utils;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -122,7 +122,7 @@ public class BaseSPUtil {
 	 * @return
 	 */
 	public boolean putEncodeObject(String key, Object value) {
-		String base64Obj = Base64Util.encode(JsonUtil.toJson(value), "UTF-8");
+		String base64Obj = Base64Utils.encode(JsonUtil.toJson(value), "UTF-8");
 		return mSP.edit().putString(key, base64Obj).commit();
 	}
 
@@ -238,7 +238,7 @@ public class BaseSPUtil {
 			return null;
 		}
 		// 对Base64格式的字符串进行解码
-		String json = Base64Util.decode(base64Obj, "UTF-8");
+		String json = Base64Utils.decode(base64Obj, "UTF-8");
 		return JsonUtil.fromJson(json, type);
 	}
 

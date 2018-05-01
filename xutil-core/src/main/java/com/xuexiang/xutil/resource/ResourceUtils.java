@@ -252,7 +252,7 @@ public final class ResourceUtils {
      * 从Assets中读取图片
      */
     @Nullable
-    public static Drawable getImageDrawableFromAssets(Context context, String fileName) {
+    public static Drawable getImageDrawableFromAssets(String fileName) {
         InputStream is = null;
         try {
             is = openAssetsFileWithException(RUtils.DRAWABLE + "/" + fileName);

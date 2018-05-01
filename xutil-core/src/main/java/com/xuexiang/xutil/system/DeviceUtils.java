@@ -24,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
 import com.xuexiang.xutil.XUtil;
@@ -39,6 +40,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.INTERNET;
 
 /**
  * <pre>
@@ -168,7 +172,7 @@ public final class DeviceUtils {
     }
 
     /**
-     *  获取设备信息
+     * 获取设备信息
      * @return
      */
     public static String getDevice() {
@@ -184,7 +188,7 @@ public final class DeviceUtils {
     }
 
     /**
-     *获取语言
+     * 获取语言
      * @return
      */
     public static String getLanguage() {
@@ -225,6 +229,7 @@ public final class DeviceUtils {
      *
      * @return MAC 地址
      */
+    @RequiresPermission(anyOf = {ACCESS_WIFI_STATE, INTERNET})
     public static String getMacAddress() {
         String macAddress = getMacAddressByWifiInfo();
         if (!"02:00:00:00:00:00".equals(macAddress)) {
@@ -248,6 +253,7 @@ public final class DeviceUtils {
      * @return MAC 地址
      */
     @SuppressLint({"HardwareIds", "MissingPermission"})
+    @RequiresPermission(ACCESS_WIFI_STATE)
     private static String getMacAddressByWifiInfo() {
         try {
             @SuppressLint("WifiManagerLeak")
@@ -268,6 +274,7 @@ public final class DeviceUtils {
      *
      * @return MAC 地址
      */
+    @RequiresPermission(INTERNET)
     private static String getMacAddressByNetworkInterface() {
         try {
             List<NetworkInterface> nis = Collections.list(NetworkInterface.getNetworkInterfaces());
@@ -365,6 +372,22 @@ public final class DeviceUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 重启到 recovery
+     * <p>Requires root permission.</p>
+     */
+    public static void reboot2Recovery() {
+        ShellUtils.execCommand("reboot recovery", true);
+    }
+
+    /**
+     * 重启到 bootloader
+     * <p>Requires root permission.</p>
+     */
+    public static void reboot2Bootloader() {
+        ShellUtils.execCommand("reboot bootloader", true);
     }
 
 }

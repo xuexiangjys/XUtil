@@ -54,6 +54,10 @@ public final class FileUtils {
     private static final String LINE_SEP = System.getProperty("line.separator");
 
     //================文件路径获取===================//
+    /**
+     * SD卡是否存在
+     * @return
+     */
     public static boolean isSDCardExist() {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
             return true;

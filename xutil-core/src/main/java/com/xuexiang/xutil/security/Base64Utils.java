@@ -25,14 +25,14 @@ import java.nio.charset.Charset;
  *     time   : 2018/4/28 上午1:12
  * </pre>
  */
-public final class Base64Util {
+public final class Base64Utils {
 
 	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	/**
 	 * Don't let anyone instantiate this class.
 	 */
-	private Base64Util() {
+	private Base64Utils() {
 		throw new UnsupportedOperationException("u can't instantiate me...");
 	}
 
@@ -136,7 +136,7 @@ public final class Base64Util {
 	}
 	
 	/**
-	 * Decode.
+	 * Decode.(解密）
 	 *
 	 * @param str the str
 	 * @param charsetName the charset name

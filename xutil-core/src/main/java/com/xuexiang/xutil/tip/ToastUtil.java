@@ -33,32 +33,17 @@ import com.xuexiang.xutil.resource.ResUtils;
  *     time   : 2018/4/27 下午8:38
  * </pre>
  */
-public class ToastUtil {
+public final class ToastUtil {
 
-    private static ToastUtil sInstance = null;
-    private Toast mToast = null;
-
-    private ToastUtil() {
-
-    }
-
-    public static ToastUtil get() {
-        if (sInstance == null) {
-            synchronized (ToastUtil.class) {
-                if (sInstance == null) {
-                    sInstance = new ToastUtil();
-                }
-            }
-        }
-        return sInstance;
-    }
+    private static Toast mToast = null;
 
     /**
      * 显示toast在主线程中
-     * @param text 提示信息
+     *
+     * @param text     提示信息
      * @param duration 提示长度
      */
-    public void toast(final String text, final int duration) {
+    public static void toast(final String text, final int duration) {
         if (isMainLooper()) {
             showToast(text, duration);
         } else {
@@ -73,34 +58,38 @@ public class ToastUtil {
 
     /**
      * 是否是主线程
+     *
      * @return
      */
-    private boolean isMainLooper() {
+    private static boolean isMainLooper() {
         return Looper.getMainLooper() == Looper.myLooper();
     }
 
     /**
-     *  显示toast在主线程中
+     * 显示toast在主线程中
+     *
      * @param text
      */
-    public void toast(String text) {
+    public static void toast(String text) {
         toast(text, Toast.LENGTH_SHORT);
     }
 
     /**
      * 显示toast在主线程中
+     *
      * @param resId
      */
-    public void toast(int resId) {
+    public static void toast(int resId) {
         toast(ResUtils.getString(resId));
     }
 
     /**
      * 显示单一的toast
-     * @param text 提示信息
+     *
+     * @param text     提示信息
      * @param duration 提示长度
      */
-    private void showToast(String text, int duration) {
+    private static void showToast(String text, int duration) {
         if (mToast == null) {
             mToast = makeText(XUtil.getContext(), text, duration);
         } else {
@@ -112,12 +101,13 @@ public class ToastUtil {
 
     /**
      * 构建Toast
+     *
      * @param context
      * @param msg
      * @param duration
      * @return
      */
-    private Toast makeText(Context context, String msg, int duration) {
+    private static Toast makeText(Context context, String msg, int duration) {
         View view = LayoutInflater.from(context).inflate(R.layout.xutil_layout_toast, null);
         Toast toast = new Toast(context);
         toast.setView(view);
@@ -128,7 +118,10 @@ public class ToastUtil {
         return toast;
     }
 
-    public void cancelToast() {
+    /**
+     * 取消toast显示
+     */
+    public static void cancelToast() {
         if (mToast != null) {
             mToast.cancel();
         }

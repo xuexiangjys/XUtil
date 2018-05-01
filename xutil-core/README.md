@@ -2,8 +2,6 @@
 
 核心基础的Android工具类库
 
-[TOC]
-
 ## APIs
 
 * ### ActivityUtils -> Activity页面跳转工具类
@@ -399,4 +397,356 @@ isScreenLock       : 判断是否锁屏
 setSleepDuration   : 设置进入休眠时长
 getSleepDuration   : 获取进入休眠时长
 isTablet           : 判断是否是平板
+```
+
+* ### CleanUtils -> 清除相关工具类
+
+```
+cleanInternalCache   : 清除内部缓存
+cleanInternalFiles   : 清除内部文件
+cleanInternalDbs     : 清除内部数据库
+cleanInternalDbByName: 根据名称清除数据库
+cleanInternalSp      : 清除内部 SP
+cleanExternalCache   : 清除外部缓存
+cleanCustomCache     : 清除自定义目录下的文件
+```
+
+* ### CloseUtils -> 关闭相关
+
+```
+closeIO       : 关闭 IO
+closeIOQuietly: 安静关闭 IO
+```
+
+* ### FileIOUtils -> 文件输入输出流相关工具类
+
+```
+writeFileFromIS            : 将输入流写入文件
+writeFileFromBytesByStream : 将字节数组写入文件
+writeFileFromBytesByChannel: 将字节数组写入文件
+writeFileFromBytesByMap    : 将字节数组写入文件
+writeFileFromString        : 将字符串写入文件
+readFile2List              : 读取文件到字符串链表中
+readFile2String            : 读取文件到字符串中
+readFile2BytesByStream     : 读取文件到字节数组中
+readFile2BytesByChannel    : 读取文件到字节数组中
+readFile2BytesByMap        : 读取文件到字节数组中
+setBufferSize              : 设置缓冲区尺寸
+```
+
+* ### FileUtils -> 文件相关工具类
+
+```
+isSDCardExist             : SD卡是否存在
+getDiskCacheDir           : 获取磁盘的缓存目录
+getDiskFilesDir           : 获取磁盘的文件目录
+getDiskDir                : 获取磁盘目录
+getFileByPath             : 根据文件路径获取文件
+isFileExists              : 判断文件是否存在
+rename                    : 重命名文件
+isDir                     : 判断是否是目录
+isFile                    : 判断是否是文件
+createOrExistsDir         : 判断目录是否存在，不存在则判断是否创建成功
+createOrExistsFile        : 判断文件是否存在，不存在则判断是否创建成功
+createFileByDeleteOldFile : 判断文件是否存在，存在则在创建之前删除
+copyDir                   : 复制目录
+copyFile                  : 复制文件
+moveDir                   : 移动目录
+moveFile                  : 移动文件
+deleteDir                 : 删除目录
+deleteFile                : 删除文件
+deleteAllInDir            : 删除目录下所有东西
+deleteFilesInDir          : 删除目录下所有文件
+deleteFilesInDirWithFilter: 删除目录下所有过滤的文件
+listFilesInDir            : 获取目录下所有文件
+listFilesInDirWithFilter  : 获取目录下所有过滤的文件
+getFileLastModified       : 获取文件最后修改的毫秒时间戳
+getFileCharsetSimple      : 简单获取文件编码格式
+getFileLines              : 获取文件行数
+getDirSize                : 获取目录大小
+getFileSize               : 获取文件大小
+getDirLength              : 获取目录长度
+getFileLength             : 获取文件长度
+getFileMD5                : 获取文件的 MD5 校验码
+getFileMD5ToString        : 获取文件的 MD5 校验码
+getDirName                : 根据全路径获取最长目录
+getFileName               : 根据全路径获取文件名
+getFileNameNoExtension    : 根据全路径获取文件名不带拓展名
+getFileExtension          : 根据全路径获取文件拓展名
+changeFileExtension       : 改变文件的拓展名
+```
+
+* ### ZipUtils -> 压缩相关
+
+```
+zipFiles          : 批量压缩文件
+zipFile           : 压缩文件
+unzipFile         : 解压文件
+unzipFileByKeyword: 解压带有关键字的文件
+getFilesPath      : 获取压缩文件中的文件路径链表
+getComments       : 获取压缩文件中的注释链表
+```
+
+* ### JsonUtil -> json转化工具类
+
+```
+fromJson                            : 把 JSON 字符串 转换为 单个指定类型的对象
+toJson                              : 把 单个指定类型的对象 转换为 JSON 字符串
+toJSONObject                        : 把 单个指定类型的对象 转换为 JSONObject对象
+```
+
+* ### JSONUtils -> JSONObject解析工具类
+
+```
+getLong                             : 获取 JSONObject 某一long字段的值
+getInt                              : 获取 JSONObject 某一int字段的值
+getDouble                           : 获取 JSONObject 某一double字段的值
+getString                           : 获取 JSONObject 某一String字段的值
+getBoolean                          : 获取 JSONObject 某一boolean字段的值
+getStringArray                      : 获取 JSONObject 某一String[]字段的值
+getStringList                       : 获取 JSONObject 某一String集合的字段的值
+getJSONObject                       : 获取 JSONObject 某一JSONObject字段的值
+getJSONArray                        : 获取 JSONObject 某一JSONArray字段的值
+getMap                              : 将 JSONObject 转换为Map集合
+```
+
+* ### NetworkUtils -> 网络工具类
+
+```
+openWirelessSettings  : 打开网络设置界面
+getActiveNetworkInfo  : 获取活动网络信息
+isNetworkAvailable    : 判断网络连接是否打开,包括移动数据连接
+isHaveInternet        : 判断当前是否有网
+isGpsEnabled          : Gps是否打开
+isMobile              : 判断当前网络是否是移动数据网络
+isWifi                : 检测当前打开的网络类型是否是WIFI
+is3G                  : 检测当前打开的网络类型是否是3G
+is4G                  : 检测当前开打的网络类型是否是4G
+isWifiEnabled         : 判断 wifi 是否打开
+setWifiEnabled        : 打开或关闭 wifi
+isAvailableByPing     : 判断网络是否可用
+getMobileDataEnabled  : 判断移动数据是否打开
+setMobileDataEnabled  : 打开或关闭移动数据
+isMobileData          : 判断网络是否是移动数据
+getLocalInetAddress   : 遍历获取本地Ip地址
+getIPAddress          : 获取 IP 地址
+getDomainAddress      : 获取域名 ip 地址
+getNetStateType       : 判断当前是否网络连接,返回当前网络状态的类型
+getNetworkOperatorName: 获取移动网络运营商名称
+getUrlParams          : 获取URL中参数 并返回Map
+parseUrl              : 解析网络请求的url
+isUrlValid            : url是否有效合法
+isIP                  : IP地址校验
+downLoadFileByUrl     : 从Url中下载文件
+```
+
+* ### ResourceUtils -> 资源工具类
+
+```
+readStringFromAssert                : 读取assert下的txt文件
+openAssetsFile                      : 打开Assets下的文件
+openRawResource                     : 打开Raw下的资源
+getFileFromAssets                   : 获取Assets下文件的内容
+getFileFromRaw                      : 读取raw下文件的内容
+readInputStream                     : 读取输入流
+getImageFromAssetsFile              : 从Assets中读取图片
+copyFilesFromAssets                 : 从assets目录中复制整个文件夹内容
+copyFileFromAssets                  : 从assets目录中复制指定文件至指定目录下
+```
+
+* ### ResUtils -> 获取res中的资源工具类
+
+```
+getResources                        : 获取resources对象
+getString                           : 获取字符串
+getDrawable                         : 获取资源图片
+getDimens                           : 获取dimes值
+getColor                            : 获取Color值
+getColorStateList                   : 获取ColorStateList值
+getDimensionPixelOffset             : 获取dimes值【px不会乘以denstiy.】
+getDimensionPixelSize               : 获取dimes值【getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.】
+getStringArray                      : 获取字符串的数组
+getIntArray                         : 获取数字的数组
+getAnim                             : 获取动画
+isIn                                : 是否在数组资源中
+```
+
+* ### ThemeUtils -> 主题工具（R.attr.xx)
+
+```
+resolveColor                          : 解析主题的Color属性
+resolveDimension                      : 解析主题的Dimension属性
+resolveBoolean                        : 解析主题的Boolean属性
+resolveDrawable                       : 解析主题的Drawable属性
+resolveString                         : 解析主题的String属性
+```
+
+* ### Base64Utils -> Base64工具类
+
+```
+encode                              : Encode.(加密）
+decode                              : Decode.(解密）
+```
+
+* ### CipherUtils -> 加密与解密的工具类
+
+```
+md5                                 : MD5加密
+getDESKey                           : 返回可逆算法DES的密钥
+decrypt                             : 根据指定的密钥及算法，将字符串进行解密。
+encrypt                             : 根据指定的密钥及算法对指定字符串进行可逆加密
+```
+
+* ### EncodeUtils -> 编码解码相关工具类
+
+```
+urlEncode                       : URL 编码
+urlDecode                       : URL 解码
+base64Encode                    : Base64 编码
+base64Encode2String             : Base64 编码为String
+htmlEncode                      : Html 编码
+htmlDecode                      : Html 解码
+```
+
+* ### EncryptUtils -> 加密解密相关
+
+```
+encryptMD2, encryptMD2ToString                        : MD2 加密
+encryptMD5, encryptMD5ToString                        : MD5 加密
+encryptMD5File, encryptMD5File2String                 : MD5 加密文件
+encryptSHA1, encryptSHA1ToString                      : SHA1 加密
+encryptSHA224, encryptSHA224ToString                  : SHA224 加密
+encryptSHA256, encryptSHA256ToString                  : SHA256 加密
+encryptSHA384, encryptSHA384ToString                  : SHA384 加密
+encryptSHA512, encryptSHA512ToString                  : SHA512 加密
+encryptHmacMD5, encryptHmacMD5ToString                : HmacMD5 加密
+encryptHmacSHA1, encryptHmacSHA1ToString              : HmacSHA1 加密
+encryptHmacSHA224, encryptHmacSHA224ToString          : HmacSHA224 加密
+encryptHmacSHA256, encryptHmacSHA256ToString          : HmacSHA256 加密
+encryptHmacSHA384, encryptHmacSHA384ToString          : HmacSHA384 加密
+encryptHmacSHA512, encryptHmacSHA512ToString          : HmacSHA512 加密
+encryptDES, encryptDES2HexString, encryptDES2Base64   : DES 加密
+decryptDES, decryptHexStringDES, decryptBase64DES     : DES 解密
+encrypt3DES, encrypt3DES2HexString, encrypt3DES2Base64: 3DES 加密
+decrypt3DES, decryptHexString3DES, decryptBase64_3DES : 3DES 解密
+encryptAES, encryptAES2HexString, encryptAES2Base64   : AES 加密
+decryptAES, decryptHexStringAES, decryptBase64AES     : AES 解密
+encryptRSA, encryptRSA2HexString, encryptRSA2Base64   : RSA 加密
+decryptRSA, decryptHexStringRSA, decryptBase64RSA     : RSA 解密
+```
+
+* ### AppExecutors -> 应用的全局线程池 （包括单线程池的磁盘io，多线程池的网络io和主线程）
+
+```
+get                                         : 获取线程池管理实例
+get().singleIO                              : 获取单线程池
+get().poolIO                                : 获取多线程池
+get().diskIO                                : 获取磁盘单线程池
+get().networkIO                             : 获取网络请求多线程池
+```
+
+* ### DeviceStatusUtils -> 手机状态工具类 主要包括网络、蓝牙、屏幕亮度、飞行模式、音量等
+
+```
+getScreenBrightnessModeState                : 获取系统屏幕亮度模式的状态
+isScreenBrightnessModeAuto                  : 判断系统屏幕亮度模式是否是自动
+setScreenBrightnessMode                     : 设置系统屏幕亮度模式
+getScreenBrightness                         : 获取系统亮度
+setScreenBrightness                         : 设置系统亮度
+setWindowBrightness                         : 设置给定Activity的窗口的亮度
+setScreenBrightnessAndApply                 : 设置系统亮度并实时可以看到效果
+getScreenDormantTime                        : 获取屏幕休眠时间
+setScreenDormantTime                        : 设置屏幕休眠时间
+getAirplaneModeState                        : 获取飞行模式的状态
+isAirplaneModeOpen                          : 判断飞行模式是否打开
+setAirplaneMode                             : 设置飞行模式的状态
+getBluetoothState                           : 获取蓝牙的状态
+isBluetoothOpen                             : 判断蓝牙是否打开
+isOpenBluetooth                             : 是否已经开启蓝牙
+isBtAddressValid                            : 检验蓝牙地址的有效性
+getBluetoothDevice                          : 根据地址获取蓝牙设备
+isBluetoothBonded                           : 蓝牙是否已绑定
+setBluetooth                                : 设置蓝牙状态
+getRingVolume                               : 获取铃声音量
+setRingVolume                               : 获取媒体音量
+getStatusBarHeight                          : 计算状态栏高度高度
+```
+
+* ### DeviceUtils -> 设备相关工具类
+
+```
+getDeviceInfos          : 获取设备的所有信息
+getAndroidVersionName   : 获取安卓系统版本
+getSDKVersionName       : 获取设备系统版本号
+getSDKVersionCode       : 获取设备系统版本码
+getDeviceBrand          : 获取设备品牌
+getAndroidID            : 获取设备 AndroidID
+getMacAddress           : 获取设备 MAC 地址
+getManufacturer         : 获取设备厂商
+getHardware             : 获取硬件信息
+getProduct              : 获取产品信息
+getDevice               : 获取设备信息
+getDisplayVersion       : 获取系统版本号
+getLanguage             : 获取语言
+getCountry              : 获取国家
+getDeviceModel          : 获取设备型号
+getMacAddress           : 获取设备 MAC 地址
+isDeviceRooted          : 判断设备是否 rooted
+shutdown                : 关机
+reboot                  : 重启
+reboot2Recovery         : 重启到 recovery
+reboot2Bootloader       : 重启到 bootloader
+```
+
+* ### PermissionUtils -> 动态权限申请工具类
+
+```
+getPermissions          : 获取应用权限
+isGranted               : 判断权限是否被授予
+launchAppDetailsSettings: 打开应用具体设置
+permission              : 设置请求权限
+rationale               : 设置拒绝权限后再次请求的回调接口
+callback                : 设置回调
+theme                   : 设置主题
+request                 : 开始请求
+```
+
+* ### KeyboardUtils -> 键盘相关工具类
+```
+showSoftInput                     : 动态显示软键盘
+hideSoftInput                     : 动态隐藏软键盘
+toggleSoftInput                   : 切换键盘显示与否状态
+isSoftInputVisible                : 判断软键盘是否可见
+registerSoftInputChangedListener  : 注册软键盘改变监听器
+unregisterSoftInputChangedListener: 注销软键盘改变监听器
+fixSoftInputLeaks                 : 修复软键盘内存泄漏
+onClickBlankArea2HideSoftInput    : 点击屏幕空白区域隐藏软键盘
+onDisableBackKeyDown              : 禁用物理返回键
+```
+
+* ### ThreadPoolUtils -> 线程池相关工具类
+
+```
+ThreadPoolUtils       : ThreadPoolUtils 构造函数
+execute               : 在未来某个时间执行给定的命令
+execute               : 在未来某个时间执行给定的命令链表
+shutDown              : 待以前提交的任务执行完毕后关闭线程池
+shutDownNow           : 试图停止所有正在执行的活动任务
+isShutDown            : 判断线程池是否已关闭
+isTerminated          : 关闭线程池后判断所有任务是否都已完成
+awaitTermination      : 请求关闭、发生超时或者当前线程中断
+submit                : 提交一个 Callable 任务用于执行
+submit                : 提交一个 Runnable 任务用于执行
+invokeAll, invokeAny  : 执行给定的任务
+schedule              : 延迟执行 Runnable 命令
+schedule              : 延迟执行 Callable 命令
+scheduleWithFixedRate : 延迟并循环执行命令
+scheduleWithFixedDelay: 延迟并以固定休息时间循环执行命令
+```
+
+* ### ToastUtil -> 管理toast的类，整个app用该类来显示toast
+
+```
+toast                   : 显示toast在主线程中
+cancelToast             : 取消toast显示
 ```
