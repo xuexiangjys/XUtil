@@ -62,6 +62,10 @@ XUtil.init(this);
 
 [点击查看](./xutil-sub/README.md)
 
+### 如何使用Gradle脚本进行代码上传
+
+[点击查看](./README_UPLOAD.md)
+
 ## 特别感谢
 
 https://github.com/Blankj/AndroidUtilCode

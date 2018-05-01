@@ -16,15 +16,26 @@
 
 apply plugin: 'maven'
 
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+}
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+}
+def getRepositoryUrl() {
+    return !VERSION_NAME.toUpperCase().contains("SNAPSHOT") ? RELEASE_REPOSITORY_URL : SNAPSHOT_REPOSITORY_URL
+}
+
 afterEvaluate { project ->
     uploadArchives {
         repositories {
             mavenDeployer {
-                // 指定默认的本地仓库地址为项目根目录，需要结合version.gradle使用仓库。
-                repository(url: uri('../LocalRepository'))
                 pom.groupId = GROUP
-                pom.artifactId = POM_ARTIFACT_ID
-                pom.version = POM_VERSION
+                pom.artifactId = ARTIFACT_ID
+                pom.version = VERSION_NAME
+                repository(url: getRepositoryUrl()) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
             }
         }
     }
@@ -36,6 +47,7 @@ afterEvaluate { project ->
         }
 
         task javadoc(type: Javadoc) {
+            failOnError false
             source = android.sourceSets.main.java.srcDirs
             classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
         }
@@ -46,6 +58,7 @@ afterEvaluate { project ->
         }
     }
 
+    // 制作文档(Javadoc)
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
@@ -62,6 +75,18 @@ afterEvaluate { project ->
         options.addStringOption('encoding', 'UTF-8')
         options.addStringOption('charSet', 'UTF-8')
     }
+
+    // javadoc configuration
+    javadoc {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            author true
+            version VERSION_NAME
+            links "http://docs.oracle.com/javase/7/docs/api"
+            title POM_ARTIFACT_ID
+        }
+    }
 }
 
 /*
@@ -75,10 +100,17 @@ afterEvaluate { project ->
  *
  *  #上传构件的信息
  *  GROUP=                            //组织名
- *  POM_ARTIFACT_ID=                  //项目名
- *  POM_VERSION=                     //版本名
+ *  ARTIFACT_ID=                      //项目名
+ *  VERSION_NAME=                     //版本名
  *
- *  compile 'GROUP:POM_ARTIFACT_ID:POM_VERSION'
+ *  compile 'GROUP:ARTIFACT_ID:VERSION_NAME'
  *
+ *  #上传的目标仓库地址
+ *  SNAPSHOT_REPOSITORY_URL=
+ *  RELEASE_REPOSITORY_URL=
+ *
+ *  #Nexus 的私服的用户名称和密码
+ *  NEXUS_USERNAME=
+ *  NEXUS_PASSWORD=
  *
  */
