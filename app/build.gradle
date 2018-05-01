@@ -66,11 +66,11 @@ dependencies {
     implementation deps.support.app_compat
     testImplementation deps.junit
 
-    implementation project(':xutil-core')
-    implementation project(':xutil-sub')
+//    implementation project(':xutil-core')
+//    implementation project(':xutil-sub')
 
-//    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.0'
-//    implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.0'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.2'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.2'
 
     //butterknife的sdk
     implementation deps.butterknife.runtime

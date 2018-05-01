@@ -72,7 +72,7 @@ https://github.com/Blankj/AndroidUtilCode
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xutil-svg]: https://img.shields.io/badge/XUtil-v1.0.0-brightgreen.svg
+[xutil-svg]: https://img.shields.io/badge/XUtil-v1.1.2-brightgreen.svg
 [xutil]: https://github.com/xuexiangjys/XUtil
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
