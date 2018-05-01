@@ -321,6 +321,12 @@ public final class SPUtils {
         return null;
     }
 
+    /**
+     * 去除某一键值对
+     * @param sp
+     * @param key
+     * @return
+     */
     public static boolean remove(SharedPreferences sp, String key) {
         return sp.edit().remove(key).commit();
     }

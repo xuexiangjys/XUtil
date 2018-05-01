@@ -71,8 +71,7 @@ public final class ColorUtils {
      * @return
      */
     public static final int setColorAlpha(@ColorInt int color, float alpha) {
-        int result = color & 0x00ffffff | (int) (alpha * 255) << 24; // 清掉alpha信息后加上新的alpha信息
-        return result;
+        return color & 0x00ffffff | (int) (alpha * 255) << 24;
     }
 
     /**
@@ -178,7 +177,7 @@ public final class ColorUtils {
     }
 
     /**
-     * 获取可点击时的颜色
+     * 获取某状态颜色
      *
      * @param colorStateList
      * @param state          颜色状态

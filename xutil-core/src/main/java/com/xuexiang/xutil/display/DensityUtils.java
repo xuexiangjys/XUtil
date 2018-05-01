@@ -67,17 +67,6 @@ public final class DensityUtils {
     }
 
     /**
-     * 根据手机的分辨率从 px(像素) 的单位 转成为 sp
-     *
-     * @param pxValue 尺寸像素
-     * @return SP值
-     */
-    public static int px2sp(float pxValue) {
-        float fontScale = ResUtils.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
-    }
-
-    /**
      * 根据手机的分辨率从 sp 的单位 转成为 px
      *
      * @param spValue SP值
@@ -86,6 +75,17 @@ public final class DensityUtils {
     public static int sp2px(float spValue) {
         float fontScale = ResUtils.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 sp
+     *
+     * @param pxValue 尺寸像素
+     * @return SP值
+     */
+    public static int px2sp(float pxValue) {
+        float fontScale = ResUtils.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
     }
 
     /**
@@ -116,11 +116,6 @@ public final class DensityUtils {
      */
     public static float getScreenDensity() {
         return getDisplayMetrics().density;
-    }
-
-    public static int dp2px(float dp) {
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, ResUtils.getResources().getDisplayMetrics());
-        return Math.round(px);
     }
 
 }

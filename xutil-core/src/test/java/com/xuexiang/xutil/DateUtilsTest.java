@@ -81,7 +81,11 @@ public class DateUtilsTest {
 
         println(DateUtils.convertTimeToFileName("2018-4-26 14:59:12:298", ".txt"));
 
-        println("年龄:" + DateUtils.getAgeByBirthDay("1994-04-28", DateUtils.yyyyMMdd.get()));
+        println(DateUtils.getChineseZodiac("1994-08-06", DateUtils.yyyyMMdd.get()));
+
+        println(DateUtils.getZodiac("1994-08-06", DateUtils.yyyyMMdd.get()));
+
+        println("年龄:" + DateUtils.getAgeByBirthDay("1994-08-06", DateUtils.yyyyMMdd.get()));
     }
 
     private void println(String s) {

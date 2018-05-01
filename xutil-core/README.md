@@ -235,3 +235,166 @@ fillUnsignedShortToBytesBigEndian   : 将无符号short数值填充至byte数组
 bytesToShortLittleEndian            : byte数组中取short数值，本方法适用于(【小端】低位在前，高位在后)的顺序
 bytesToShortBigEndian               : byte数组中取short数值，本方法适用于(【大端】高位在前，低位在后)的顺序
 ```
+
+
+* ### DateUtils -> 日期时间工具类
+
+```
+millis2String                       : 将时间戳转为时间字符串
+date2String                         : 将 Date 类型转为时间字符串
+string2Millis                       : 将时间字符串转为时间戳
+string2Date                         : 将时间字符串转为 Date 类型
+date2Millis                         : 将 Date 类型转为时间戳
+millis2Date                         : 将时间戳转为 Date 类型
+translateDateFormat                 : 转换日期格式 oldFormat ---> newFormat
+isDateFormatRight                   : 判断时间字符串的格式是否正确
+nDaysBeforeToday                    : 获取当前日期n天前的日期，返回String
+nDaysAfterToday                     : 获取当前日期n天后的日期，返回String
+getTimeSpan                         : 获取两个时间差（单位：unit）
+getFitTimeSpan                      : 获取合适型两个时间差
+getTimeSpanByNow                    : 获取与当前时间的差（单位：unit）
+getFitTimeSpanByNow                 : 获取合适型与当前时间的差
+getFriendlyTimeSpanByNow            : 获取友好型与当前时间的差
+getFuzzyTimeDescriptionByNow        : 根据时间戳获取模糊型的时间描述。
+getAgeByBirthDay                    : 根据出生日期获取年龄
+getNowMills                         : 获取当前毫秒时间戳
+getNowString                        : 获取当前时间字符串
+getNowDate                          : 获取当前 Date
+isToday                             : 判断是否今天
+getWeekIndex                        : 获取星期索引
+getYear                             : 得到年份
+getMonth                            : 得到月
+getDay                              : 得到日
+getChineseZodiac                    : 获取生肖
+getZodiac                           : 获取星座
+```
+
+* ### SPUtils -> SharedPreferences工具类
+
+```
+getSharedPreferences                    : 获取SharedPreferences实例
+putBoolean                              : 设置boolean值
+putFloat                                : 设置float值
+putLong                                 : 设置long值
+putString                               : 设置String值
+putInt                                  : 设置int值
+putObject                               : 设置Object
+putEncodeObject                         : 设置加密Object
+put                                     : 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
+getBoolean                              : 根据key获取boolean值
+getLong                                 : 根据key获取long值
+getFloat                                : 根据key获取float值
+getString                               : 根据key获取String值
+getInt                                  : 根据key获取int值
+getEncodeObject                         : 获取加密的对象
+getObject                               : 获取对象
+get                                     : 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
+contains                                : 查询某个key是否已经存在
+getAll                                  : 返回所有的键值对
+remove                                  : 去除某一键值对
+clear                                   : 清空销毁
+```
+
+* ### BarUtils -> 栏相关
+```
+getStatusBarHeight                   : 获取状态栏高度（px）
+setStatusBarVisibility               : 设置状态栏是否可见
+isStatusBarVisible                   : 判断状态栏是否可见
+setStatusBarLightMode                : 设置状态栏是否为浅色模式
+addMarginTopEqualStatusBarHeight     : 为 view 增加 MarginTop 为状态栏高度
+subtractMarginTopEqualStatusBarHeight: 为 view 减少 MarginTop 为状态栏高度
+setStatusBarColor                    : 设置状态栏颜色
+setStatusBarAlpha                    : 设置状态栏透明度
+setStatusBarColor4Drawer             : 为 DrawerLayout 设置状态栏颜色
+setStatusBarAlpha4Drawer             : 为 DrawerLayout 设置状态栏透明度
+getActionBarHeight                   : 获取 ActionBar 高度
+setNotificationBarVisibility         : 设置通知栏是否可见
+getNavBarHeight                      : 获取导航栏高度
+setNavBarVisibility                  : 设置导航栏是否可见
+setNavBarImmersive                   : 设置导航栏沉浸式
+setNavBarColor                       : 设置导航栏颜色
+getNavBarColor                       : 获取导航栏颜色
+isNavBarVisible                      : 判断导航栏是否可见
+```
+
+* ### ColorUtils -> 颜色相关工具类
+
+```
+adjustAlpha                         : 矫正颜色的透明度
+setColorAlpha                       : 设置颜色的alpha值
+colorToString                       : 将 color 颜色值转换为十六进制字符串
+darker                              : 加深颜色
+lighter                             : 变浅颜色
+isColorDark                         : 是否是深色的颜色
+getStateColor                       : 获取某状态颜色
+getEnableColor                      : 获取可点击时的颜色
+getDisableColor                     : 获取不可点击时的颜色
+getDefaultColor                     : 获取默认的颜色
+getRandomColor                      : 获取随机颜色
+```
+
+* ### DensityUtils -> 屏幕密度工具类
+
+```
+dip2px                               : 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+px2dip                               : 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+sp2px                                : 根据手机的分辨率从 sp 的单位 转成为 px
+px2sp                                : 根据手机的分辨率从 px(像素) 的单位 转成为 sp
+getScreenDpi                         : 获取屏幕分辨率
+getScreenWidth                       : 得到设备屏幕的宽度
+getScreenHeight                      : 得到设备屏幕的高度
+getScreenDensity                     : 得到设备的密度
+```
+
+* ### ImageUtils -> 图片相关工具类
+
+```
+bitmap2Bytes, bytes2Bitmap      : bitmap 与 bytes 互转
+drawable2Bitmap, bitmap2Drawable: drawable 与 bitmap 互转
+drawable2Bytes, bytes2Drawable  : drawable 与 bytes 互转
+view2Bitmap                     : view 转 bitmap
+getBitmap                       : 获取 bitmap
+scale                           : 缩放图片
+clip                            : 裁剪图片
+skew                            : 倾斜图片
+rotate                          : 旋转图片
+getRotateDegree                 : 获取图片旋转角度
+toRound                         : 转为圆形图片
+toRoundCorner                   : 转为圆角图片
+addCornerBorder                 : 添加圆角边框
+addCircleBorder                 : 添加圆形边框
+addReflection                   : 添加倒影
+addTextWatermark                : 添加文字水印
+addImageWatermark               : 添加图片水印
+toAlpha                         : 转为 alpha 位图
+toGray                          : 转为灰度图片
+fastBlur                        : 快速模糊
+renderScriptBlur                : renderScript 模糊图片
+stackBlur                       : stack 模糊图片
+save                            : 保存图片
+isImage                         : 根据文件名判断文件是否为图片
+getImageType                    : 获取图片类型
+compressByScale                 : 按缩放压缩
+compressByQuality               : 按质量压缩
+compressBySampleSize            : 按采样大小压缩
+```
+
+* ### ScreenUtils -> 屏幕相关工具类
+
+```
+getScreenWidth     : 获取屏幕的宽度（单位：px）
+getScreenHeight    : 获取屏幕的高度（单位：px）
+getScreenDensity   : 获取屏幕密度
+getScreenDensityDpi: 获取屏幕密度 DPI
+setFullScreen      : 设置屏幕为全屏
+setLandscape       : 设置屏幕为横屏
+setPortrait        : 设置屏幕为竖屏
+isLandscape        : 判断是否横屏
+isPortrait         : 判断是否竖屏
+getScreenRotation  : 获取屏幕旋转角度
+screenShot         : 截屏
+isScreenLock       : 判断是否锁屏
+setSleepDuration   : 设置进入休眠时长
+getSleepDuration   : 获取进入休眠时长
+isTablet           : 判断是否是平板
+```

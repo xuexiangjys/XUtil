@@ -792,7 +792,7 @@ public final class DateUtils {
     }
 
      /**
-      * 生日期获取年龄
+      * 根据出生日期获取年龄
       *
       * @param birthDay 出生日期字符串
       * @param format   日期格式
