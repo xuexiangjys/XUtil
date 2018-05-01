@@ -39,9 +39,9 @@ allprojects {
 
 ```
 //基础功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.0'
+implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.2'
 //附加功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.0'
+implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.2'
 ```
 
 3.在Application进行初始化:
