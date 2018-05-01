@@ -129,7 +129,9 @@ developer.name=             //开发者姓名
 developer.email=            //开发者的联系邮箱
 ```
 
-【注意】：`bintray.user`和`bintray.apikey`需要你在 https://bintray.com/ 上注册后才能获得。
+【注意】：`bintray.user`和`bintray.apikey`需要你在 https://bintray.com/ 上注册后才能获得。详情如下图：
+
+![](./img/apikey.png)
 
 3.在Module的根目录下新建gradle.properties文件，然后配置如下属性：
 
@@ -153,4 +155,74 @@ javadoc.name=XUtil
 
 ```
 
-【注意】：这里`project.bintrayRepository`需要你在 https://bintray.com/ 上创建用户账号后，手动新建一个代码仓库。它是你新建的代码仓库的名称。
+【注意】：这里`project.bintrayRepository`需要你在 https://bintray.com/ 上创建用户账号后，手动新建一个代码仓库。它是你新建的代码仓库的名称。详情如下图：
+
+![](./img/maven.png)
+
+4.在Module的build.gradle中添加gradle脚本引用。
+
+```
+apply from: https://raw.githubusercontent.com/xuexiangjys/XUtil/master/bintrayUpload.gradle
+```
+
+### 执行上传任务
+
+执行上传任务有两种方式：
+
+* 先后执行命令：`./gradlew install`和`./gradlew bintrayUpload`
+
+* Gradle执行窗口: 点击Android Studio右侧的Gradle执行窗口，找到bintrayUpload上传任务，点击执行。详情如下图：
+
+![](./img/bintrayupload.png)
+
+上传任务完成后，可登录 https://bintray.com/ 到你上传的仓库里看项目是否存在，如果存在则点击进入项目主页查看是否有你刚才上传的版本信息，如果有则上传成功，否则上传失败。详情如下图：
+
+![](./img/upload_success.png)
+
+### 提交Jcenter
+
+上传完毕后，并不代表你已经完成任务了。最后，你还需要点击项目页面右下角的"Add to JCenter",填写提交信息后，等待JCenter审核通过后才算完成上传Jcenter。
+
+审核大概需要几个小时，这个比较蛋疼，但也没办法。
+
+---------------------------------
+
+## 上传私有云Maven仓库
+
+> 当我们对代码的保密性比较强时，我们可能会自己搭建一个私有的Maven仓库，搭建的详细步骤可[点击查看](https://blog.csdn.net/qq_32452623/article/details/79385595)
+
+### 代码仓库配置
+
+1.在Module的根目录下新建gradle.properties文件，然后配置如下属性：
+
+```
+#上传构件的信息
+GROUP=                            //组织名
+ARTIFACT_ID=                      //项目名
+VERSION_NAME=                     //版本名
+
+#上传的目标仓库地址
+SNAPSHOT_REPOSITORY_URL=
+RELEASE_REPOSITORY_URL=
+
+#Nexus 的私服的用户名称和密码
+NEXUS_USERNAME=
+NEXUS_PASSWORD=
+```
+如果你发布的是snapshot版本，那么你需要在`VERSION_NAME`中包含`SNAPSHOT`, 例如"1.0.0-SNAPSHOT"。版本名不带`SNAPSHOT`的默认都是release版本。
+
+2.在Module的build.gradle中添加gradle脚本引用。
+
+```
+apply from: "https://raw.githubusercontent.com/xuexiangjys/XUtil/master/upload_nexus.gradle"
+```
+
+### 执行上传任务
+
+执行上传任务有两种方式：
+
+* 执行命令：`./gradlew uploadArchives`
+
+* Gradle执行窗口: 点击Android Studio右侧的Gradle执行窗口，找到uploadArchives上传任务，点击执行。详情如下图：
+
+![](./img/upload.png)
