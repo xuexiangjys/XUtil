@@ -404,6 +404,18 @@ getSleepDuration   : 获取进入休眠时长
 isTablet           : 判断是否是平板
 ```
 
+* ### ViewUtils -> View控件工具类
+
+```
+getListViewHeightBasedOnChildren                   : 计算获取ListView的高度
+getGridViewVerticalSpacing                         : 计算GridView垂直间距
+setViewHeight                                      : 设置View的高度
+setListViewHeightBasedOnChildren                   : 通过计算设置ListView的真实高度
+getDescendants                                     : 获取父布局控件下的所有控件集合
+isTablet                                           : 判断设备是否是平板
+getContentView                                     : 获取activity最顶层的父布局
+```
+
 * ### CleanUtils -> 清除相关工具类
 
 ```
