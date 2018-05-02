@@ -96,6 +96,15 @@ type                            : 获取包裹对象的类型
 
 ```
 
+* ### IDCardUtils -> 身份证工具类
+
+```
+validateCard                    : 验证身份证是否合法
+hideIdCard                      : 隐藏身份证信息
+getBirthByIdCard                : 根据身份编号获取出生日期
+getAgeDescriptionByIdCard       : 根据身份编号获取年龄描述信息
+```
+
 * ### RandomUtils -> 随机生成工具
 
 ```
