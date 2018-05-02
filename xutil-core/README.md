@@ -359,6 +359,7 @@ drawable2Bytes, bytes2Drawable  : drawable 与 bytes 互转
 view2Bitmap                     : view 转 bitmap
 getBitmap                       : 获取 bitmap
 scale                           : 缩放图片
+clearImgMemory                  : 清空图片的内存
 clip                            : 裁剪图片
 skew                            : 倾斜图片
 rotate                          : 旋转图片

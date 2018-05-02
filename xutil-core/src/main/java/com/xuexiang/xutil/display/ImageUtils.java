@@ -51,6 +51,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.xuexiang.constant.MemoryConstants;
 import com.xuexiang.xutil.XUtil;
@@ -373,6 +374,27 @@ public final class ImageUtils {
         options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFileDescriptor(fd, null, options);
+    }
+
+    /**
+     * 清空图片的内存
+     *
+     * @param imageView
+     */
+    public static void clearImgMemory(ImageView imageView) {
+        if (imageView == null) return;
+
+        Drawable d = imageView.getDrawable();
+        if (d != null && d instanceof BitmapDrawable) {
+            Bitmap bmp = ((BitmapDrawable) d).getBitmap();
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
+            }
+        }
+        imageView.setImageBitmap(null);
+        if (d != null) {
+            d.setCallback(null);
+        }
     }
 
     /**

@@ -494,11 +494,27 @@ public final class StringUtils {
      */
     public static String format2Decimals(final String str) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");// 构造方法的字符格式这里如果小数不足2位,会以0补足.
-        if (isEmpty(str)) {
-            return "";
-        } else {
-            return decimalFormat.format(toDouble(str, -1));
-        }
+        return isEmpty(str) ? "" : decimalFormat.format(toDouble(str, -1));
+    }
+
+    /**
+     * 将浮点数转化为带两位小数的字符串
+     *
+     * @param number 字符串
+     * @return
+     */
+    public static String format2Decimals(final double number) {
+        return new DecimalFormat("0.00").format(number); // 构造方法的字符格式这里如果小数不足2位,会以0补足.
+    }
+
+    /**
+     * 将浮点数转化为带两位小数的字符串
+     *
+     * @param number 字符串
+     * @return
+     */
+    public static String format2Decimals(final float number) {
+        return new DecimalFormat("0.00").format(number); // 构造方法的字符格式这里如果小数不足2位,会以0补足.
     }
 
     /**
