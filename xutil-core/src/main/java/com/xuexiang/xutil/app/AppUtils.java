@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
@@ -161,6 +162,23 @@ public final class AppUtils {
      */
     @RequiresPermission(INSTALL_PACKAGES)
     public static boolean installAppSilent(final String filePath) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return installAppSilentBelow24(filePath);
+        } else {
+            return installAppSilentAbove24(XUtil.getContext().getPackageName(), filePath);
+        }
+    }
+
+    /**
+     * 静默安装 App 在Android7.0以下起作用
+     * <p>非 root 需添加权限
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 安装成功<br>{@code false}: 安装失败
+     */
+    @RequiresPermission(INSTALL_PACKAGES)
+    private static boolean installAppSilentBelow24(final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
         if (!FileUtils.isFileExists(file)) return false;
         boolean isRoot = isDeviceRooted();
@@ -171,10 +189,29 @@ public final class AppUtils {
             return true;
         } else {
             command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib64 pm install " + filePath;
-            commandResult = ShellUtils.execCommand(command, isRoot, true);
+            commandResult = ShellUtils.execCommand(command, isRoot);
             return commandResult.successMsg != null
                     && commandResult.successMsg.toLowerCase().contains("success");
         }
+    }
+
+    /**
+     * 静默安装 App 在Android7.0及以上起作用
+     * <p>非 root 需添加权限
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 安装成功<br>{@code false}: 安装失败
+     */
+    @RequiresPermission(INSTALL_PACKAGES)
+    private static boolean installAppSilentAbove24(final String packageName, final String filePath) {
+        File file = FileUtils.getFileByPath(filePath);
+        if (!FileUtils.isFileExists(file)) return false;
+        boolean isRoot = isDeviceRooted();
+        String command = "pm install -i " + packageName + " --user 0 " + filePath;
+        ShellUtils.CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
+        return (commandResult.successMsg != null
+                && commandResult.successMsg.toLowerCase().contains("success"));
     }
 
     /**

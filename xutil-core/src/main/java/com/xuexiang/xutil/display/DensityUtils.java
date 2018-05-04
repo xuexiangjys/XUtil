@@ -17,7 +17,6 @@
 package com.xuexiang.xutil.display;
 
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 import com.xuexiang.xutil.resource.ResUtils;
 
@@ -33,7 +32,7 @@ public final class DensityUtils {
      * Don't let anyone instantiate this class.
      */
     private DensityUtils() {
-        throw new Error("Do not need instantiate!");
+        throw new UnsupportedOperationException("Do not need instantiate!");
     }
 
     /**
