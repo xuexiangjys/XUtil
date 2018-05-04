@@ -260,6 +260,18 @@ setShakeAnimation           : 设置震动动画
 shake                       : 开始震动
 ```
 
+* ### FlashlightUtils -> 闪光灯相关
+
+```
+getInstance              : 获取闪光灯实例
+Instance.register        : 注册
+Instance.unregister      : 注销
+Instance.setFlashlightOn : 打开闪光灯
+Instance.setFlashlightOff: 关闭闪光灯
+Instance.isFlashlightOn  : 判断闪光灯是否打开
+isFlashlightEnable       : 判断设备是否支持闪光灯
+```
+
 * ### PhoneUtils -> 手机相关工具类
 
 ```
