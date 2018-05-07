@@ -349,7 +349,7 @@ public class BluetoothHelper {
      * @return true:有效，false:无效
      */
     public boolean isBtAddressValid(String address) {
-        return !StringUtils.isEmpty(address) && BluetoothAdapter.checkBluetoothAddress(address);
+        return !StringUtils.isEmpty(address) && BluetoothAdapter.checkBluetoothAddress(address.toUpperCase());
     }
 
     /**

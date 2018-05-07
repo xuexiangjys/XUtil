@@ -1466,6 +1466,21 @@ public final class ImageUtils {
         return ret;
     }
 
+
+    /**
+     * Save the bitmap.
+     *
+     * @param view     The view.
+     * @param filePath The path of file.
+     * @param format   The format of the image.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean save(final View view,
+                               final String filePath,
+                               final CompressFormat format) {
+        return save(view2Bitmap(view), getFileByPath(filePath), format, false);
+    }
+
     /**
      * Save the bitmap.
      *

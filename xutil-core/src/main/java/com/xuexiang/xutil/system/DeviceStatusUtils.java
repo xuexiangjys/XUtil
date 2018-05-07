@@ -302,7 +302,7 @@ public class DeviceStatusUtils {
      * @return true:有效，false:无效
      */
     public static boolean isBtAddressValid(String address) {
-        return !StringUtils.isSpace(address) && BluetoothAdapter.checkBluetoothAddress(address);
+        return !StringUtils.isSpace(address) && BluetoothAdapter.checkBluetoothAddress(address.toUpperCase());
     }
 
     /**
