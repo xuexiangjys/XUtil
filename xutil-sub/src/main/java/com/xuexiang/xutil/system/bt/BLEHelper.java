@@ -38,7 +38,7 @@ public final class BLEHelper {
     /**
      * 默认超时时间
      */
-    private final static int DEFAULT_CONNECT_TIMEOUT = 30;
+    private final static int DEFAULT_CONNECT_TIMEOUT = 15;
     private static volatile BLEHelper sInstance;
     /**
      * 系统蓝牙适配器
@@ -195,13 +195,20 @@ public final class BLEHelper {
      * 开启蓝牙
      */
     public void openBluetooth() {
+        openBluetooth(null);
+    }
+
+    /**
+     * 开启蓝牙
+     */
+    public void openBluetooth(final OnBluetoothOpenListener listener) {
         ThreadPoolManager.get().addTask(new Runnable() {
             @Override
             public void run() {
                 boolean openResult = getOpenBluetoothResult();
                 if (openResult) {
-                    if (mListener != null) {
-                        mListener.onBluetoothOpened();
+                    if (listener != null) {
+                        listener.onBluetoothOpened();
                     }
                 }
             }
@@ -386,11 +393,21 @@ public final class BLEHelper {
          */
         void onSearchCompleted(List<BluetoothDevice> bondedList, List<BluetoothDevice> newList);
 
+    }
+
+
+    /**
+     * <pre>
+     *     desc   : 蓝牙打开监听
+     *     author : xuexiang
+     *     time   : 2018/5/8 下午3:38
+     * </pre>
+     */
+    public interface OnBluetoothOpenListener {
         /**
          * 蓝牙打开监听
          */
         void onBluetoothOpened();
-
     }
 
 }

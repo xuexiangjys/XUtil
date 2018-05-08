@@ -21,10 +21,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * Logger日志记录
- *
- * @author xuexiang
- * @date 2018/3/9 上午12:29
+ * <pre>
+ *     desc   : Logger日志记录
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:18
+ * </pre>
  */
 public final class Logger {
 
