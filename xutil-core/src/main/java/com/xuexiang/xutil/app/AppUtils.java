@@ -28,6 +28,8 @@ import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
@@ -620,13 +622,13 @@ public final class AppUtils {
      */
     public static class AppInfo {
 
-        private String   name;
+        private String name;
         private Drawable icon;
-        private String   packageName;
-        private String   packagePath;
-        private String   versionName;
-        private int      versionCode;
-        private boolean  isSystem;
+        private String packageName;
+        private String packagePath;
+        private String versionName;
+        private int versionCode;
+        private boolean isSystem;
 
         public Drawable getIcon() {
             return icon;
@@ -786,6 +788,74 @@ public final class AppUtils {
 
     public static PackageManager getPackageManager() {
         return XUtil.getContext().getPackageManager();
+    }
+
+    public static String getPackageName() {
+        return XUtil.getContext().getPackageName();
+    }
+
+    /**
+     * 获取manifest里注册的meta-data值集合
+     *
+     * @return meta-data值集合
+     */
+    @Nullable
+    public static Bundle getMetaDatas() {
+        try {
+            PackageManager pm = getPackageManager();
+            return pm.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
+        } catch (PackageManager.NameNotFoundException e) {
+            Logger.e(e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取meta-data中的String类型的值
+     *
+     * @param key
+     * @return String类型的值
+     */
+    @Nullable
+    public static String getStringValueInMetaData(String key) {
+        Bundle metaData = AppUtils.getMetaDatas();
+        return metaData != null ? metaData.getString(key) : null;
+    }
+
+    /**
+     * 获取meta-data中的Int类型的值
+     *
+     * @param key
+     * @return Int类型的值
+     */
+    @Nullable
+    public static int getIntValueInMetaData(String key) {
+        Bundle metaData = AppUtils.getMetaDatas();
+        return metaData != null ? metaData.getInt(key) : 0;
+    }
+
+    /**
+     * 获取meta-data中的Float类型的值
+     *
+     * @param key
+     * @return Float类型的值
+     */
+    @Nullable
+    public static float getFloatValueInMetaData(String key) {
+        Bundle metaData = AppUtils.getMetaDatas();
+        return metaData != null ? metaData.getFloat(key) : 0F;
+    }
+
+    /**
+     * 获取meta-data中的Double类型的值
+     *
+     * @param key
+     * @return Double类型的值
+     */
+    @Nullable
+    public static double getDoubleValueInMetaData(String key) {
+        Bundle metaData = AppUtils.getMetaDatas();
+        return metaData != null ? metaData.getDouble(key) : 0D;
     }
 
     /**

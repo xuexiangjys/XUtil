@@ -131,6 +131,31 @@ public final class FileUtils {
 
     //=================判断文件是否存在========================//
     /**
+     * 获取文件的路径
+     *
+     * @param dirPath  目录
+     * @param fileName 文件名
+     * @return 拼接的文件的路径
+     */
+    private String getFilePath(String dirPath, String fileName) {
+        return getDirPath(dirPath) + fileName;
+    }
+
+    /**
+     * 获取文件目录的路径，自动补齐"/"
+     * @param dirPath 目录路径
+     * @return 自动补齐"/"的目录路径
+     */
+    private String getDirPath(String dirPath) {
+        if (isSpace(dirPath)) return "";
+
+        if (!dirPath.trim().endsWith(File.separator)) {
+            dirPath = dirPath.trim() + File.separator;
+        }
+        return dirPath;
+    }
+
+    /**
      * 根据文件路径获取文件
      *
      * @param filePath 文件路径

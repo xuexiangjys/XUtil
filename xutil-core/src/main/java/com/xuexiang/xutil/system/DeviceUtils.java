@@ -19,6 +19,8 @@ package com.xuexiang.xutil.system;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -28,6 +30,7 @@ import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.app.AppUtils;
 import com.xuexiang.xutil.common.ShellUtils;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.net.JsonUtil;
@@ -67,6 +70,19 @@ public final class DeviceUtils {
         // 反射机制
         Field[] fields = Build.class.getDeclaredFields();
         // 迭代Build的字段key-value 此处的信息主要是为了在服务器端手机各种版本手机报错的原因
+        try {
+            // 获得包管理器
+            PackageManager packageManager = AppUtils.getPackageManager();
+            // 得到该应用的信息，即主Activity
+            PackageInfo packageInfo = packageManager.getPackageInfo(AppUtils.getPackageName(), PackageManager.GET_ACTIVITIES);
+            if (packageInfo != null) {
+                deviceInfos.put("packageName", packageInfo.packageName);
+                deviceInfos.put("versionName", packageInfo.versionName);
+                deviceInfos.put("versionCode", String.valueOf(packageInfo.versionCode));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
