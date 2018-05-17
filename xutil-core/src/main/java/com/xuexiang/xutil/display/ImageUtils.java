@@ -942,7 +942,7 @@ public final class ImageUtils {
     }
 
     /**
-     * Return the bitmap with reflection.
+     * Return the bitmap with reflection（倒影）.
      *
      * @param src              The source of bitmap.
      * @param reflectionHeight The height of reflection.
@@ -980,7 +980,65 @@ public final class ImageUtils {
     }
 
     /**
-     * Return the bitmap with text watermarking.
+     * 横向拼接两张Bitmap
+     *
+     * @param src              拼接的源图片
+     * @param mergeBitmap      拼接的图片
+     * @param spaceWidth       间距宽度【px】
+     * @param dividerLineColor 分割线的颜色
+     * @return
+     */
+    public static Bitmap addBitmapHorizontal(Bitmap src, Bitmap mergeBitmap, int spaceWidth, int dividerLineColor) {
+        int width = src.getWidth() + mergeBitmap.getWidth() + spaceWidth;
+        int height = Math.max(src.getHeight(), mergeBitmap.getHeight());
+        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(src, 0, 0, null);
+        //画分隔线
+        canvas.drawLine(src.getWidth() + spaceWidth / 2, 0, src.getWidth() + spaceWidth / 2, height, getDividerLinePaint(spaceWidth, dividerLineColor));
+
+        canvas.drawBitmap(mergeBitmap, src.getWidth() + spaceWidth, 0, null);
+        return result;
+    }
+
+    /**
+     * 纵向拼接两张Bitmap
+     *
+     * @param src              拼接的源图片
+     * @param mergeBitmap      拼接的图片
+     * @param spaceWidth       间距宽度【px】
+     * @param dividerLineColor 分割线的颜色
+     * @return
+     */
+    public static Bitmap addBitmapVertical(Bitmap src, Bitmap mergeBitmap, int spaceWidth, int dividerLineColor) {
+        int width = Math.max(src.getWidth(), mergeBitmap.getWidth());
+        int height = src.getHeight() + mergeBitmap.getHeight() + spaceWidth;
+        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(src, 0, 0, null);
+        //画分隔线
+        canvas.drawLine(0, src.getHeight() + spaceWidth / 2, width, src.getHeight() + spaceWidth / 2, getDividerLinePaint(spaceWidth, dividerLineColor));
+
+        canvas.drawBitmap(mergeBitmap, 0, src.getHeight() + spaceWidth, null);
+        return result;
+    }
+
+    /**
+     * 获取分割线的画笔
+     *
+     * @param spaceWidth       分割线的宽度
+     * @param dividerLineColor 分割线的颜色
+     * @return
+     */
+    private static Paint getDividerLinePaint(int spaceWidth, int dividerLineColor) {
+        Paint paint = new Paint();
+        paint.setColor(dividerLineColor);
+        paint.setStrokeWidth(spaceWidth);
+        return paint;
+    }
+
+    /**
+     * 添加文字水印
      *
      * @param src      The source of bitmap.
      * @param content  The content of text.
@@ -1000,7 +1058,7 @@ public final class ImageUtils {
     }
 
     /**
-     * Return the bitmap with text watermarking.
+     * 添加文字水印
      *
      * @param src      The source of bitmap.
      * @param content  The content of text.
@@ -1032,7 +1090,7 @@ public final class ImageUtils {
     }
 
     /**
-     * Return the bitmap with image watermarking.
+     * 添加图片水印
      *
      * @param src       The source of bitmap.
      * @param watermark The image watermarking.
@@ -1049,7 +1107,7 @@ public final class ImageUtils {
     }
 
     /**
-     * Return the bitmap with image watermarking.
+     * 添加图片水印
      *
      * @param src       The source of bitmap.
      * @param watermark The image watermarking.
