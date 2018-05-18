@@ -20,8 +20,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.xuexiang.xutil.XUtil;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
