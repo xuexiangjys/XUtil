@@ -136,10 +136,8 @@
 # 极光推送混淆
 -dontoptimize
 -dontpreverify
-
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
-
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
 
@@ -176,3 +174,23 @@
 -dontwarn com.alibaba.fastjson.**
 -keep class com.alibaba.fastjson.** { *; }
 -keepattributes Signature
+
+# xpage
+-keep class com.xuexiang.xpage.annotation.** { *; }
+
+# xaop
+-keep @com.xuexiang.xaop.annotation.* class * {*;}
+-keep class * {
+    @com.xuexiang.xaop.annotation.* <fields>;
+}
+-keepclassmembers class * {
+    @com.xuexiang.xaop.annotation.* <methods>;
+}
+
+# xrouter
+-keep public class com.xuexiang.xrouter.routes.**{*;}
+-keep class * implements com.xuexiang.xrouter.facade.template.ISyringe{*;}
+# 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口
+-keep interface * implements com.xuexiang.xrouter.facade.template.IProvider
+# 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
+-keep class * implements com.xuexiang.xrouter.facade.template.IProvider
