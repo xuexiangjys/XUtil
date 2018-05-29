@@ -19,12 +19,12 @@ package com.xuexiang.xutildemo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xuexiang.xpage.base.BaseActivity;
+import com.xuexiang.xpage.base.XPageActivity;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.fragment.MainFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends XPageActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

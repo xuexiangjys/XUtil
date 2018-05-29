@@ -21,12 +21,11 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xpage.base.SimpleListFragment;
+import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.data.DateUtils;
-import com.xuexiang.xutildemo.MyApp;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
 
 import java.util.HashMap;
@@ -39,7 +38,7 @@ import java.util.Map;
  * @date 2018/4/14 上午1:42
  */
 @Page(name = "XUtil")
-public class MainFragment extends SimpleListFragment {
+public class MainFragment extends XPageSimpleListFragment {
     /**
      * 初始化例子
      *
