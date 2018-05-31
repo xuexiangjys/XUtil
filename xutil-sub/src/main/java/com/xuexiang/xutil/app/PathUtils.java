@@ -19,6 +19,7 @@ package com.xuexiang.xutil.app;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -30,6 +31,8 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
+
+import java.io.File;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
@@ -381,6 +384,32 @@ public class PathUtils {
     }
 
     /**
+     * 将媒体文件转化为资源定位符
+     * @param context
+     * @param mediaFile 媒体文件
+     * @return
+     */
+    public static Uri getMediaContentUri(Context context, File mediaFile) {
+        String filePath = mediaFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID }, MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (mediaFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    /**
      * 根据uri获取文件的绝对路径，解决Android 4.4以上 根据uri获取路径的方法
      *
      * @param context
@@ -491,4 +520,5 @@ public class PathUtils {
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
+
 }
