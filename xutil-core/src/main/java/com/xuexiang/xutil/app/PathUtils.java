@@ -29,6 +29,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
+import android.support.v4.content.FileProvider;
 
 import com.xuexiang.xutil.XUtil;
 
@@ -383,8 +384,20 @@ public class PathUtils {
         return XUtil.getContext().getObbDir().getAbsolutePath();
     }
 
+
     /**
      * 将媒体文件转化为资源定位符
+     *
+     * @param mediaFile 媒体文件
+     * @return
+     */
+    public static Uri getMediaContentUri(File mediaFile) {
+        return getMediaContentUri(XUtil.getContext(), mediaFile);
+    }
+
+    /**
+     * 将媒体文件转化为资源定位符
+     *
      * @param context
      * @param mediaFile 媒体文件
      * @return
@@ -392,8 +405,8 @@ public class PathUtils {
     public static Uri getMediaContentUri(Context context, File mediaFile) {
         String filePath = mediaFile.getAbsolutePath();
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID }, MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
+                new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
+                new String[]{filePath}, null);
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
             Uri baseUri = Uri.parse("content://media/external/images/media");
@@ -407,6 +420,34 @@ public class PathUtils {
                 return null;
             }
         }
+    }
+
+    /**
+     * Return a content URI for a given file.
+     *
+     * @param file The file.
+     * @return a content URI for a given file
+     */
+    public static Uri getUriForFile(final File file) {
+        if (file == null) return null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String authority = XUtil.getContext().getPackageName() + ".xutil.provider";
+            return FileProvider.getUriForFile(XUtil.getContext(), authority, file);
+        } else {
+            return Uri.fromFile(file);
+        }
+    }
+
+    /**
+     * 根据uri获取文件的绝对路径，解决Android 4.4以上 根据uri获取路径的方法
+     *
+     * @param uri
+     * @return
+     */
+    @SuppressLint("MissingPermission")
+    @RequiresPermission(READ_EXTERNAL_STORAGE)
+    public static String getFilePathByUri(Uri uri) {
+        return getFilePathByUri(XUtil.getContext(), uri);
     }
 
     /**
