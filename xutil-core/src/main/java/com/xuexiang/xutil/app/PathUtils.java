@@ -44,7 +44,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
  *     time   : 2018/5/5 上午12:16
  * </pre>
  */
-public class PathUtils {
+public final class PathUtils {
 
     private PathUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
