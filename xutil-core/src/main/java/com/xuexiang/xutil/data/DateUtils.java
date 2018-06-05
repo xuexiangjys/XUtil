@@ -38,13 +38,13 @@ import static com.xuexiang.constant.TimeConstants.MIN;
 import static com.xuexiang.constant.TimeConstants.SEC;
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
 
- /**
-  * <pre>
-  *     desc   : 日期工具
-  *     author : xuexiang
-  *     time   : 2018/4/30 下午12:22
-  * </pre>
-  */
+/**
+ * <pre>
+ *     desc   : 日期工具
+ *     author : xuexiang
+ *     time   : 2018/4/30 下午12:22
+ * </pre>
+ */
 public final class DateUtils {
 
     /**
@@ -250,49 +250,51 @@ public final class DateUtils {
         return translateDateFormat(time, new SimpleDateFormat(oldFormatType), new SimpleDateFormat(newFormatType));
     }
 
-     /**
-      * 判断时间字符串的格式是否正确
-      *
-      * @param time   时间字符串
-      * @param format 时间的格式
-      * @return
-      */
-     public static boolean isDateFormatRight(final String time, final DateFormat format) {
-         //内容和格式出错，直接返回false
-         if (StringUtils.isSpace(time) || format == null) return false;
+    /**
+     * 判断时间字符串的格式是否正确
+     *
+     * @param time   时间字符串
+     * @param format 时间的格式
+     * @return
+     */
+    public static boolean isDateFormatRight(final String time, final DateFormat format) {
+        //内容和格式出错，直接返回false
+        if (StringUtils.isSpace(time) || format == null) return false;
 
-         try {
-             Date date = format.parse(time);
-             String s = format.format(date);
-             return time.equals(s);
-         } catch (ParseException e) {
-             e.printStackTrace();
-             return false;
-         }
-     }
+        try {
+            Date date = format.parse(time);
+            String s = format.format(date);
+            return time.equals(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-     /**
-      * 将时间字符串转换为文件名称
-      *
-      * @param dateTime 时间字符串
-      * @param suffix   文件名后缀
-      * @return
-      */
-     @Nullable
-     public static String convertTimeToFileName(String dateTime, String suffix) {
-         if (StringUtils.isSpace(dateTime)) return null;
+    /**
+     * 将时间字符串转换为文件名称
+     *
+     * @param dateTime 时间字符串
+     * @param suffix   文件名后缀
+     * @return
+     */
+    @Nullable
+    public static String convertTimeToFileName(String dateTime, String suffix) {
+        if (StringUtils.isSpace(dateTime)) return null;
 
-         Pattern p = Pattern.compile("[^\\d]+");
-         Matcher m = p.matcher(dateTime);
-         return m.replaceAll("").trim() + suffix;
-     }
+        Pattern p = Pattern.compile("[^\\d]+");
+        Matcher m = p.matcher(dateTime);
+        return m.replaceAll("").trim() + suffix;
+    }
 
     //===============================时间计算==================================//
+
     /**
      * 获取当前日期n天前的日期，返回String
      * <p>例如：今天是2018-4-24，day=2， return 2018-4-22</p>
      * <p>day=-2， return 2018-4-26</p>
-     * @param day 【1：1天前， -1：1天后】
+     *
+     * @param day               【1：1天前， -1：1天后】
      * @param day
      * @param isNeedHMS:是否需要时分秒
      * @return
@@ -305,7 +307,8 @@ public final class DateUtils {
      * 获取当前日期n天后的日期，返回String
      * <p>例如：今天是2018-4-24，day=2， return 2018-4-26</p>
      * <p>day=-2， return 2018-4-22</p>
-     * @param day 【1：1天后，-1：1天前】
+     *
+     * @param day               【1：1天后，-1：1天前】
      * @param isNeedHMS:是否需要时分秒
      * @return
      */
@@ -324,6 +327,7 @@ public final class DateUtils {
      * 获取当前日期n天前的日期，返回String
      * <p>例如：今天是2018-4-24，day=2， return 2018-4-22</p>
      * <p>day=-2， return 2018-4-26</p>
+     *
      * @param day 【1：1天前， -1：1天后】
      * @param day
      * @return
@@ -336,6 +340,7 @@ public final class DateUtils {
      * 获取当前日期n天后的日期，返回Date
      * <p>例如：今天是2018-4-24，day=2， return 2018-4-26</p>
      * <p>day=-2， return 2018-4-22</p>
+     *
      * @param day 【1：1天后，-1：1天前】
      * @return
      */
@@ -343,6 +348,33 @@ public final class DateUtils {
         Calendar rightNow = Calendar.getInstance();
         rightNow.setTimeInMillis(System.currentTimeMillis());
         rightNow.add(Calendar.DAY_OF_MONTH, day);
+        return rightNow.getTime();
+    }
+
+    /**
+     * 获取当前日期n月前的日期，返回Date
+     * <p>例如：今天是2018-04-24，month=2， return 2018-02-24</p>
+     * <p>month=-2， return 2018-06-24</p>
+     *
+     * @param month 【1：1月前，-1：1月后】
+     * @return 当前日期n月前的日期
+     */
+    public static Date nMonthsBeforeToday(int month) {
+        return nMonthsAfterToday(-month);
+    }
+
+    /**
+     * 获取当前日期n月后的日期，返回Date
+     * <p>例如：今天是2018-04-24，month=2， return 2018-06-24</p>
+     * <p>month=-2， return 2018-02-24</p>
+     *
+     * @param month 【1：1月后，-1：1月前】
+     * @return 当前日期n月后的日期
+     */
+    public static Date nMonthsAfterToday(int month) {
+        Calendar rightNow = Calendar.getInstance();
+        rightNow.setTimeInMillis(System.currentTimeMillis());
+        rightNow.add(Calendar.MONTH, month);
         return rightNow.getTime();
     }
 
@@ -683,83 +715,83 @@ public final class DateUtils {
         return cal.getTimeInMillis();
     }
 
-     private static final int YEAR = 365 * 24 * 60 * 60;// 年
-     private static final int MONTH = 30 * 24 * 60 * 60;// 月
-     private static final int DAY = 24 * 60 * 60;// 天
-     private static final int HOUR = 60 * 60;// 小时
-     private static final int MINUTE = 60;// 分钟
+    private static final int YEAR = 365 * 24 * 60 * 60;// 年
+    private static final int MONTH = 30 * 24 * 60 * 60;// 月
+    private static final int DAY = 24 * 60 * 60;// 天
+    private static final int HOUR = 60 * 60;// 小时
+    private static final int MINUTE = 60;// 分钟
 
-     /**
-      * 根据时间戳获取模糊型的时间描述。
-      *
-      * @param time   时间字符串
-      * @param format 时间格式
-      * @return 模糊型的与当前时间的差
-      * <ul>
-      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
-      * <li>如果在 1 小时内，显示 XXX分钟前</li>
-      * <li>如果在 1 天内，显示XXX小时前</li>
-      * <li>如果在 1 月内，显示XXX天前</li>
-      * <li>如果在 1 年内，显示XXX月前</li>
-      * <li>如果在 1 年外，显示XXX年前</li>
-      * </ul>
-      */
-     public static String getFuzzyTimeDescriptionByNow(final String time, final DateFormat format) {
-         return getFuzzyTimeDescriptionByNow(string2Millis(time, format));
-     }
+    /**
+     * 根据时间戳获取模糊型的时间描述。
+     *
+     * @param time   时间字符串
+     * @param format 时间格式
+     * @return 模糊型的与当前时间的差
+     * <ul>
+     * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+     * <li>如果在 1 小时内，显示 XXX分钟前</li>
+     * <li>如果在 1 天内，显示XXX小时前</li>
+     * <li>如果在 1 月内，显示XXX天前</li>
+     * <li>如果在 1 年内，显示XXX月前</li>
+     * <li>如果在 1 年外，显示XXX年前</li>
+     * </ul>
+     */
+    public static String getFuzzyTimeDescriptionByNow(final String time, final DateFormat format) {
+        return getFuzzyTimeDescriptionByNow(string2Millis(time, format));
+    }
 
-     /**
-      * 根据时间戳获取模糊型的时间描述。
-      *
-      * @param date Date 类型时间
-      * @return 模糊型的与当前时间的差
-      * <ul>
-      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
-      * <li>如果在 1 小时内，显示 XXX分钟前</li>
-      * <li>如果在 1 天内，显示XXX小时前</li>
-      * <li>如果在 1 月内，显示XXX天前</li>
-      * <li>如果在 1 年内，显示XXX月前</li>
-      * <li>如果在 1 年外，显示XXX年前</li>
-      * </ul>
-      */
-     public static String getFuzzyTimeDescriptionByNow(final Date date) {
-         return getFuzzyTimeDescriptionByNow(date.getTime());
-     }
+    /**
+     * 根据时间戳获取模糊型的时间描述。
+     *
+     * @param date Date 类型时间
+     * @return 模糊型的与当前时间的差
+     * <ul>
+     * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+     * <li>如果在 1 小时内，显示 XXX分钟前</li>
+     * <li>如果在 1 天内，显示XXX小时前</li>
+     * <li>如果在 1 月内，显示XXX天前</li>
+     * <li>如果在 1 年内，显示XXX月前</li>
+     * <li>如果在 1 年外，显示XXX年前</li>
+     * </ul>
+     */
+    public static String getFuzzyTimeDescriptionByNow(final Date date) {
+        return getFuzzyTimeDescriptionByNow(date.getTime());
+    }
 
-     /**
-      * 根据时间戳获取模糊型的时间描述。
-      *
-      * @param timestamp 时间戳 单位为毫秒
-      * @return 模糊型的与当前时间的差
-      * <ul>
-      * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
-      * <li>如果在 1 小时内，显示 XXX分钟前</li>
-      * <li>如果在 1 天内，显示XXX小时前</li>
-      * <li>如果在 1 月内，显示XXX天前</li>
-      * <li>如果在 1 年内，显示XXX月前</li>
-      * <li>如果在 1 年外，显示XXX年前</li>
-      * </ul>
-      */
-     public static String getFuzzyTimeDescriptionByNow(final long timestamp) {
-         long currentTime = System.currentTimeMillis();
-         long timeGap = (currentTime - timestamp) / 1000;// 与现在时间相差秒数
-         String timeStr;
-         long span;
-         if ((span = Math.round((float) timeGap / YEAR)) > 0) {
-             timeStr = span + "年前";
-         } else if ((span = Math.round((float) timeGap / MONTH)) > 0) {
-             timeStr = span + "个月前";
-         } else if ((span = Math.round((float) timeGap / DAY)) > 0) {// 1天以上
-             timeStr = span + "天前";
-         } else if ((span = Math.round((float) timeGap / HOUR)) > 0) {// 1小时-24小时
-             timeStr = span + "小时前";
-         } else if ((span = Math.round((float) timeGap / MINUTE)) > 0) {// 1分钟-59分钟
-             timeStr = span + "分钟前";
-         } else {// 1秒钟-59秒钟
-             timeStr = "刚刚";
-         }
-         return timeStr;
-     }
+    /**
+     * 根据时间戳获取模糊型的时间描述。
+     *
+     * @param timestamp 时间戳 单位为毫秒
+     * @return 模糊型的与当前时间的差
+     * <ul>
+     * <li>如果在 1 分钟内或者时间是未来的时间，显示刚刚</li>
+     * <li>如果在 1 小时内，显示 XXX分钟前</li>
+     * <li>如果在 1 天内，显示XXX小时前</li>
+     * <li>如果在 1 月内，显示XXX天前</li>
+     * <li>如果在 1 年内，显示XXX月前</li>
+     * <li>如果在 1 年外，显示XXX年前</li>
+     * </ul>
+     */
+    public static String getFuzzyTimeDescriptionByNow(final long timestamp) {
+        long currentTime = System.currentTimeMillis();
+        long timeGap = (currentTime - timestamp) / 1000;// 与现在时间相差秒数
+        String timeStr;
+        long span;
+        if ((span = Math.round((float) timeGap / YEAR)) > 0) {
+            timeStr = span + "年前";
+        } else if ((span = Math.round((float) timeGap / MONTH)) > 0) {
+            timeStr = span + "个月前";
+        } else if ((span = Math.round((float) timeGap / DAY)) > 0) {// 1天以上
+            timeStr = span + "天前";
+        } else if ((span = Math.round((float) timeGap / HOUR)) > 0) {// 1小时-24小时
+            timeStr = span + "小时前";
+        } else if ((span = Math.round((float) timeGap / MINUTE)) > 0) {// 1分钟-59分钟
+            timeStr = span + "分钟前";
+        } else {// 1秒钟-59秒钟
+            timeStr = "刚刚";
+        }
+        return timeStr;
+    }
 
     private static long timeSpan2Millis(final long timeSpan, @TimeConstants.Unit final int unit) {
         return timeSpan * unit;
@@ -791,51 +823,51 @@ public final class DateUtils {
         return sb.toString();
     }
 
-     /**
-      * 根据出生日期获取年龄
-      *
-      * @param birthDay 出生日期字符串
-      * @param format   日期格式
-      * @return 计算出的年龄
-      */
-     public static int getAgeByBirthDay(final String birthDay, final DateFormat format) throws IllegalArgumentException {
-         return getAgeByBirthDay(DateUtils.string2Date(birthDay, format));
-     }
+    /**
+     * 根据出生日期获取年龄
+     *
+     * @param birthDay 出生日期字符串
+     * @param format   日期格式
+     * @return 计算出的年龄
+     */
+    public static int getAgeByBirthDay(final String birthDay, final DateFormat format) throws IllegalArgumentException {
+        return getAgeByBirthDay(DateUtils.string2Date(birthDay, format));
+    }
 
-     /**
-      * 根据出生日期获取年龄
-      *
-      * @param birthDay 出生日期
-      * @return 计算出的年龄
-      */
-     public static int getAgeByBirthDay(Date birthDay) throws IllegalArgumentException {
-         Calendar cal = Calendar.getInstance();
+    /**
+     * 根据出生日期获取年龄
+     *
+     * @param birthDay 出生日期
+     * @return 计算出的年龄
+     */
+    public static int getAgeByBirthDay(Date birthDay) throws IllegalArgumentException {
+        Calendar cal = Calendar.getInstance();
 
-         if (cal.before(birthDay)) {
-             throw new IllegalArgumentException("The birthDay is before Now.It's unbelievable!");
-         }
-         int yearNow = cal.get(Calendar.YEAR);
-         int monthNow = cal.get(Calendar.MONTH);
-         int dayNow = cal.get(Calendar.DAY_OF_MONTH);
+        if (cal.before(birthDay)) {
+            throw new IllegalArgumentException("The birthDay is before Now.It's unbelievable!");
+        }
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayNow = cal.get(Calendar.DAY_OF_MONTH);
 
-         cal.setTime(birthDay);
-         int yearBirth = cal.get(Calendar.YEAR);
-         int monthBirth = cal.get(Calendar.MONTH);
-         int dayBirth = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(birthDay);
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayBirth = cal.get(Calendar.DAY_OF_MONTH);
 
-         int age = yearNow - yearBirth;
+        int age = yearNow - yearBirth;
 
-         if (monthNow <= monthBirth) {
-             if (monthNow == monthBirth) {
-                 if (dayNow < dayBirth) {
-                     age--;
-                 }
-             } else {
-                 age--;
-             }
-         }
-         return age;
-     }
+        if (monthNow <= monthBirth) {
+            if (monthNow == monthBirth) {
+                if (dayNow < dayBirth) {
+                    age--;
+                }
+            } else {
+                age--;
+            }
+        }
+        return age;
+    }
 
     //==============================时间获取===============================//
 
