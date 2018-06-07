@@ -682,7 +682,7 @@ public final class IDCardUtils {
             return true;
         }
         String[] cardval = validateIdCard10(card);
-        return cardval != null && cardval[2].equals("true");
+        return cardval != null && "true".equals(cardval[2]);
     }
 
     /**
