@@ -65,6 +65,18 @@ public final class XUtil {
     }
 
     /**
+     * 注册activity的生命回调
+     * @param application
+     * @param lifecycleHelper
+     * @return
+     */
+    public XUtil registerLifecycleCallbacks(Application application, ActivityLifecycleHelper lifecycleHelper) {
+        mActivityLifecycleHelper = lifecycleHelper;
+        application.registerActivityLifecycleCallbacks(mActivityLifecycleHelper);
+        return this;
+    }
+
+    /**
      * 获取全局上下文
      * @return
      */

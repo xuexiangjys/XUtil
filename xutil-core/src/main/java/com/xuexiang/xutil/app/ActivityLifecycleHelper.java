@@ -3,10 +3,12 @@ package com.xuexiang.xutil.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.common.logger.Logger;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -26,49 +28,60 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        Logger.d("[onActivityCreated]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityCreated]:" + StringUtils.getName(activity));
         addActivity(activity);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        Logger.d("[onActivityStarted]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityStarted]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        Logger.d("[onActivityResumed]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityResumed]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        Logger.d("[onActivityResumed]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityResumed]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        Logger.d("[onActivityStopped]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityStopped]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        Logger.d("[onActivitySaveInstanceState]:" + StringUtils.getName(activity));
+        Logger.v("[onActivitySaveInstanceState]:" + StringUtils.getName(activity));
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        Logger.d("[onActivityDestroyed]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityDestroyed]:" + StringUtils.getName(activity));
         removeActivity(activity);
     }
 
     /**
      * 添加Activity到堆栈
      */
-    public void addActivity(Activity activity) {
+    private void addActivity(Activity activity) {
         if (mActivityStack == null) {
             mActivityStack = new Stack<>();
         }
         mActivityStack.add(activity);
+    }
+
+    /**
+     * 将Activity移出堆栈
+     *
+     * @param activity
+     */
+    private void removeActivity(Activity activity) {
+        if (activity != null) {
+            mActivityStack.remove(activity);
+        }
     }
 
     /**
@@ -97,6 +110,13 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     }
 
     /**
+     * 结束上一个Activity
+     */
+    public void finishPreActivity() {
+        finishActivity(getPreActivity());
+    }
+
+    /**
      * 结束指定的Activity
      */
     public void finishActivity(Activity activity) {
@@ -104,6 +124,28 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
             mActivityStack.remove(activity);
             activity.finish();
             activity = null;
+        }
+    }
+
+    /**
+     * 结束指定的Activity
+     *
+     * @param clazz activity的类
+     */
+    public void finishActivity(@NonNull Class<? extends Activity> clazz) {
+        if (mActivityStack != null) {
+            Iterator<Activity> it = mActivityStack.iterator();
+            synchronized (it) {
+                while (it.hasNext()) {
+                    Activity activity = it.next();
+                    if (clazz.getCanonicalName().equals(activity.getClass().getCanonicalName())) {
+                        if (!activity.isFinishing()) {
+                            it.remove();
+                            activity.finish();
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -122,12 +164,6 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
                 }
             }
             mActivityStack.clear();
-        }
-    }
-
-    public void removeActivity(Activity activity) {
-        if (activity != null) {
-            mActivityStack.remove(activity);
         }
     }
 
