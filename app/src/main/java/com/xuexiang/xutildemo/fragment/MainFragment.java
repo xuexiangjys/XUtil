@@ -23,6 +23,7 @@ import android.view.View;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
+import com.xuexiang.xutil.app.SocialShareUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.data.DateUtils;
@@ -49,6 +50,7 @@ public class MainFragment extends XPageSimpleListFragment {
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("路由测试");
         lists.add("通知");
+        lists.add("社会化分享");
         return lists;
     }
 
@@ -78,6 +80,9 @@ public class MainFragment extends XPageSimpleListFragment {
             case 1:
                openPage(NotifyFragment.class);
                 break;
+            case 2:
+                openPage(SocialShareFragment.class);
+            break;
             default:
                 break;
         }

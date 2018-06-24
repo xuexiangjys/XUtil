@@ -42,14 +42,15 @@ public final class ActivityUtils {
      *
      * @param intent
      */
-    public static void startActivity(final Intent intent) {
+    public static boolean startActivity(final Intent intent) {
         if (intent == null) {
             Logger.e("[startActivity failed]: intent == null");
-            return;
+            return false;
         }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try {
                 XUtil.getContext().startActivity(intent);
+                return true;
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 Logger.e(e);
@@ -57,6 +58,7 @@ public final class ActivityUtils {
         } else {
             Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
         }
+        return false;
     }
 
     /**
@@ -66,14 +68,15 @@ public final class ActivityUtils {
      * @param intent
      * @param requestCode  请求码
      */
-    public static void startActivityForResult(final Activity fromActivity, final Intent intent, final int requestCode) {
+    public static boolean startActivityForResult(final Activity fromActivity, final Intent intent, final int requestCode) {
         if (intent == null) {
             Logger.e("[startActivity failed]: intent == null");
-            return;
+            return false;
         }
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try {
                 fromActivity.startActivityForResult(intent, requestCode);
+                return true;
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 Logger.e(e);
@@ -81,6 +84,7 @@ public final class ActivityUtils {
         } else {
             Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
         }
+        return false;
     }
 
     //=================获取Activity跳转意图===============//
@@ -195,9 +199,9 @@ public final class ActivityUtils {
      *
      * @param cls Activity类
      */
-    public static void startActivity(final Class<? extends Activity> cls) {
+    public static boolean startActivity(final Class<? extends Activity> cls) {
         Intent intent = getActivityIntent(cls);
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -207,9 +211,9 @@ public final class ActivityUtils {
      * @param to          Activity类
      * @param requestCode 请求码
      */
-    public static void startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode) {
+    public static boolean startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode) {
         Intent intent = getActivityIntent(from, to);
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
 
@@ -220,8 +224,8 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivity(final Class<? extends Activity> cls, final String key, final Object param) {
-        startActivity(getActivityIntent(cls, key, param));
+    public static boolean startActivity(final Class<? extends Activity> cls, final String key, final Object param) {
+        return startActivity(getActivityIntent(cls, key, param));
     }
 
     /**
@@ -233,10 +237,10 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
+    public static boolean startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, to);
         intent = IntentUtils.putExtra(intent, key, param);
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
 
@@ -246,9 +250,9 @@ public final class ActivityUtils {
      * @param cls Activity类
      * @param map 携带的数据
      */
-    public static void startActivity(final Class<? extends Activity> cls, final Map<String, Object> map) {
+    public static boolean startActivity(final Class<? extends Activity> cls, final Map<String, Object> map) {
         Intent intent = getActivityIntent(cls, map);
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -259,14 +263,14 @@ public final class ActivityUtils {
      * @param requestCode 请求码
      * @param map         携带的数据
      */
-    public static void startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode, final Map<String, Object> map) {
+    public static boolean startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode, final Map<String, Object> map) {
         Intent intent = getActivityIntent(from, to);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
     /**
@@ -276,12 +280,12 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityWithBundle(final Class<? extends Activity> cls, final String key, final Object param) {
+    public static boolean startActivityWithBundle(final Class<? extends Activity> cls, final String key, final Object param) {
         Intent intent = getActivityIntent(cls);
         Bundle bundle = new Bundle();
         bundle = IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -293,12 +297,12 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityForResultWithBundle(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
+    public static boolean startActivityForResultWithBundle(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, to);
         Bundle bundle = new Bundle();
         bundle = IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
     /**
@@ -307,7 +311,7 @@ public final class ActivityUtils {
      * @param cls Activity类
      * @param map 携带的数据
      */
-    public static void startActivityWithBundle(final Class<? extends Activity> cls, final Map<String, Object> map) {
+    public static boolean startActivityWithBundle(final Class<? extends Activity> cls, final Map<String, Object> map) {
         Intent intent = getActivityIntent(cls);
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
@@ -316,7 +320,7 @@ public final class ActivityUtils {
             }
             intent.putExtras(bundle);
         }
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -327,7 +331,7 @@ public final class ActivityUtils {
      * @param requestCode 请求码
      * @param map         携带的数据
      */
-    public static void startActivityForResultWithBundle(final Activity from, final Class<? extends Activity> to, final int requestCode, final Map<String, Object> map) {
+    public static boolean startActivityForResultWithBundle(final Activity from, final Class<? extends Activity> to, final int requestCode, final Map<String, Object> map) {
         Intent intent = getActivityIntent(from, to);
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
@@ -336,7 +340,7 @@ public final class ActivityUtils {
             }
             intent.putExtras(bundle);
         }
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
 
@@ -348,8 +352,8 @@ public final class ActivityUtils {
      *
      * @param action 隐式启动的动作
      */
-    public static void startActivity(final String action) {
-        startActivity(getActivityIntent(action));
+    public static boolean startActivity(final String action) {
+        return startActivity(getActivityIntent(action));
     }
 
     /**
@@ -359,8 +363,8 @@ public final class ActivityUtils {
      * @param action      隐式启动的动作
      * @param requestCode 请求码
      */
-    public static void startActivityForResult(final Activity from, final String action, final int requestCode) {
-        startActivityForResult(from, getActivityIntent(from, action), requestCode);
+    public static boolean startActivityForResult(final Activity from, final String action, final int requestCode) {
+        return startActivityForResult(from, getActivityIntent(from, action), requestCode);
     }
 
     /**
@@ -370,10 +374,10 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivity(final String action, final String key, final Object param) {
+    public static boolean startActivity(final String action, final String key, final Object param) {
         Intent intent = getActivityIntent(action);
         intent = IntentUtils.putExtra(intent, key, param);
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -385,10 +389,10 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityForResult(final Activity from, final String action, final int requestCode, final String key, final Object param) {
+    public static boolean startActivityForResult(final Activity from, final String action, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, action);
         intent = IntentUtils.putExtra(intent, key, param);
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
     /**
@@ -397,14 +401,14 @@ public final class ActivityUtils {
      * @param action 隐式启动的动作
      * @param map    携带的数据
      */
-    public static void startActivity(final String action, final Map<String, Object> map) {
+    public static boolean startActivity(final String action, final Map<String, Object> map) {
         Intent intent = getActivityIntent(action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -415,14 +419,14 @@ public final class ActivityUtils {
      * @param requestCode 请求码
      * @param map         携带的数据
      */
-    public static void startActivityForResult(final Activity from, final String action, final int requestCode, final Map<String, Object> map) {
+    public static boolean startActivityForResult(final Activity from, final String action, final int requestCode, final Map<String, Object> map) {
         Intent intent = getActivityIntent(from, action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
     /**
@@ -432,12 +436,12 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityWithBundle(final String action, final String key, final Object param) {
+    public static boolean startActivityWithBundle(final String action, final String key, final Object param) {
         Intent intent = getActivityIntent(action);
         Bundle bundle = new Bundle();
         bundle = IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -449,12 +453,12 @@ public final class ActivityUtils {
      * @param key
      * @param param
      */
-    public static void startActivityForResultWithBundle(final Activity from, final String action, final int requestCode, final String key, final Object param) {
+    public static boolean startActivityForResultWithBundle(final Activity from, final String action, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, action);
         Bundle bundle = new Bundle();
         bundle = IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
 
@@ -464,7 +468,7 @@ public final class ActivityUtils {
      * @param action 隐式启动的动作
      * @param map    携带的数据
      */
-    public static void startActivityWithBundle(final String action, final Map<String, Object> map) {
+    public static boolean startActivityWithBundle(final String action, final Map<String, Object> map) {
         Intent intent = getActivityIntent(action);
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
@@ -473,7 +477,7 @@ public final class ActivityUtils {
             }
             intent.putExtras(bundle);
         }
-        startActivity(intent);
+        return startActivity(intent);
     }
 
     /**
@@ -484,7 +488,7 @@ public final class ActivityUtils {
      * @param requestCode 请求码
      * @param map         携带的数据
      */
-    public static void startActivityForResultWithBundle(final Activity from, final String action, final int requestCode, final Map<String, Object> map) {
+    public static boolean startActivityForResultWithBundle(final Activity from, final String action, final int requestCode, final Map<String, Object> map) {
         Intent intent = getActivityIntent(from, action);
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
@@ -493,7 +497,7 @@ public final class ActivityUtils {
             }
             intent.putExtras(bundle);
         }
-        startActivityForResult(from, intent, requestCode);
+        return startActivityForResult(from, intent, requestCode);
     }
 
 }

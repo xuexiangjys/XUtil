@@ -19,6 +19,7 @@ package com.xuexiang.xutil.file;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
@@ -161,6 +162,7 @@ public final class FileUtils {
      * @param filePath 文件路径
      * @return 文件
      */
+    @Nullable
     public static File getFileByPath(final String filePath) {
         return isSpace(filePath) ? null : new File(filePath);
     }

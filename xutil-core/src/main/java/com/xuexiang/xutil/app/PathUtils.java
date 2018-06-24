@@ -27,6 +27,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.content.FileProvider;
@@ -428,6 +429,7 @@ public final class PathUtils {
      * @param file The file.
      * @return a content URI for a given file
      */
+    @Nullable
     public static Uri getUriForFile(final File file) {
         if (file == null) return null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
