@@ -44,7 +44,7 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
 
     @Override
     public void onActivityPaused(Activity activity) {
-        Logger.v("[onActivityResumed]:" + StringUtils.getName(activity));
+        Logger.v("[onActivityPaused]:" + StringUtils.getName(activity));
     }
 
     @Override
