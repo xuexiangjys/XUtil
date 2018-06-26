@@ -18,12 +18,18 @@ package com.xuexiang.xutil.display;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -252,12 +258,81 @@ public final class ViewUtils {
     /**
      * 获取activity最顶层的父布局
      * <p>@android:id/content 对应的控件是FrameLayout</p>
+     *
      * @param activity
      * @return
      */
-    public static FrameLayout getContentView(final Activity activity) {
+    public static FrameLayout getContentView(@NonNull final Activity activity) {
         ViewGroup view = (ViewGroup) activity.getWindow().getDecorView();
         return view.findViewById(android.R.id.content);
+    }
+
+    /**
+     * View设备背景
+     *
+     * @param context
+     * @param view
+     * @param res
+     */
+    public static void setBackground(Context context, View view, int res) {
+        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), res);
+        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bmp);
+        if (view != null) {
+            view.setBackgroundDrawable(bd);
+        }
+    }
+
+    /**
+     * 释放图片资源
+     *
+     * @param v
+     */
+    public static void recycleBackground(@NonNull View v) {
+        Drawable d = v.getBackground();
+        v.setBackgroundResource(0);//别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
+        if (d != null && d instanceof BitmapDrawable) {
+            Bitmap bmp = ((BitmapDrawable) d).getBitmap();
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
+            }
+        }
+        if (d != null) {
+            d.setCallback(null);
+        }
+    }
+
+    /**
+     * 遍历View,清除所有ImageView的缓存
+     *
+     * @param view
+     */
+    public static void clearImageView(@NonNull View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) view;
+            int count = parent.getChildCount();
+            for (int i = 0; i < count; i++) {
+                clearImageView(parent.getChildAt(i));
+            }
+        } else if (view instanceof ImageView) {
+            clearImgMemory((ImageView) view);
+        }
+    }
+
+    /**
+     * 清空图片的内存
+     */
+    public static void clearImgMemory(@NonNull ImageView imageView) {
+        Drawable d = imageView.getDrawable();
+        if (d != null && d instanceof BitmapDrawable) {
+            Bitmap bmp = ((BitmapDrawable) d).getBitmap();
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
+            }
+        }
+        imageView.setImageBitmap(null);
+        if (d != null) {
+            d.setCallback(null);
+        }
     }
 
 }
