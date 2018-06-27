@@ -30,11 +30,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import com.xuexiang.constant.PermissionConstants;
 import com.xuexiang.constant.PermissionConstants.Permission;
-import com.xuexiang.xutil.system.PermissionUtils.OnRationaleListener.ShouldRequest;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.system.PermissionUtils.OnRationaleListener.ShouldRequest;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -307,6 +309,13 @@ public final class PermissionUtils {
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+            if (sInstance == null) {
+                super.onCreate(savedInstanceState);
+                finish();
+                return;
+            }
             if (sInstance.mThemeCallback != null) {
                 sInstance.mThemeCallback.onActivityCreate(this);
             }
@@ -318,6 +327,10 @@ public final class PermissionUtils {
             }
             if (sInstance.mPermissionsRequest != null) {
                 int size = sInstance.mPermissionsRequest.size();
+                if (size <= 0) {
+                    finish();
+                    return;
+                }
                 requestPermissions(sInstance.mPermissionsRequest.toArray(new String[size]), 1);
             }
         }
@@ -329,7 +342,14 @@ public final class PermissionUtils {
             sInstance.onRequestPermissionsResult(this);
             finish();
         }
+
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            finish();
+            return true;
+        }
     }
+
 
     public interface OnRationaleListener {
 

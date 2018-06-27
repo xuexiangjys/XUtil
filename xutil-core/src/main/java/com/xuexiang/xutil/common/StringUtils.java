@@ -64,6 +64,83 @@ public final class StringUtils {
     }
 
     /**
+     * 判断字符串是否为 null 或全为空白字符
+     *
+     * @param s 待校验字符串
+     * @return {@code true}: null 或全空白字符<br> {@code false}: 不为 null 且不全空白字符
+     */
+    public static boolean isSpace(final String s) {
+        if (s == null) return true;
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断两字符串是否相等
+     *
+     * @param a 待校验字符串 a
+     * @param b 待校验字符串 b
+     * @return {@code true}: 相等<br>{@code false}: 不相等
+     */
+    public static boolean equals(final CharSequence a, final CharSequence b) {
+        if (a == b) return true;
+        int length;
+        if (a != null && b != null && (length = a.length()) == b.length()) {
+            if (a instanceof String && b instanceof String) {
+                return a.equals(b);
+            } else {
+                for (int i = 0; i < length; i++) {
+                    if (a.charAt(i) != b.charAt(i)) return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断两字符串忽略大小写是否相等
+     *
+     * @param a 待校验字符串 a
+     * @param b 待校验字符串 b
+     * @return {@code true}: 相等<br>{@code false}: 不相等
+     */
+    public static boolean equalsIgnoreCase(final String a, final String b) {
+        return a == null ? b == null : a.equalsIgnoreCase(b);
+    }
+
+    /**
+     * 获取String内容
+     * @param s
+     * @return
+     */
+    public static String getString(String s) {
+        return isEmptyTrim(s) ? "" : s;
+    }
+
+    /**
+     * 获取String内容，去除前后空格
+     * @param s
+     * @return
+     */
+    public static String getStringTrim(String s) {
+        return isEmptyTrim(s) ? "" : s.trim();
+    }
+
+    /**
+     * 获取String内容，去除所有空格
+     * @param s
+     * @return
+     */
+    public static String getStringNoSpace(String s) {
+        return isEmptyTrim(s) ? "" : replaceBlank(s);
+    }
+
+    /**
      * String转Int（防止崩溃）
      * @param value
      * @param defValue 默认值
@@ -154,15 +231,6 @@ public final class StringUtils {
     }
 
     /**
-     * 获取String内容
-     * @param s
-     * @return
-     */
-    public static String getString(String s) {
-        return isEmptyTrim(s) ? "" : s;
-    }
-
-    /**
      * 判断字符串是否是整数
      */
     public static boolean isInteger(String value) {
@@ -180,9 +248,7 @@ public final class StringUtils {
     public static boolean isDouble(String value) {
         try {
             Double.parseDouble(value);
-            if (value.contains("."))
-                return true;
-            return false;
+            return value.contains(".");
         } catch (NumberFormatException e) {
             return false;
         }
@@ -193,56 +259,6 @@ public final class StringUtils {
      */
     public static boolean isNumber(String value) {
         return isInteger(value) || isDouble(value);
-    }
-
-    /**
-     * 判断字符串是否为 null 或全为空白字符
-     *
-     * @param s 待校验字符串
-     * @return {@code true}: null 或全空白字符<br> {@code false}: 不为 null 且不全空白字符
-     */
-    public static boolean isSpace(final String s) {
-        if (s == null) return true;
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 判断两字符串是否相等
-     *
-     * @param a 待校验字符串 a
-     * @param b 待校验字符串 b
-     * @return {@code true}: 相等<br>{@code false}: 不相等
-     */
-    public static boolean equals(final CharSequence a, final CharSequence b) {
-        if (a == b) return true;
-        int length;
-        if (a != null && b != null && (length = a.length()) == b.length()) {
-            if (a instanceof String && b instanceof String) {
-                return a.equals(b);
-            } else {
-                for (int i = 0; i < length; i++) {
-                    if (a.charAt(i) != b.charAt(i)) return false;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 判断两字符串忽略大小写是否相等
-     *
-     * @param a 待校验字符串 a
-     * @param b 待校验字符串 b
-     * @return {@code true}: 相等<br>{@code false}: 不相等
-     */
-    public static boolean equalsIgnoreCase(final String a, final String b) {
-        return a == null ? b == null : a.equalsIgnoreCase(b);
     }
 
     /**

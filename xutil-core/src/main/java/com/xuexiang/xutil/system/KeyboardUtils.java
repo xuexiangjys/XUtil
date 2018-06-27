@@ -16,17 +16,21 @@
 
 package com.xuexiang.xutil.system;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.xuexiang.xutil.XUtil;
 
@@ -42,6 +46,9 @@ import java.lang.reflect.Field;
 public final class KeyboardUtils {
 
     private static int sContentViewInvisibleHeightPre;
+    private static OnGlobalLayoutListener onGlobalLayoutListener;
+    private static OnSoftInputChangedListener onSoftInputChangedListener;
+    private static int sContentViewInvisibleHeightPre5497;
 
     private KeyboardUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -63,7 +70,12 @@ public final class KeyboardUtils {
                 (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         View view = activity.getCurrentFocus();
-        if (view == null) view = new View(activity);
+        if (view == null) {
+            view = new View(activity);
+            view.setFocusable(true);
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+        }
         imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 
@@ -126,7 +138,7 @@ public final class KeyboardUtils {
      * @return {@code true}: 可见<br>{@code false}: 不可见
      */
     public static boolean isSoftInputVisible(final Activity activity) {
-        return getContentViewInvisibleHeight(activity) >= 200;
+        return isSoftInputVisible(activity, 200);
     }
 
     /**
@@ -142,10 +154,11 @@ public final class KeyboardUtils {
     }
 
     private static int getContentViewInvisibleHeight(final Activity activity) {
-        final View contentView = activity.findViewById(android.R.id.content);
-        Rect r = new Rect();
-        contentView.getWindowVisibleDisplayFrame(r);
-        return contentView.getBottom() - r.bottom;
+        final FrameLayout contentView = activity.findViewById(android.R.id.content);
+        final View contentViewChild = contentView.getChildAt(0);
+        final Rect outRect = new Rect();
+        contentViewChild.getWindowVisibleDisplayFrame(outRect);
+        return contentViewChild.getBottom() - outRect.bottom;
     }
 
     /**
@@ -156,20 +169,72 @@ public final class KeyboardUtils {
      */
     public static void registerSoftInputChangedListener(final Activity activity,
                                                         final OnSoftInputChangedListener listener) {
-        final View contentView = activity.findViewById(android.R.id.content);
+        final int flags = activity.getWindow().getAttributes().flags;
+        if ((flags & WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS) != 0) {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        final FrameLayout contentView = activity.findViewById(android.R.id.content);
         sContentViewInvisibleHeightPre = getContentViewInvisibleHeight(activity);
-        contentView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+        onSoftInputChangedListener = listener;
+        onGlobalLayoutListener = new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (listener != null) {
+                if (onSoftInputChangedListener != null) {
                     int height = getContentViewInvisibleHeight(activity);
                     if (sContentViewInvisibleHeightPre != height) {
-                        listener.onSoftInputChanged(height);
+                        onSoftInputChangedListener.onSoftInputChanged(height);
                         sContentViewInvisibleHeightPre = height;
                     }
                 }
             }
-        });
+        };
+        contentView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+
+    /**
+     * Register soft input changed listener.
+     *
+     * @param activity The activity.
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static void unregisterSoftInputChangedListener(final Activity activity) {
+        final View contentView = activity.findViewById(android.R.id.content);
+        contentView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+        onSoftInputChangedListener = null;
+        onGlobalLayoutListener = null;
+    }
+
+    /**
+     * Fix the bug of 5497 in Android.
+     *
+     * @param activity The activity.
+     */
+    public static void fixAndroidBug5497(final Activity activity) {
+        final int flags = activity.getWindow().getAttributes().flags;
+        if ((flags & WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS) != 0) {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        final FrameLayout contentView = activity.findViewById(android.R.id.content);
+        final View contentViewChild = contentView.getChildAt(0);
+        final int paddingBottom = contentViewChild.getPaddingBottom();
+        sContentViewInvisibleHeightPre5497 = getContentViewInvisibleHeight(activity);
+        contentView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int height = getContentViewInvisibleHeight(activity);
+                        if (sContentViewInvisibleHeightPre5497 != height) {
+                            contentViewChild.setPadding(
+                                    contentViewChild.getPaddingLeft(),
+                                    contentViewChild.getPaddingTop(),
+                                    contentViewChild.getPaddingRight(),
+                                    paddingBottom + height
+                            );
+                            sContentViewInvisibleHeightPre5497 = height;
+                        }
+                    }
+                });
     }
 
     /**
@@ -209,6 +274,7 @@ public final class KeyboardUtils {
      * 点击屏幕空白区域隐藏软键盘
      * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
      * <p>需重写 dispatchTouchEvent</p>
+     *
      * @param ev
      * @param activity 窗口
      * @return
@@ -226,6 +292,7 @@ public final class KeyboardUtils {
      * 点击屏幕空白区域隐藏软键盘
      * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
      * <p>需重写 dispatchTouchEvent</p>
+     *
      * @param ev
      * @param dialog 窗口
      * @return
@@ -243,6 +310,7 @@ public final class KeyboardUtils {
      * 点击屏幕空白区域隐藏软键盘
      * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
      * <p>需重写 dispatchTouchEvent</p>
+     *
      * @param ev
      * @param window 窗口
      * @return
@@ -260,6 +328,7 @@ public final class KeyboardUtils {
      * 点击屏幕空白区域隐藏软键盘
      * <p>根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘</p>
      * <p>需重写 dispatchTouchEvent</p>
+     *
      * @param ev
      * @param focusView 聚焦的控件
      * @return
@@ -274,16 +343,15 @@ public final class KeyboardUtils {
 
     /**
      * 禁用物理返回键
-     *
-     *  使用方法：
+     * <p>
+     * 使用方法：
      * <p>需重写 onKeyDown</p>
-     *  @Override
-     *  public boolean onKeyDown(int keyCode, KeyEvent event) {
-     *      return KeyboardUtils.onKeyDown(keyCode) && super.onKeyDown(keyCode, event) ;
-     *  }
      *
      * @param keyCode
      * @return
+     * @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+     * return KeyboardUtils.onDisableBackKeyDown(keyCode) && super.onKeyDown(keyCode, event) ;
+     * }
      */
     public static boolean onDisableBackKeyDown(int keyCode) {
         switch (keyCode) {
@@ -319,6 +387,7 @@ public final class KeyboardUtils {
     public interface OnSoftInputChangedListener {
         /**
          * 键盘输入法状态改变
+         *
          * @param height
          */
         void onSoftInputChanged(int height);
