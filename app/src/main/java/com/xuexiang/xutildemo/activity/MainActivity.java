@@ -16,12 +16,9 @@
 
 package com.xuexiang.xutildemo.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.xuexiang.xpage.base.XPageActivity;
-import com.xuexiang.xutil.app.IntentUtils;
-import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.fragment.MainFragment;
 
 public class MainActivity extends XPageActivity {
@@ -30,17 +27,5 @@ public class MainActivity extends XPageActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         openPage(MainFragment.class);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
-        }
-    }
-
-    protected void toast(String msg) {
-        ToastUtils.toast(msg);
     }
 }

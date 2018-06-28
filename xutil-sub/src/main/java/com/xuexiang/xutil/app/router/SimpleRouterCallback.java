@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.app.router;
 
-import android.app.Activity;
+import android.content.Context;
 
 /**
  * <pre>
@@ -28,17 +28,17 @@ import android.app.Activity;
 public class SimpleRouterCallback implements RouterCallback {
 
     @Override
-    public void onBefore(Activity from, Class<?> to) {
+    public void onBefore(Context from, Class<?> to) {
 
     }
 
     @Override
-    public void onNext(Activity from, Class<?> to) {
+    public void onNext(Context from, Class<?> to) {
 
     }
 
     @Override
-    public void onError(Activity from, Class<?> to, Throwable throwable) {
+    public void onError(Context from, Class<?> to, Throwable throwable) {
 
     }
 }

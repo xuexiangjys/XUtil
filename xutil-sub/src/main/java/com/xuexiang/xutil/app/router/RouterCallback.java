@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.app.router;
 
-import android.app.Activity;
+import android.content.Context;
 
 /**
  * <pre>
@@ -27,10 +27,10 @@ import android.app.Activity;
  */
 public interface RouterCallback {
 
-    void onBefore(Activity from, Class<?> to);
+    void onBefore(Context from, Class<?> to);
 
-    void onNext(Activity from, Class<?> to);
+    void onNext(Context from, Class<?> to);
 
-    void onError(Activity from, Class<?> to, Throwable throwable);
+    void onError(Context from, Class<?> to, Throwable throwable);
 
 }

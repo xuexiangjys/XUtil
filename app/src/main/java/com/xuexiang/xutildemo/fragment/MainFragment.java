@@ -16,6 +16,7 @@
 
 package com.xuexiang.xutildemo.fragment;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,15 +24,19 @@ import android.view.View;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
+import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.SocialShareUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.data.DateUtils;
+import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * 主界面
@@ -72,7 +77,7 @@ public class MainFragment extends XPageSimpleListFragment {
 //                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100);
 //                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
 //                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
-                Router.newIntent(getActivity()).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
+                Router.newIntent(this).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
 
                 Log.e("xuexiang", DateUtils.nDaysAfterToday(2, true));
                 Log.e("xuexiang", DateUtils.nDaysBeforeToday(2, true));
@@ -110,4 +115,13 @@ public class MainFragment extends XPageSimpleListFragment {
         }
         return true;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            ToastUtils.toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
+        }
+    }
+
 }

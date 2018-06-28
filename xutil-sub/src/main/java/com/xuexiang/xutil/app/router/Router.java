@@ -17,6 +17,8 @@
 package com.xuexiang.xutil.app.router;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,7 +40,11 @@ public class Router {
     public static final int ROUTER_ANIM_EXIT = Router.RES_NONE;
 
     private Intent intent;
-    private Activity from;
+    private Activity fromActivity;
+
+    private Fragment fromFragment;
+    private android.support.v4.app.Fragment fromFragmentV4;
+
     private Class<?> to;
     private Bundle data;
     private ActivityOptionsCompat options;
@@ -56,7 +62,19 @@ public class Router {
 
     public static Router newIntent(Activity context) {
         Router router = new Router();
-        router.from = context;
+        router.fromActivity = context;
+        return router;
+    }
+
+    public static Router newIntent(Fragment fragment) {
+        Router router = new Router();
+        router.fromFragment = fragment;
+        return router;
+    }
+
+    public static Router newIntent(android.support.v4.app.Fragment fragment) {
+        Router router = new Router();
+        router.fromFragmentV4 = fragment;
         return router;
     }
 
@@ -107,44 +125,67 @@ public class Router {
     }
 
     public void launch() {
+        Context context = getFromContext();
         try {
-            if (intent != null && from != null && to != null) {
-
+            if (intent != null && context != null && to != null) {
                 if (callback != null) {
-                    callback.onBefore(from, to);
+                    callback.onBefore(context, to);
                 }
-
-                intent.setClass(from, to);
-
+                intent.setClass(context, to);
                 intent.putExtras(getBundleData());
 
                 if (options == null) {
-                    if (requestCode < 0) {
-                        from.startActivity(intent);
-                    } else {
-                        from.startActivityForResult(intent, requestCode);
-                    }
-
+                    startActivity();
                     if (enterAnim > 0 && exitAnim > 0) {
-                        from.overridePendingTransition(enterAnim, exitAnim);
+                        ((Activity)context).overridePendingTransition(enterAnim, exitAnim);
                     }
                 } else {
                     if (requestCode < 0) {
-                        ActivityCompat.startActivity(from, intent, options.toBundle());
+                        ActivityCompat.startActivity(context, intent, options.toBundle());
                     } else {
-                        ActivityCompat.startActivityForResult(from, intent, requestCode, options.toBundle());
+                        ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, options.toBundle());
                     }
                 }
-
                 if (callback != null) {
-                    callback.onNext(from, to);
+                    callback.onNext(context, to);
                 }
             }
         } catch (Throwable throwable) {
             if (callback != null) {
-                callback.onError(from, to, throwable);
+                callback.onError(context, to, throwable);
             }
         }
+    }
+
+    private void startActivity() {
+        if (requestCode < 0) {
+            if (fromActivity != null) {
+                fromActivity.startActivity(intent);
+            } else if (fromFragment != null) {
+                fromFragment.startActivity(intent);
+            } else if (fromFragmentV4 != null) {
+                fromFragmentV4.startActivity(intent);
+            }
+        } else {
+            if (fromActivity != null) {
+                fromActivity.startActivityForResult(intent, requestCode);
+            } else if (fromFragment != null) {
+                fromFragment.startActivityForResult(intent, requestCode);
+            } else if (fromFragmentV4 != null) {
+                fromFragmentV4.startActivityForResult(intent, requestCode);
+            }
+        }
+    }
+
+    private Context getFromContext() {
+        if (fromActivity != null) {
+            return fromActivity;
+        } else if (fromFragment != null) {
+            return fromFragment.getActivity();
+        } else if (fromFragmentV4 != null) {
+            return fromFragmentV4.getContext();
+        }
+        return null;
     }
 
     private Bundle getBundleData() {
