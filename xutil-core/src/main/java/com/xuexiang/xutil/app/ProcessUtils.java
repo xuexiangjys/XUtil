@@ -16,7 +16,6 @@
 
 package com.xuexiang.xutil.app;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;

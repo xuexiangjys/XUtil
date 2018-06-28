@@ -452,38 +452,6 @@ public final class PackageUtils {
     }
 
     /**
-     * whether the app whost package's name is packageName is on the top of the
-     * stack
-     * <ul>
-     * <strong>Attentions:</strong>
-     * <li>You should add <strong>android.permission.GET_TASKS</strong> in
-     * manifest</li>
-     * </ul>
-     *
-     * @param context
-     * @param packageName
-     * @return if params error or task stack is null, return null, otherwise
-     * retun whether the app is on the top of stack
-     */
-    public static Boolean isTopActivity(Context context, String packageName) {
-        if (context == null || TextUtils.isEmpty(packageName)) {
-            return null;
-        }
-
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
-        if (tasksInfo == null || tasksInfo.size() < 1) {
-            return null;
-        }
-        try {
-            return packageName.equals(tasksInfo.get(0).topActivity.getPackageName());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
      * get app version code
      *
      * @param context

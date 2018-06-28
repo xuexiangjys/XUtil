@@ -19,6 +19,7 @@ package com.xuexiang.xutil.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -31,6 +32,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;
@@ -592,8 +594,7 @@ public final class AppUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isAppForeground() {
-        ActivityManager manager =
-                (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = getActivityManager();
         List<ActivityManager.RunningAppProcessInfo> info = manager.getRunningAppProcesses();
         if (info == null || info.size() == 0) return false;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
@@ -615,6 +616,39 @@ public final class AppUtils {
     @RequiresPermission(PACKAGE_USAGE_STATS)
     public static boolean isAppForeground(final String packageName) {
         return !isSpace(packageName) && packageName.equals(ProcessUtils.getForegroundProcessName());
+    }
+
+    /**
+     * 是否是TopActivity
+     * @param packageName
+     * @return
+     */
+    public static boolean isTopActivity(String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+        ComponentName topActivity = getTopActivityComponent();
+        return topActivity != null && packageName.equals(topActivity.getPackageName());
+    }
+
+    /**
+     * 获取TopActivity的组件
+     *
+     * @return
+     */
+    public static ComponentName getTopActivityComponent() {
+        ComponentName topActivity = null;
+        ActivityManager activityManager = getActivityManager();
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = activityManager
+                .getRunningTasks(1);
+        if (runningTaskInfos != null) {
+            topActivity = runningTaskInfos.get(0).topActivity;
+        }
+        return topActivity;
+    }
+
+    public static ActivityManager getActivityManager() {
+        return (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
     }
 
     /**
