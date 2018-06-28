@@ -21,6 +21,7 @@ import com.xuexiang.xutil.common.CollectionUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -42,6 +43,19 @@ public class CollectionTest {
         list.add("1234");
 
         System.out.println(list);
+
+        CollectionUtils.sort(list);
+
+        System.out.println("排序后的list：" + list);
+
+        CollectionUtils.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Integer.parseInt(o1) - Integer.parseInt(o2);
+            }
+        });
+
+        System.out.println("排序后的list：" + list);
 
         List<String> uniqueList = CollectionUtils.makeListUnique(list);
 

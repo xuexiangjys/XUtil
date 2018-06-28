@@ -19,7 +19,10 @@ package com.xuexiang.xutil.common;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -37,27 +40,74 @@ public final class CollectionUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+    //==========排序==========//
     /**
-     * 去除List集合里面重复的项
+     * 对List集合进行排序
      *
-     * @param list 需要去除重复的集合
-     * @return 无重复项的集合
+     * @param list 需要排序的list集合
      */
-    @NonNull
-    public static <E> ArrayList<E> makeListUnique(@NonNull final List<E> list) {
-        return new ArrayList<E>(new HashSet<E>(list));
+    public static <T extends Comparable<? super T>> List<T> sort(@NonNull final List<T> list) {
+        Collections.sort(list);
+        return list;
     }
 
     /**
-     * 去除List集合里面重复的项,顺序不变
+     * 对List集合进行排序
      *
-     * @param list 需要去除重复的集合
+     * @param list       需要排序的list集合
+     * @param comparator 比较器
+     */
+    public static <T extends Comparable<? super T>> List<T> sort(@NonNull final List<T> list, Comparator<? super T> comparator) {
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    /**
+     * 对数组进行排序
+     *
+     * @param array 需要排序的数组
+     */
+    public static <T extends Comparable<? super T>> T[] sort(@NonNull final T[] array) {
+        Arrays.sort(array);
+        return array;
+    }
+
+    /**
+     * 对数组进行排序
+     *
+     * @param array      需要排序的数组
+     * @param comparator 比较器
+     */
+    public static <T extends Comparable<? super T>> T[] sort(@NonNull final T[] array, Comparator<? super T> comparator) {
+        Arrays.sort(array, comparator);
+        return array;
+    }
+
+    //=========去除重复项===========//
+
+    /**
+     * 去除集合里面重复的项
+     *
+     * @param collection 需要去除重复的集合
      * @return 无重复项的集合
      */
     @NonNull
-    public static <E> ArrayList<E> makeListUniqueLinked(@NonNull final List<E> list) {
-        return new ArrayList<E>(new LinkedHashSet<E>(list));
+    public static <E> List<E> makeListUnique(@NonNull final Collection<E> collection) {
+        return new ArrayList<E>(new HashSet<E>(collection));
     }
+
+    /**
+     * 去除集合里面重复的项,顺序不变
+     *
+     * @param collection 需要去除重复的集合
+     * @return 无重复项的集合
+     */
+    @NonNull
+    public static <E> List<E> makeListUniqueLinked(@NonNull final Collection<E> collection) {
+        return new ArrayList<E>(new LinkedHashSet<E>(collection));
+    }
+
+    //==========搜索条目索引位置==========//
 
     /**
      * 搜索条目在集合数组中的索引位置
@@ -85,6 +135,8 @@ public final class CollectionUtils {
     public static <E> int arrayIndexOf(@NonNull final Collection<E> collection, @NonNull final E search) {
         return arrayIndexOf(collection.toArray(), search);
     }
+
+    //=========拼接集合===========//
 
     /**
      * 拼接集合为String
@@ -137,6 +189,8 @@ public final class CollectionUtils {
         }
         return out.toString();
     }
+
+    //=========删除、修改条目===========//
 
     /**
      * 删除第一个满足条件的条目
