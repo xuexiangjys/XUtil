@@ -298,7 +298,7 @@ public final class PathUtils {
     }
 
     /**
-     * 获取此应用在外置储存中的闹钟目录
+     * 获取此应用在外置储存中的下载目录
      * <pre>path: /storage/emulated/0/Android/data/package/files/Download</pre>
      *
      * @return 此应用在外置储存中的闹钟目录

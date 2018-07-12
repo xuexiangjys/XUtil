@@ -167,7 +167,7 @@ public final class AppUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     public static boolean installAppSilent(final String filePath) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return installAppSilentBelow24(filePath);
+            return installAppSilentBelow24(XUtil.getContext(), filePath);
         } else {
             return installAppSilentAbove24(XUtil.getContext().getPackageName(), filePath);
         }
@@ -182,21 +182,21 @@ public final class AppUtils {
      * @return {@code true}: 安装成功<br>{@code false}: 安装失败
      */
     @RequiresPermission(INSTALL_PACKAGES)
-    private static boolean installAppSilentBelow24(final String filePath) {
+    private static boolean installAppSilentBelow24(Context context, final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
         if (!FileUtils.isFileExists(file)) return false;
-        boolean isRoot = isDeviceRooted();
-        String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install " + filePath;
-        ShellUtils.CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
-        if (commandResult.successMsg != null
-                && commandResult.successMsg.toLowerCase().contains("success")) {
-            return true;
-        } else {
-            command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib64 pm install " + filePath;
-            commandResult = ShellUtils.execCommand(command, isRoot);
-            return commandResult.successMsg != null
-                    && commandResult.successMsg.toLowerCase().contains("success");
-        }
+
+        String pmParams = " -r " + getInstallLocationParams();
+
+        StringBuilder command = new StringBuilder()
+                .append("LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install ")
+                .append(pmParams).append(" ")
+                .append(filePath.replace(" ", "\\ "));
+        ShellUtils.CommandResult commandResult = ShellUtils.execCommand(
+                command.toString(), !isSystemApplication(context), true);
+        return commandResult.successMsg != null
+                && (commandResult.successMsg.contains("Success") || commandResult.successMsg
+                .contains("success"));
     }
 
     /**
@@ -943,6 +943,100 @@ public final class AppUtils {
             if (new File(location + su).exists()) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private static final int APP_INSTALL_AUTO = 0;
+    private static final int APP_INSTALL_INTERNAL = 1;
+    private static final int APP_INSTALL_EXTERNAL = 2;
+
+    /**
+     * get params for pm install location
+     *
+     * @return
+     */
+    private static String getInstallLocationParams() {
+        int location = getInstallLocation();
+        switch (location) {
+            case APP_INSTALL_INTERNAL:
+                return "-f";
+            case APP_INSTALL_EXTERNAL:
+                return "-s";
+        }
+        return "";
+    }
+
+    /**
+     * get system install location<br/>
+     * can be set by System Menu Setting->Storage->Prefered install location
+     *
+     * @return
+     */
+    private static int getInstallLocation() {
+        ShellUtils.CommandResult commandResult = ShellUtils.execCommand("LD_LIBRARY_PATH=/vendor/lib:/system/lib pm get-install-location", false, true);
+        if (commandResult.result == 0 && commandResult.successMsg != null && commandResult.successMsg.length() > 0) {
+            try {
+                int location = Integer.parseInt(commandResult.successMsg.substring(0, 1));
+                switch (location) {
+                    case APP_INSTALL_INTERNAL:
+                        return APP_INSTALL_INTERNAL;
+                    case APP_INSTALL_EXTERNAL:
+                        return APP_INSTALL_EXTERNAL;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Logger.e("pm get-install-location error");
+            }
+        }
+        return APP_INSTALL_AUTO;
+    }
+
+    /**
+     * whether context is system application
+     *
+     * @param context
+     * @return
+     */
+    private static boolean isSystemApplication(Context context) {
+        return context != null && isSystemApplication(context, context.getPackageName());
+
+    }
+
+    /**
+     * whether packageName is system application
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    private static boolean isSystemApplication(Context context, String packageName) {
+        return context != null && isSystemApplication(context.getPackageManager(), packageName);
+
+    }
+
+    /**
+     * whether packageName is system application
+     *
+     * @param packageManager
+     * @param packageName
+     * @return <ul>
+     * <li>if packageManager is null, return false</li>
+     * <li>if package name is null or is empty, return false</li>
+     * <li>if package name not exit, return false</li>
+     * <li>if package name exit, but not system app, return false</li>
+     * <li>else return true</li>
+     * </ul>
+     */
+    private static boolean isSystemApplication(PackageManager packageManager, String packageName) {
+        if (packageManager == null || packageName == null || packageName.length() == 0) {
+            return false;
+        }
+        try {
+            ApplicationInfo app = packageManager.getApplicationInfo(packageName, 0);
+            return (app != null && (app.flags & ApplicationInfo.FLAG_SYSTEM) > 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
         return false;
     }
