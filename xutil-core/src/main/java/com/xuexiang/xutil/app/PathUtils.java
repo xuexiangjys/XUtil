@@ -21,6 +21,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -438,6 +439,25 @@ public final class PathUtils {
         } else {
             return Uri.fromFile(file);
         }
+    }
+
+    /**
+     * Uri to file.
+     *
+     * @param uri        The uri.
+     * @param columnName The name of the target column.
+     *                   <p>e.g. {@link MediaStore.Images.Media#DATA}</p>
+     * @return file
+     */
+    public static File uri2File(final Uri uri, final String columnName) {
+        if (uri == null) return null;
+        CursorLoader cl = new CursorLoader(XUtil.getContext());
+        cl.setUri(uri);
+        cl.setProjection(new String[]{columnName});
+        Cursor cursor = cl.loadInBackground();
+        int columnIndex = cursor.getColumnIndexOrThrow(columnName);
+        cursor.moveToFirst();
+        return new File(cursor.getString(columnIndex));
     }
 
     /**
