@@ -39,9 +39,9 @@ allprojects {
 
 ```
 //基础功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.4'
+implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.5'
 //附加功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.4'
+implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.5'
 ```
 
 3.在Application进行初始化:
@@ -76,7 +76,7 @@ https://github.com/Blankj/AndroidUtilCode
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xutil-svg]: https://img.shields.io/badge/XUtil-v1.1.4-brightgreen.svg
+[xutil-svg]: https://img.shields.io/badge/XUtil-v1.1.5-brightgreen.svg
 [xutil]: https://github.com/xuexiangjys/XUtil
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
