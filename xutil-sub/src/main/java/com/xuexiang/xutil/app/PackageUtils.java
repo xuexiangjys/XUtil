@@ -30,6 +30,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.common.ShellUtils;
 import com.xuexiang.xutil.common.ShellUtils.CommandResult;
@@ -591,33 +592,71 @@ public final class PackageUtils {
      * @param context
      * @param packageName
      */
-    public static void openApp(Context context, String packageName) {
-        try {
-            PackageManager pm = context.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(packageName, 0);
-
-            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            resolveIntent.setPackage(pi.packageName);
-
-            List<ResolveInfo> apps = pm.queryIntentActivities(resolveIntent, 0);
-
-            ResolveInfo ri = apps.iterator().next();
-            if (ri != null) {
-                String packagename = ri.activityInfo.packageName;
-                String className = ri.activityInfo.name;
-
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-                ComponentName cn = new ComponentName(packagename, className);
-
-                intent.setComponent(cn);
-                context.startActivity(intent);
-            }
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
+    public static boolean openApp(Context context, String packageName) {
+        Intent intent = getAppOpenIntentByPackageName(context, packageName, true);
+        if (intent != null) {
+            context.startActivity(intent);
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * 切换app，如果app已打开就直接切换回去，不重新打开
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean switchApp(Context context, String packageName) {
+        Context pkgContext = getPackageContext(context, packageName);
+        Intent intent = getAppOpenIntentByPackageName(context, packageName, false);
+        if (pkgContext != null && intent != null) {
+            pkgContext.startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+
+    private static Intent getAppOpenIntentByPackageName(Context context, String packageName, boolean isReopen) {
+        // MainActivity完整名
+        String mainAct = null;
+        // 根据包名寻找MainActivity
+        PackageManager pkgMag = context.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        if (!isReopen) { //不重新打开
+            intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+
+        List<ResolveInfo> list = pkgMag.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
+        for (int i = 0; i < list.size(); i++) {
+            ResolveInfo info = list.get(i);
+            if (info.activityInfo.packageName.equals(packageName)) {
+                mainAct = info.activityInfo.name;
+                break;
+            }
+        }
+        if (TextUtils.isEmpty(mainAct)) {
+            return null;
+        }
+        intent.setComponent(new ComponentName(packageName, mainAct));
+        return intent;
+    }
+
+    private static Context getPackageContext(Context context, String packageName) {
+        Context pkgContext = null;
+        if (context.getPackageName().equals(packageName)) {
+            pkgContext = context;
+        } else {
+            // 创建第三方应用的上下文环境
+            try {
+                pkgContext = context.createPackageContext(packageName, Context.CONTEXT_IGNORE_SECURITY
+                        | Context.CONTEXT_INCLUDE_CODE);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return pkgContext;
     }
 
     /**
