@@ -34,6 +34,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.resource.ResUtils;
 
 /**
@@ -86,6 +87,39 @@ public final class ScreenUtils {
         }
         return point.y;
     }
+
+    /**
+     * 计算出设备的物理尺寸
+     *
+     * @param context
+     * @return
+     */
+    public static double getDevicePhysicalSize(Context context) {
+        int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+        float xdpi = context.getResources().getDisplayMetrics().xdpi;
+        float ydpi = context.getResources().getDisplayMetrics().ydpi;
+        int width = context.getResources().getDisplayMetrics().widthPixels;
+        int height = context.getResources().getDisplayMetrics().heightPixels;
+        double size = Math.sqrt(Math.pow(width / xdpi, 2) + Math.pow(height / ydpi, 2));
+        Logger.d("计算出来的物理尺寸:" + size + " , [width:" + width + ", height:" + height + ", xdpi:" + xdpi + ", ydpi:" + ydpi + ", densityDpi:" + densityDpi + "]");
+        return size;
+    }
+
+    /**
+     * 计算出设备屏幕密度
+     *
+     * @param context
+     * @param inch    设备的物理尺寸(英寸)
+     * @return
+     */
+    public static double getDensityDpi(Context context, float inch) {
+        int width = context.getResources().getDisplayMetrics().widthPixels;
+        int height = context.getResources().getDisplayMetrics().heightPixels;
+        double densityDpi = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / inch;
+        Logger.d("计算出来的屏幕密度:" + densityDpi + " , [width:" + width + ", height:" + height + "]");
+        return densityDpi;
+    }
+
 
     /**
      * 获取屏幕密度
