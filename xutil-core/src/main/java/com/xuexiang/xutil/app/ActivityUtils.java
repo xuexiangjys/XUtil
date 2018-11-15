@@ -56,7 +56,7 @@ public final class ActivityUtils {
                 Logger.e(e);
             }
         } else {
-            Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
+            Logger.e("[resolveActivity failed]: " + (intent.getComponent() != null ? intent.getComponent().getClassName() : intent.getAction()) + " do not register in manifest");
         }
         return false;
     }
@@ -82,7 +82,7 @@ public final class ActivityUtils {
                 Logger.e(e);
             }
         } else {
-            Logger.e("[resolveActivity failed]: " + intent.getComponent().getClassName() + " do not register in manifest");
+            Logger.e("[resolveActivity failed]: " + (intent.getComponent() != null ? intent.getComponent().getClassName() : intent.getAction()) + " do not register in manifest");
         }
         return false;
     }
