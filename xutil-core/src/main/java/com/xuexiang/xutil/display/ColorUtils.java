@@ -70,7 +70,7 @@ public final class ColorUtils {
      * @param alpha 取值为[0,1]，0表示全透明，1表示不透明
      * @return
      */
-    public static final int setColorAlpha(@ColorInt int color, float alpha) {
+    public static int setColorAlpha(@ColorInt int color, float alpha) {
         return color & 0x00ffffff | (int) (alpha * 255) << 24;
     }
 

@@ -38,7 +38,9 @@ import java.util.Map;
 public final class BroadcastUtils {
 
     //============================getBroadCastIntent=============================//
-
+    private BroadcastUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
     /**
      * 获取广播意图
      *
