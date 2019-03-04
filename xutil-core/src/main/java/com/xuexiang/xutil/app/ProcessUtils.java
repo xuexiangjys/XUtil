@@ -44,7 +44,7 @@ import static android.Manifest.permission.PACKAGE_USAGE_STATS;
 
 /**
  * <pre>
- *     desc   : 进程相关工具类
+ *     desc   : 进程相关工具类(6.0以后失效）
  *     author : xuexiang
  *     time   : 2018/4/28 上午12:35
  * </pre>
@@ -135,12 +135,9 @@ public final class ProcessUtils {
 
     /**
      * 获取后台服务进程
-     * <p>需添加权限
-     * {@code <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />}</p>
      *
      * @return 后台服务进程
      */
-    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static Set<String> getAllBackgroundProcesses() {
         ActivityManager am =
                 (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -153,6 +150,26 @@ public final class ProcessUtils {
             }
         }
         return set;
+    }
+
+    /**
+     * 判断进程是否在运行
+     *
+     * @return 后台服务进程
+     */
+    public static boolean isProcessRunning(@NonNull String processName) {
+        ActivityManager am =
+                (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) return false;
+        List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
+        if (info != null) {
+            for (ActivityManager.RunningAppProcessInfo aInfo : info) {
+                if (processName.equals(aInfo.processName)) {
+                    return  true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
