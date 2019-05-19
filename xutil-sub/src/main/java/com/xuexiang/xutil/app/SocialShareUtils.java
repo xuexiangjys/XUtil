@@ -16,6 +16,7 @@
 
 package com.xuexiang.xutil.app;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
@@ -87,8 +88,8 @@ public final class SocialShareUtils {
      *
      * @param filePaths 图片文件路径
      */
-    public static void shareMultiplePicture(String... filePaths) {
-        shareMultiplePicture(Arrays.asList(filePaths));
+    public static void shareMultiplePicture(Activity activity, String... filePaths) {
+        shareMultiplePicture(activity, Arrays.asList(filePaths));
     }
 
     /**
@@ -96,14 +97,12 @@ public final class SocialShareUtils {
      *
      * @param filePaths 图片文件路径
      */
-    public static void shareMultiplePicture(List<String> filePaths) {
+    public static void shareMultiplePicture(Activity activity, List<String> filePaths) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND_MULTIPLE);
         intent.setType(IntentUtils.DocumentType.IMAGE);
-
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, getMediaUrisFromPaths(filePaths));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (!ActivityUtils.startActivity(intent)) {
+        if (!ActivityUtils.startActivity(activity, intent)) {
             ToastUtils.toast("未找到可进行分享的应用！");
         }
     }
@@ -114,8 +113,8 @@ public final class SocialShareUtils {
      * @param description 分享描述
      * @param filePaths   图片文件路径
      */
-    public static void shareMultiplePictureToWeChatCircle(String description, String... filePaths) {
-        shareMultiplePictureToWeChatCircle(description, Arrays.asList(filePaths));
+    public static void shareMultiplePictureToWeChatCircle(Activity activity, String description, String... filePaths) {
+        shareMultiplePictureToWeChatCircle(activity, description, Arrays.asList(filePaths));
     }
 
     /**
@@ -124,7 +123,7 @@ public final class SocialShareUtils {
      * @param description 分享描述
      * @param filePaths   图片文件路径
      */
-    public static void shareMultiplePictureToWeChatCircle(String description, List<String> filePaths) {
+    public static void shareMultiplePictureToWeChatCircle(Activity activity, String description, List<String> filePaths) {
         Intent intent = new Intent();
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
         intent.setComponent(comp);
@@ -133,8 +132,7 @@ public final class SocialShareUtils {
 
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, getMediaUrisFromPaths(filePaths));
         intent.putExtra("Kdescription", description);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (!ActivityUtils.startActivity(intent)) {
+        if (!ActivityUtils.startActivity(activity, intent)) {
             ToastUtils.toast("当前设备未安装微信，无法进行微信分享！");
         }
     }
@@ -145,8 +143,8 @@ public final class SocialShareUtils {
      * @param description 分享描述
      * @param filePaths   图片文件路径
      */
-    public static void shareMultiplePictureToWeChatContacts(String description, String... filePaths) {
-        shareMultiplePictureToWeChatContacts(description, Arrays.asList(filePaths));
+    public static void shareMultiplePictureToWeChatContacts(Activity activity, String description, String... filePaths) {
+        shareMultiplePictureToWeChatContacts(activity, description, Arrays.asList(filePaths));
     }
 
     /**
@@ -155,7 +153,7 @@ public final class SocialShareUtils {
      * @param description 分享描述
      * @param filePaths   图片文件路径
      */
-    public static void shareMultiplePictureToWeChatContacts(String description, List<String> filePaths) {
+    public static void shareMultiplePictureToWeChatContacts(Activity activity, String description, List<String> filePaths) {
         Intent intent = new Intent();
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
         intent.setComponent(comp);
@@ -164,8 +162,7 @@ public final class SocialShareUtils {
 
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, getMediaUrisFromPaths(filePaths));
         intent.putExtra("Kdescription", description);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (!ActivityUtils.startActivity(intent)) {
+        if (!ActivityUtils.startActivity(activity, intent)) {
             ToastUtils.toast("当前设备未安装微信，无法进行微信分享！");
         }
     }
@@ -178,16 +175,16 @@ public final class SocialShareUtils {
      * @param imgUri    图片的资源路径
      * @param shareType 分享的类型
      */
-    public static void sharePicture(final Uri imgUri, ShareType shareType) {
+    public static void sharePicture(Activity activity, final Uri imgUri, ShareType shareType) {
         switch (shareType) {
             case DEFAULT:
-                sharePicture(imgUri);
+                sharePicture(activity, imgUri);
                 break;
             case WE_CHAT_CIRCLE:
-                sharePictureToWeChatCircle(imgUri);
+                sharePictureToWeChatCircle(activity, imgUri);
                 break;
             case WE_CHAT_CONTACTS:
-                sharePictureToWeChatContacts(imgUri);
+                sharePictureToWeChatContacts(activity, imgUri);
                 break;
             default:
                 break;
@@ -199,9 +196,9 @@ public final class SocialShareUtils {
      *
      * @param imgUri 图片的资源路径
      */
-    public static void sharePictureToWeChatCircle(final Uri imgUri) {
+    public static void sharePictureToWeChatCircle(Activity activity, final Uri imgUri) {
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
-        shareFile(comp, imgUri, IntentUtils.DocumentType.IMAGE, "分享图片");
+        shareFile(activity, comp, imgUri, IntentUtils.DocumentType.IMAGE, "分享图片");
     }
 
     /**
@@ -209,9 +206,9 @@ public final class SocialShareUtils {
      *
      * @param imgUri 图片的资源路径
      */
-    public static void sharePictureToWeChatContacts(final Uri imgUri) {
+    public static void sharePictureToWeChatContacts(Activity activity, final Uri imgUri) {
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
-        shareFile(comp, imgUri, IntentUtils.DocumentType.IMAGE, "分享图片");
+        shareFile(activity, comp, imgUri, IntentUtils.DocumentType.IMAGE, "分享图片");
     }
 
     /**
@@ -219,8 +216,8 @@ public final class SocialShareUtils {
      *
      * @param picture 分享图片文件
      */
-    public static void sharePicture(final File picture) {
-        shareFile(null, picture, IntentUtils.DocumentType.IMAGE, "分享图片");
+    public static void sharePicture(Activity activity, final File picture) {
+        shareFile(activity, null, picture, IntentUtils.DocumentType.IMAGE, "分享图片");
     }
 
     /**
@@ -228,8 +225,8 @@ public final class SocialShareUtils {
      *
      * @param pictureUri 分享图片的资源路径
      */
-    public static void sharePicture(final Uri pictureUri) {
-        shareFile(null, pictureUri, IntentUtils.DocumentType.IMAGE, "分享图片");
+    public static void sharePicture(Activity activity, final Uri pictureUri) {
+        shareFile(activity, null, pictureUri, IntentUtils.DocumentType.IMAGE, "分享图片");
     }
 
     //========================系统的分享视频==========================//
@@ -240,16 +237,16 @@ public final class SocialShareUtils {
      * @param videoUri  分享视频的资源路径
      * @param shareType 分享的类型
      */
-    public static void shareVideo(final Uri videoUri, ShareType shareType) {
+    public static void shareVideo(Activity activity, final Uri videoUri, ShareType shareType) {
         switch (shareType) {
             case DEFAULT:
-                shareVideo(videoUri);
+                shareVideo(activity, videoUri);
                 break;
             case WE_CHAT_CIRCLE:
                 ToastUtils.toast("微信朋友圈只支持分享图片！");
                 break;
             case WE_CHAT_CONTACTS:
-                shareVideoToWeChatContacts(videoUri);
+                shareVideoToWeChatContacts(activity, videoUri);
                 break;
             default:
                 break;
@@ -261,9 +258,9 @@ public final class SocialShareUtils {
      *
      * @param videoUri 分享视频的资源路径
      */
-    public static void shareVideoToWeChatContacts(final Uri videoUri) {
+    public static void shareVideoToWeChatContacts(Activity activity, final Uri videoUri) {
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
-        shareFile(comp, videoUri, IntentUtils.DocumentType.VIDEO, "分享视频");
+        shareFile(activity, comp, videoUri, IntentUtils.DocumentType.VIDEO, "分享视频");
     }
 
     /**
@@ -271,8 +268,8 @@ public final class SocialShareUtils {
      *
      * @param videoFile 分享视频的文件
      */
-    public static void shareVideo(final File videoFile) {
-        shareFile(null, videoFile, IntentUtils.DocumentType.VIDEO, "分享视频");
+    public static void shareVideo(Activity activity, final File videoFile) {
+        shareFile(activity, null, videoFile, IntentUtils.DocumentType.VIDEO, "分享视频");
     }
 
     /**
@@ -280,8 +277,8 @@ public final class SocialShareUtils {
      *
      * @param videoUri 分享视频的资源路径
      */
-    public static void shareVideo(final Uri videoUri) {
-        shareFile(null, videoUri, IntentUtils.DocumentType.VIDEO, "分享视频");
+    public static void shareVideo(Activity activity, final Uri videoUri) {
+        shareFile(activity, null, videoUri, IntentUtils.DocumentType.VIDEO, "分享视频");
     }
 
     //========================分享文件==========================//
@@ -292,16 +289,16 @@ public final class SocialShareUtils {
      * @param fileUri   分享的文件资源路径
      * @param shareType 分享的类型
      */
-    public static void shareFile(final Uri fileUri, ShareType shareType) {
+    public static void shareFile(Activity activity, final Uri fileUri, ShareType shareType) {
         switch (shareType) {
             case DEFAULT:
-                shareFile(fileUri);
+                shareFile(activity, fileUri);
                 break;
             case WE_CHAT_CIRCLE:
                 ToastUtils.toast("微信朋友圈只支持分享图片！");
                 break;
             case WE_CHAT_CONTACTS:
-                shareFileToWeChatContacts(fileUri);
+                shareFileToWeChatContacts(activity, fileUri);
                 break;
             default:
                 break;
@@ -313,9 +310,9 @@ public final class SocialShareUtils {
      *
      * @param fileUri 分享的文件资源路径
      */
-    public static void shareFileToWeChatContacts(final Uri fileUri) {
+    public static void shareFileToWeChatContacts(Activity activity, final Uri fileUri) {
         ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
-        shareFile(comp, fileUri, IntentUtils.DocumentType.ANY, "分享文件");
+        shareFile(activity, comp, fileUri, IntentUtils.DocumentType.ANY, "分享文件");
     }
 
 
@@ -324,8 +321,8 @@ public final class SocialShareUtils {
      *
      * @param fileUri 分享的文件资源路径
      */
-    public static void shareFile(final Uri fileUri) {
-        shareFile(null, fileUri, IntentUtils.DocumentType.ANY, "分享文件");
+    public static void shareFile(Activity activity, final Uri fileUri) {
+        shareFile(activity, null, fileUri, IntentUtils.DocumentType.ANY, "分享文件");
     }
 
     /**
@@ -336,8 +333,8 @@ public final class SocialShareUtils {
      * @param mimeTypeForFile    文件的类型
      * @param subjectTextToShare 分享的文字
      */
-    public static void shareFile(ComponentName componentName, @NonNull final File fileToShare, final @IntentUtils.DocumentType String mimeTypeForFile, final String subjectTextToShare) {
-        shareFile(componentName, PathUtils.getUriForFile(fileToShare), mimeTypeForFile, subjectTextToShare);
+    public static void shareFile(Activity activity, ComponentName componentName, @NonNull final File fileToShare, final @IntentUtils.DocumentType String mimeTypeForFile, final String subjectTextToShare) {
+        shareFile(activity, componentName, PathUtils.getUriForFile(fileToShare), mimeTypeForFile, subjectTextToShare);
     }
 
 
@@ -349,7 +346,7 @@ public final class SocialShareUtils {
      * @param mimeTypeForFile    文件的类型
      * @param subjectTextToShare 分享的文字
      */
-    public static void shareFile(ComponentName componentName, final Uri fileUri, @NonNull final @IntentUtils.DocumentType String mimeTypeForFile, @NonNull final String subjectTextToShare) {
+    public static void shareFile(Activity activity, ComponentName componentName, final Uri fileUri, @NonNull final @IntentUtils.DocumentType String mimeTypeForFile, @NonNull final String subjectTextToShare) {
         Intent intent = new Intent();
         if (componentName != null) {
             intent.setComponent(componentName);
@@ -358,8 +355,7 @@ public final class SocialShareUtils {
         intent.setType(mimeTypeForFile);
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTextToShare);
         intent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (!ActivityUtils.startActivity(intent)) {
+        if (!ActivityUtils.startActivity(activity, intent)) {
             ToastUtils.toast("未找到可进行分享的应用！");
         }
     }

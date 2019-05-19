@@ -158,7 +158,7 @@ public class SocialShareFragment extends XPageSimpleListFragment {
             switch (requestCode) {
                 case REQUEST_CODE_SHARE_PICTURE:
                     if (data != null) {
-                        SocialShareUtils.sharePicture(data.getData(), mShareType);
+                        SocialShareUtils.sharePicture(getActivity(), data.getData(), mShareType);
                     }
                     break;
                 case REQUEST_CODE_MULTIPLE_PICTURE:
@@ -166,13 +166,13 @@ public class SocialShareFragment extends XPageSimpleListFragment {
                         List<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                         switch (mShareType) {
                             case DEFAULT:
-                                SocialShareUtils.shareMultiplePicture(photos);
+                                SocialShareUtils.shareMultiplePicture(getActivity(), photos);
                                 break;
                             case WE_CHAT_CIRCLE:
-                                SocialShareUtils.shareMultiplePictureToWeChatCircle("单图片分享", photos);
+                                SocialShareUtils.shareMultiplePictureToWeChatCircle(getActivity(), "单图片分享", photos);
                                 break;
                             case WE_CHAT_CONTACTS:
-                                SocialShareUtils.shareMultiplePictureToWeChatContacts("单图片分享", photos);
+                                SocialShareUtils.shareMultiplePictureToWeChatContacts(getActivity(), "单图片分享", photos);
                                 break;
                             default:
                                 break;
@@ -181,12 +181,12 @@ public class SocialShareFragment extends XPageSimpleListFragment {
                     break;
                 case REQUEST_CODE_SHARE_VIDEO:
                     if (data != null) {
-                        SocialShareUtils.shareVideo(data.getData(), mShareType);
+                        SocialShareUtils.shareVideo(getActivity(), data.getData(), mShareType);
                     }
                     break;
                 case REQUEST_CODE_SHARE_FILE:
                     if (data != null) {
-                        SocialShareUtils.shareFile(data.getData(), mShareType);
+                        SocialShareUtils.shareFile(getActivity(), data.getData(), mShareType);
                     }
                     break;
                 default:

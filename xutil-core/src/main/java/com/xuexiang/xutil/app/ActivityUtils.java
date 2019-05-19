@@ -18,6 +18,7 @@ package com.xuexiang.xutil.app;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -55,6 +56,30 @@ public final class ActivityUtils {
         if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try {
                 XUtil.getContext().startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                Logger.e(e);
+            }
+        } else {
+            Logger.e("[resolveActivity failed]: " + (intent.getComponent() != null ? intent.getComponent().getClassName() : intent.getAction()) + " do not register in manifest");
+        }
+        return false;
+    }
+
+    /**
+     * 页面跳转
+     *
+     * @param intent
+     */
+    public static boolean startActivity(Context context, final Intent intent) {
+        if (intent == null) {
+            Logger.e("[startActivity failed]: intent == null");
+            return false;
+        }
+        if (AppUtils.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            try {
+                context.startActivity(intent);
                 return true;
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
