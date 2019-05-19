@@ -81,15 +81,15 @@ dependencies {
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler
     //XPage
-    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.2'
-    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.2'
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.5'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.5'
     //leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    implementation 'com.github.xuexiangjys:PhotoPicker:1.0.0'
-    implementation "com.github.bumptech.glide:glide:4.5.0"
+    implementation 'com.github.xuexiangjys:PhotoPicker:1.0.1'
+    implementation "com.github.bumptech.glide:glide:4.8.0"
 
 
 }
