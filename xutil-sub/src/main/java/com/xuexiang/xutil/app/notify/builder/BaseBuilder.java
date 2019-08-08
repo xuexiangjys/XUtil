@@ -17,9 +17,12 @@
 package com.xuexiang.xutil.app.notify.builder;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
@@ -38,6 +41,8 @@ import java.util.List;
  * </pre>
  */
 public class BaseBuilder {
+    private static final String DEFAULT_CHANNEL_ID_PREFIX = "xutil_channel_id_";
+    private static final String DEFAULT_CHANNEL_NAME_PREFIX = "xutil_channel_name_";
 
     private NotificationCompat.Builder mBuilder;
 
@@ -81,7 +86,14 @@ public class BaseBuilder {
      * 通知ID
      */
     private int mId;
-
+    /**
+     * 通知渠道ID
+     */
+    private String mChannelId;
+    /**
+     * 通知渠道ID
+     */
+    private String mChannelName;
     /**
      * 大图标
      */
@@ -142,7 +154,7 @@ public class BaseBuilder {
     /**
      * 是否显示是前台服务的通知
      */
-    private boolean mIsForGroundService = false;
+    private boolean mIsForeGroundService = false;
 
     /**
      * 通知的可见度
@@ -189,6 +201,16 @@ public class BaseBuilder {
 
     public <T extends BaseBuilder> T setId(int id) {
         mId = id;
+        return (T) this;
+    }
+
+    public <T extends BaseBuilder> T setChannelId(String channelId) {
+        mChannelId = channelId;
+        return (T) this;
+    }
+
+    public <T extends BaseBuilder> T setChannelName(String channelName) {
+        mChannelName = channelName;
         return (T) this;
     }
 
@@ -291,8 +313,8 @@ public class BaseBuilder {
         return (T) this;
     }
 
-    public <T extends BaseBuilder> T setForgroundService() {
-        mIsForGroundService = true;
+    public <T extends BaseBuilder> T setForegroundService() {
+        mIsForeGroundService = true;
         mIsOnGoing = true;
         return (T) this;
     }
@@ -318,7 +340,13 @@ public class BaseBuilder {
     public void build() {
         beforeBuild();
 
-        mBuilder = new NotificationCompat.Builder(XUtil.getContext());
+        if (mChannelId == null) {
+            mChannelId = DEFAULT_CHANNEL_ID_PREFIX + mId;
+        }
+        if (mChannelName == null) {
+            mChannelName = DEFAULT_CHANNEL_NAME_PREFIX + mId;
+        }
+        mBuilder = new NotificationCompat.Builder(XUtil.getContext(), mChannelId);
 
         if (mSmallIcon > 0) {
             mBuilder.setSmallIcon(mSmallIcon);// 设置顶部状态栏的小图标
@@ -352,18 +380,18 @@ public class BaseBuilder {
         mBuilder.setDeleteIntent(mDeleteIntent);
         mBuilder.setFullScreenIntent(mFullscreenIntent, true);
 
-		/*
+        /*
          * 将AutoCancel设为true后，当你点击通知栏的notification后，它会自动被取消消失,
-		 * 不设置的话点击消息后也不清除，但可以滑动删除
-		 */
+         * 不设置的话点击消息后也不清除，但可以滑动删除
+         */
         mBuilder.setAutoCancel(true);
 
         // 将Ongoing设为true 那么notification将不能滑动删除
         mBuilder.setOngoing(mIsOnGoing);
         /*
          * 从Android4.1开始，可以通过以下方法，设置notification的优先级，
-		 * 优先级越高的，通知排的越靠前，优先级低的，不会在手机最顶部的状态栏显示图标
-		 */
+         * 优先级越高的，通知排的越靠前，优先级低的，不会在手机最顶部的状态栏显示图标
+         */
         mBuilder.setPriority(mPriority);
 
         if (mIsSound) {
@@ -409,7 +437,6 @@ public class BaseBuilder {
     }
 
 
-
     protected void beforeBuild() {
 
     }
@@ -424,11 +451,16 @@ public class BaseBuilder {
     public void show() {
         build();
         Notification notification = mBuilder.build();
-        if (mIsForGroundService) {
+        if (mIsForeGroundService) {
             notification.flags = Notification.FLAG_FOREGROUND_SERVICE;
         }
         if (mIsPolling) {
             notification.flags |= Notification.FLAG_INSISTENT;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(mChannelId, mChannelName, NotificationManager.IMPORTANCE_HIGH);
+            NotificationUtils.getManager().createNotificationChannel(channel);
         }
 
         NotificationUtils.notify(mId, notification);

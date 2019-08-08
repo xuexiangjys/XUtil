@@ -18,41 +18,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xuexiang.xutil_sub">
 
+    <!-- 前台服务，兼容9.0 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- 悬浮窗 -->
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- APK安装 -->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
     <!-- 震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- 蓝牙设备需要的权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-
-    <!--network-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!--phone-->
+    <!--手机权限-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <!--flashlight-->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--闪光灯-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
 </manifest>

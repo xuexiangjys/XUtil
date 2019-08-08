@@ -96,7 +96,7 @@ public class NotifyFragment extends XPageSimpleListFragment {
                         .addMsg("11111111111")
                         .addMsg("22222222222")
                         .addMsg("33333333333")
-                        .setForgroundService()
+                        .setForegroundService()
                         .show();
                 break;
             case 4:

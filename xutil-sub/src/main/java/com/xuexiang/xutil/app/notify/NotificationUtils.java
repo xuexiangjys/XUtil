@@ -202,4 +202,11 @@ public final class NotificationUtils {
     public static NotificationManager getNotificationManager() {
         return (NotificationManager) XUtil.getContext().getSystemService(Activity.NOTIFICATION_SERVICE);
     }
+
+    public static NotificationManager getManager() {
+        if (sNotificationManager == null) {
+            sNotificationManager = getNotificationManager();
+        }
+        return sNotificationManager;
+    }
 }
