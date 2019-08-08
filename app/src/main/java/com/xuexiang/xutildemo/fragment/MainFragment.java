@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.xuexiang.xaop.annotation.Permission;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
@@ -29,22 +30,29 @@ import com.xuexiang.xutil.app.SocialShareUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.data.DateUtils;
+import com.xuexiang.xutil.system.CameraUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
+import static com.xuexiang.xaop.consts.PermissionConsts.CAMERA;
+import static com.xuexiang.xaop.consts.PermissionConsts.STORAGE;
+import static com.xuexiang.xutil.system.CameraUtils.REQUEST_CAMERA;
 
 /**
  * 主界面
+ *
  * @author xuexiang
  * @date 2018/4/14 上午1:42
  */
 @Page(name = "XUtil")
 public class MainFragment extends XPageSimpleListFragment {
+    private File mCameraFile;
     /**
      * 初始化例子
      *
@@ -56,6 +64,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("路由测试");
         lists.add("通知");
         lists.add("社会化分享");
+        lists.add("拍照");
         return lists;
     }
 
@@ -66,7 +75,7 @@ public class MainFragment extends XPageSimpleListFragment {
      */
     @Override
     protected void onItemClick(int position) {
-        switch(position) {
+        switch (position) {
             case 0:
 //                ActivityUtils.startActivity(TestRouterActivity.class, "param", "我是内容");
                 Map<String, Object> params = new HashMap<>();
@@ -78,19 +87,29 @@ public class MainFragment extends XPageSimpleListFragment {
 //                ActivityUtils.startActivityForResult(this, "com.xuexiang.TestRouter", 100, params);
 //                ActivityUtils.startActivityForResult(this, TestRouterActivity.class, 100, params);
                 Router.newIntent(this).to(TestRouterActivity.class).putExtraParam("param1", "我是参数1").requestCode(100).launch();
-
-                Log.e("xuexiang", DateUtils.nDaysAfterToday(2, true));
-                Log.e("xuexiang", DateUtils.nDaysBeforeToday(2, true));
                 break;
             case 1:
-               openPage(NotifyFragment.class);
+                openPage(NotifyFragment.class);
                 break;
             case 2:
                 openPage(SocialShareFragment.class);
-            break;
+                break;
+            case 3:
+                openCamera();
+                break;
             default:
                 break;
         }
+    }
+
+    @Permission({CAMERA})
+    private void openCamera() {
+        CameraUtils.startOpenCamera(this, new CameraUtils.OnOpenCameraListener() {
+            @Override
+            public void onOpenCamera(File cameraFile) {
+                mCameraFile = cameraFile;
+            }
+        });
     }
 
 
@@ -120,7 +139,11 @@ public class MainFragment extends XPageSimpleListFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            ToastUtils.toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
+            if (requestCode == REQUEST_CAMERA) {
+                ToastUtils.toast("文件路径:" + mCameraFile.getPath());
+            } else {
+                ToastUtils.toast("请求码：" + requestCode + "， 返回码：" + resultCode + "， 返回内容：" + IntentUtils.getStringExtra(data, "back"));
+            }
         }
     }
 

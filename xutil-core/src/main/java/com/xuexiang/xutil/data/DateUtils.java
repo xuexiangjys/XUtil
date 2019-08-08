@@ -290,6 +290,83 @@ public final class DateUtils {
     //===============================时间计算==================================//
 
     /**
+     * 获取日期当天的最早时间
+     *
+     * <p>例如：今天日期是 2018-4-24 12:34:58，结果就是 2018-4-24 00:00:00:000</p>
+     *
+     * @param date 日期
+     * @return
+     */
+    public static Date getStartOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取n天后最早的时间
+     *
+     * <p>例如：今天日期是 2018-4-24 12:34:58，n=2，结果就是 2018-4-26 00:00:00:000</p>
+     *
+     * @param date     日期
+     * @param dayAfter 几天后
+     * @return
+     */
+    public static Date getStartOfDay(Date date, int dayAfter) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, dayAfter);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取日期当天的最后时间
+     *
+     * <p>例如：今天日期是 2018-4-24 12:34:58，结果就是 2018-4-24 23:59:59:999</p>
+     *
+     * @param date 日期
+     * @return
+     */
+    public static Date getEndOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取日期当天的最后时间
+     *
+     * <p>例如：今天日期是 2018-4-24 12:34:58，n=2，结果就是 2018-4-26 23:59:59:999</p>
+     *
+     * @param date     日期
+     * @param dayAfter 几天后
+     * @return
+     */
+    public static Date getEndOfDay(Date date, int dayAfter) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, dayAfter);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
+
+
+    /**
      * 获取当前日期n天前的日期，返回String
      * <p>例如：今天是2018-4-24，day=2， return 2018-4-22</p>
      * <p>day=-2， return 2018-4-26</p>
@@ -715,11 +792,11 @@ public final class DateUtils {
         return cal.getTimeInMillis();
     }
 
-    private static final int YEAR = 365 * 24 * 60 * 60;// 年
-    private static final int MONTH = 30 * 24 * 60 * 60;// 月
-    private static final int DAY = 24 * 60 * 60;// 天
-    private static final int HOUR = 60 * 60;// 小时
-    private static final int MINUTE = 60;// 分钟
+    public static final int YEAR = 365 * 24 * 60 * 60;// 年
+    public static final int MONTH = 30 * 24 * 60 * 60;// 月
+    public static final int DAY = 24 * 60 * 60;// 天
+    public static final int HOUR = 60 * 60;// 小时
+    public static final int MINUTE = 60;// 分钟
 
     /**
      * 根据时间戳获取模糊型的时间描述。
