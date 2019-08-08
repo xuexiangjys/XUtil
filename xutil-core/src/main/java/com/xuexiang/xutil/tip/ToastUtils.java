@@ -112,8 +112,12 @@ public final class ToastUtils {
         Toast toast = new Toast(context);
         toast.setView(view);
         TextView tv = view.findViewById(R.id.tv_info);
-        tv.getBackground().setAlpha(100);
-        tv.setText(msg);
+        if (tv != null) {
+            tv.setText(msg);
+            if (tv.getBackground() != null) {
+                tv.getBackground().setAlpha(100);
+            }
+        }
         toast.setDuration(duration);
         return toast;
     }

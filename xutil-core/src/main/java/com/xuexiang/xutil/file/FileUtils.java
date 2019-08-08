@@ -55,8 +55,10 @@ public final class FileUtils {
     private static final String LINE_SEP = System.getProperty("line.separator");
 
     //================文件路径获取===================//
+
     /**
      * SD卡是否存在
+     *
      * @return
      */
     public static boolean isSDCardExist() {
@@ -128,6 +130,7 @@ public final class FileUtils {
     }
 
     //=================判断文件是否存在========================//
+
     /**
      * 获取文件的路径
      *
@@ -141,6 +144,7 @@ public final class FileUtils {
 
     /**
      * 获取文件目录的路径，自动补齐"/"
+     *
      * @param dirPath 目录路径
      * @return 自动补齐"/"的目录路径
      */
@@ -206,6 +210,7 @@ public final class FileUtils {
     }
 
     //======================文件判断=======================//
+
     /**
      * 判断是否是目录
      *
@@ -247,6 +252,7 @@ public final class FileUtils {
     }
 
     //=======================重命名文件=======================//
+
     /**
      * 重命名文件
      *
@@ -281,6 +287,7 @@ public final class FileUtils {
     }
 
     //=======================创建文件=======================//
+
     /**
      * 文件不存在就创建，存在则返回文件，不存在则创建并返回文件
      *
@@ -384,6 +391,7 @@ public final class FileUtils {
     }
 
     //=======================文件复制或移动=======================//
+
     /**
      * 复制或移动目录
      *
@@ -511,6 +519,7 @@ public final class FileUtils {
     }
 
     //=======================文件复制=======================//
+
     /**
      * 复制目录
      *
@@ -568,6 +577,7 @@ public final class FileUtils {
     }
 
     //=======================文件移动=======================//
+
     /**
      * 移动目录
      *
@@ -625,6 +635,7 @@ public final class FileUtils {
     }
 
     //=======================文件删除=======================//
+
     /**
      * 删除目录
      *
@@ -789,6 +800,7 @@ public final class FileUtils {
     }
 
     //=======================文件遍历、过滤、获取=======================//
+
     /**
      * 获取目录下所有文件
      * <p>不递归进子目录</p>
@@ -907,6 +919,7 @@ public final class FileUtils {
     }
 
     //=======================文件信息（修改时间、大小、编码格式等）=======================//
+
     /**
      * 获取文件最后修改的毫秒时间戳
      *
@@ -1265,7 +1278,7 @@ public final class FileUtils {
      * <p>例如:aa/bb/cc.png  --> aa/bb/cc </p>
      *
      * @param filePath 文件路径
-     * @return 不带拓展名的文件名(带路径）
+     * @return 不带拓展名的文件名(带路径 ）
      */
     public static String getFileNameNoExtensionWithPath(final String filePath) {
         if (isSpace(filePath)) return filePath;
@@ -1353,7 +1366,7 @@ public final class FileUtils {
      * @return 合适内存大小
      */
     @SuppressLint("DefaultLocale")
-    private static String byte2FitMemorySize(final long byteNum) {
+    public static String byte2FitMemorySize(final long byteNum) {
         if (byteNum < 0) {
             return "shouldn't be less than zero!";
         } else if (byteNum < 1024) {
@@ -1364,6 +1377,29 @@ public final class FileUtils {
             return String.format("%.3fMB", (double) byteNum / 1048576);
         } else {
             return String.format("%.3fGB", (double) byteNum / 1073741824);
+        }
+    }
+
+    /**
+     * 字节数转合适内存大小
+     * <p>保留 N 位小数</p>
+     *
+     * @param byteNum 字节数
+     * @param length  小数位数
+     * @return
+     */
+    @SuppressLint("DefaultLocale")
+    public static String byte2FitMemorySize(final long byteNum, int length) {
+        if (byteNum < 0) {
+            return "shouldn't be less than zero!";
+        } else if (byteNum < 1024) {
+            return String.format("%." + length + "fB", (double) byteNum);
+        } else if (byteNum < 1048576) {
+            return String.format("%." + length + "fKB", (double) byteNum / 1024);
+        } else if (byteNum < 1073741824) {
+            return String.format("%." + length + "fMB", (double) byteNum / 1048576);
+        } else {
+            return String.format("%." + length + "fGB", (double) byteNum / 1073741824);
         }
     }
 

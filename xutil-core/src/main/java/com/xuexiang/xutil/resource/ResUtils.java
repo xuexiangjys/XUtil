@@ -18,18 +18,19 @@ package com.xuexiang.xutil.resource;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ArrayRes;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.StyleableRes;
+import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -78,7 +79,10 @@ public final class ResUtils {
      * @return
      */
     public static Drawable getDrawable(@DrawableRes int resId) {
-        return getDrawable(XUtil.getContext(), resId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return XUtil.getContext().getDrawable(resId);
+        }
+        return getResources().getDrawable(resId);
     }
 
     /**
@@ -88,11 +92,46 @@ public final class ResUtils {
      * @return
      */
     public static Drawable getDrawable(Context context, @DrawableRes int resId) {
-        return ContextCompat.getDrawable(context, resId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getDrawable(resId);
+        }
+        return context.getResources().getDrawable(resId);
     }
 
     /**
-     * 获取dimes值
+     * 获取svg资源图片
+     * @param context
+     * @param resId
+     * @return
+     */
+    public static Drawable getVectorDrawable(Context context, @DrawableRes int resId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getDrawable(resId);
+        }
+        return AppCompatResources.getDrawable(context, resId);
+    }
+
+    /**
+     * 获取Drawable属性（兼容VectorDrawable）
+     * @param context
+     * @param typedArray
+     * @param index
+     * @return
+     */
+    public static Drawable getDrawableAttrRes(Context context, TypedArray typedArray, @StyleableRes int index) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return typedArray.getDrawable(index);
+        } else {
+            int resourceId = typedArray.getResourceId(index, -1);
+            if (resourceId != -1) {
+                return AppCompatResources.getDrawable(context, resourceId);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取dimes值，返回的是精确的值
      *
      * @param resId
      * @return
@@ -117,17 +156,12 @@ public final class ResUtils {
      * @param resId
      * @return
      */
-    public static ColorStateList getColorStateList(@ColorRes int resId) {
+    public static ColorStateList getColors(@ColorRes int resId) {
         return getResources().getColorStateList(resId);
     }
 
-    @ColorInt
-    public static int getColor(Context context, @ColorRes int colorId) {
-        return ContextCompat.getColor(context, colorId);
-    }
-
     /**
-     * 获取dimes值【px不会乘以denstiy.】
+     * 获取dimes值，返回的是【去余取整】的值
      *
      * @param resId
      * @return
@@ -137,7 +171,7 @@ public final class ResUtils {
     }
 
     /**
-     * 获取dimes值【getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.】
+     * 获取dimes值，返回的是【4舍5入】的值
      *
      * @param resId
      * @return

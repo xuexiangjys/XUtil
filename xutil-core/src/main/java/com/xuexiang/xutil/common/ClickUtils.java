@@ -16,6 +16,7 @@
 
 package com.xuexiang.xutil.common;
 
+import android.os.SystemClock;
 import android.view.View;
 
 import com.xuexiang.xutil.XUtil;
@@ -25,11 +26,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * <pre>
- *     desc   :	快速点击工具类
- *     author : xuexiang
- *     time   : 2018/4/23 下午2:45
- * </pre>
+ * 快速点击工具类
+ *
+ * @author xuexiang
+ * @since 2019-08-08 16:35
  */
 public final class ClickUtils {
 
@@ -80,6 +80,40 @@ public final class ClickUtils {
         }
     }
 
+    //====================多次点击==========================//
+
+    private final static int COUNTS = 5;// 点击次数
+    private final static long DURATION = 1000;// 规定有效时间
+    private static long[] mHits = new long[COUNTS];
+
+    /**
+     * 连续点击
+     *
+     * @param listener
+     */
+    public static void doClick(OnContinuousClickListener listener) {
+        //每次点击时，数组向前移动一位
+        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+        //为数组最后一位赋值
+        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+        if (mHits[0] >= (SystemClock.uptimeMillis() - DURATION)) {
+            mHits = new long[COUNTS];//重新初始化数组
+            if (listener != null) {
+                listener.onContinuousClick();
+            }
+        }
+    }
+
+    /**
+     * 多次点击的监听
+     */
+    public interface OnContinuousClickListener {
+        /**
+         * 多次点击
+         */
+        void onContinuousClick();
+    }
+
     /**
      * 双击退出函数
      */
@@ -89,18 +123,51 @@ public final class ClickUtils {
      * 双击返回退出程序
      */
     public static void exitBy2Click() {
+        exitBy2Click(2000, null);
+    }
+
+    /**
+     * 双击返回退出程序
+     *
+     * @param intervalMillis 按键间隔
+     * @param listener       退出监听
+     */
+    public static void exitBy2Click(long intervalMillis, OnClick2ExitListener listener) {
         if (!sIsExit) {
             sIsExit = true; // 准备退出
-            ToastUtils.toast("再按一次退出程序");
+            if (listener != null) {
+                listener.onRetry();
+            } else {
+                ToastUtils.toast("再按一次退出程序");
+            }
             Timer tExit = new Timer();
             tExit.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     sIsExit = false; // 取消退出
                 }
-            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+            }, intervalMillis); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
         } else {
-            XUtil.get().exitApp();
+            if (listener != null) {
+                listener.onExit();
+            } else {
+                XUtil.get().exitApp();
+            }
         }
+    }
+
+    /**
+     * 点击返回退出监听
+     */
+    public interface OnClick2ExitListener {
+        /**
+         * 再点击一次
+         */
+        void onRetry();
+
+        /**
+         * 退出
+         */
+        void onExit();
     }
 }

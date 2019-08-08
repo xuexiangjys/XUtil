@@ -115,6 +115,7 @@ public final class StringUtils {
 
     /**
      * 获取String内容
+     *
      * @param s
      * @return
      */
@@ -124,6 +125,7 @@ public final class StringUtils {
 
     /**
      * 获取String内容，去除前后空格
+     *
      * @param s
      * @return
      */
@@ -133,6 +135,7 @@ public final class StringUtils {
 
     /**
      * 获取String内容，去除所有空格
+     *
      * @param s
      * @return
      */
@@ -142,6 +145,17 @@ public final class StringUtils {
 
     /**
      * String转Int（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static int toInt(final String value) {
+        return toInt(value, 0);
+    }
+
+    /**
+     * String转Int（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -157,6 +171,17 @@ public final class StringUtils {
 
     /**
      * String转Float（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static float toFloat(final String value) {
+        return toFloat(value, 0);
+    }
+
+    /**
+     * String转Float（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -170,8 +195,20 @@ public final class StringUtils {
         return defValue;
     }
 
+
     /**
      * String转Short（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static short toShort(final String value) {
+        return toShort(value, (short) 0);
+    }
+
+    /**
+     * String转Short（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -187,6 +224,17 @@ public final class StringUtils {
 
     /**
      * String转Long（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static long toLong(final String value) {
+        return toLong(value, 0);
+    }
+
+    /**
+     * String转Long（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -202,6 +250,18 @@ public final class StringUtils {
 
     /**
      * String转Double（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static double toDouble(final String value) {
+        return toDouble(value, 0);
+    }
+
+
+    /**
+     * String转Double（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -217,6 +277,17 @@ public final class StringUtils {
 
     /**
      * String转Boolean（防止崩溃）
+     *
+     * @param value
+     * @return
+     */
+    public static boolean toBoolean(final String value) {
+        return toBoolean(value, false);
+    }
+
+    /**
+     * String转Boolean（防止崩溃）
+     *
      * @param value
      * @param defValue 默认值
      * @return
@@ -339,6 +410,7 @@ public final class StringUtils {
 
     /**
      * 字符串连接，将参数列表通过分隔符拼接为一个字符串
+     *
      * @param split
      * @param more
      * @return 回拼接后的字符串
@@ -366,6 +438,7 @@ public final class StringUtils {
 
     /**
      * 将对象转化为String
+     *
      * @param object
      * @return
      */
@@ -442,6 +515,7 @@ public final class StringUtils {
 
     /**
      * 过滤字符串中的空格
+     *
      * @param str
      * @return
      */
@@ -459,14 +533,13 @@ public final class StringUtils {
      * 根据分隔符将String转换为List
      *
      * <p>例如:aa,bb,cc --> {"aa","bb","cc"}</p>
+     *
      * @param str
-     * @param separator
-     *            分隔符
+     * @param separator 分隔符
      * @return
      */
     public static List<String> stringToList(final String str, final String separator) {
-        List<String> list = Arrays.asList(str.split(separator));
-        return list;
+        return Arrays.asList(str.split(separator));
     }
 
     /**
@@ -477,6 +550,10 @@ public final class StringUtils {
      * @return
      */
     public static String listToString(final List<String> list, final String separator) {
+        if (list == null || list.size() == 0) {
+            return EMPTY;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             sb.append(list.get(i)).append(separator);
@@ -486,6 +563,7 @@ public final class StringUtils {
 
     /**
      * 获取对象的类名
+     *
      * @param object
      * @return
      */
@@ -495,6 +573,7 @@ public final class StringUtils {
 
     /**
      * 获取对象的类名
+     *
      * @param object
      * @return
      */
@@ -535,6 +614,7 @@ public final class StringUtils {
 
     /**
      * 比较两个版本号
+     *
      * @param versionName1
      * @param versionName2
      * @return [> 0 versionName1 > versionName2] [= 0 versionName1 = versionName2]  [< 0 versionName1 < versionName2]

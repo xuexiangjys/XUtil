@@ -87,7 +87,7 @@ public final class ColorUtils {
     /**
      * 加深颜色
      *
-     * @param color  需要加深的颜色
+     * @param color 需要加深的颜色
      */
     public static int darker(int color) {
         return darker(color, 0.8F);
@@ -218,7 +218,7 @@ public final class ColorUtils {
      * @return
      */
     public static int getEnableColor(@ColorRes int colorResId) {
-        return ResUtils.getColorStateList(colorResId).getColorForState(new int[]{ENABLE_ATTR}, -1);
+        return ResUtils.getColors(colorResId).getColorForState(new int[]{ENABLE_ATTR}, -1);
     }
 
     /**
@@ -228,7 +228,7 @@ public final class ColorUtils {
      * @return
      */
     public static int getDisableColor(@ColorRes int colorResId) {
-        return ResUtils.getColorStateList(colorResId).getColorForState(new int[]{-ENABLE_ATTR}, -1);
+        return ResUtils.getColors(colorResId).getColorForState(new int[]{-ENABLE_ATTR}, -1);
     }
 
     /**
@@ -238,7 +238,7 @@ public final class ColorUtils {
      * @return
      */
     public static int getDefaultColor(@ColorRes int colorResId) {
-        return ResUtils.getColorStateList(colorResId).getDefaultColor();
+        return ResUtils.getColors(colorResId).getDefaultColor();
     }
 
     /**

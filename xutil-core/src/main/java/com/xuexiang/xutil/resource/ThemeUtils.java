@@ -193,19 +193,38 @@ public final class ThemeUtils {
         return (String) v.string;
     }
 
-    public static int getColorFromAttrRes(Context context, int attrRes, int defaultValue) {
+    public static float resolveFloat(Context context, int attrRes) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue.getFloat();
+    }
+
+    public static int resolveInt(Context context, int attrRes) {
+        return resolveInt(context, attrRes, 0);
+    }
+
+    public static int resolveInt(Context context, int attrRes, int defaultValue) {
         TypedArray a = context.obtainStyledAttributes(new int[]{attrRes});
         try {
-            return a.getColor(0, defaultValue);
+            return a.getInt(0, defaultValue);
         } finally {
             a.recycle();
         }
     }
 
-    public static float getFloatFromAttrRes(Context context, int attrRes, float defaultValue) {
+    public static float resolveFloat(Context context, int attrRes, float defaultValue) {
         TypedArray a = context.obtainStyledAttributes(new int[]{attrRes});
         try {
             return a.getFloat(0, defaultValue);
+        } finally {
+            a.recycle();
+        }
+    }
+
+    public static int getColorFromAttrRes(Context context, int attrRes, int defaultValue) {
+        TypedArray a = context.obtainStyledAttributes(new int[]{attrRes});
+        try {
+            return a.getColor(0, defaultValue);
         } finally {
             a.recycle();
         }
