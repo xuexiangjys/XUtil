@@ -469,7 +469,6 @@ public final class PathUtils {
      * @param uri
      * @return
      */
-    @SuppressLint("MissingPermission")
     @RequiresPermission(READ_EXTERNAL_STORAGE)
     public static String getFilePathByUri(Uri uri) {
         return getFilePathByUri(XUtil.getContext(), uri);
@@ -482,19 +481,19 @@ public final class PathUtils {
      * @param uri
      * @return
      */
-    @SuppressLint("MissingPermission")
     @RequiresPermission(READ_EXTERNAL_STORAGE)
     public static String getFilePathByUri(Context context, Uri uri) {
         if (context == null || uri == null) return null;
 
         String path = null;
+        String scheme = uri.getScheme();
         // 以 file:// 开头的
-        if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
+        if (ContentResolver.SCHEME_FILE.equals(scheme)) {
             path = uri.getPath();
             return path;
         }
         // 以 content:// 开头的，比如 content://media/extenral/images/media/17766
-        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+        if (ContentResolver.SCHEME_CONTENT.equals(scheme) && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -507,8 +506,9 @@ public final class PathUtils {
             }
             return path;
         }
+
         // 4.4及之后的 是以 content:// 开头的，比如 content://com.android.providers.media.documents/document/image%3A235700
-        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
+        if (ContentResolver.SCHEME_CONTENT.equals(scheme) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
             if (isExternalStorageDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
@@ -537,45 +537,68 @@ public final class PathUtils {
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         } // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+        else if ("content".equalsIgnoreCase(scheme)) {
             // Return the remote address
-            if (isGooglePhotosUri(uri))
+            if (isGooglePhotosUri(uri)) {
                 return uri.getLastPathSegment();
+            } else if (isHuaWeiUri(uri)) {
+                String uriPath = uri.getPath();
+                //content://com.huawei.hidisk.fileprovider/root/storage/emulated/0/Android/data/com.xxx.xxx/
+                if (uriPath != null && uriPath.startsWith("/root")) {
+                    return uriPath.replaceAll("/root", "");
+                }
+            }
             return getDataColumn(context, uri, null, null);
         }
         // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+        else if ("file".equalsIgnoreCase(scheme)) {
             return uri.getPath();
         }
         return null;
     }
 
-    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {column};
+        String column = MediaStore.Images.Media.DATA;
+        String[] projection = {column};
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
+                int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
             }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
         return null;
     }
 
-    private static boolean isExternalStorageDocument(Uri uri) {
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    private static boolean isDownloadsDocument(Uri uri) {
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    private static boolean isMediaDocument(Uri uri) {
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
@@ -585,6 +608,16 @@ public final class PathUtils {
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    /**
+     * content://com.huawei.hidisk.fileprovider/root/storage/emulated/0/Android/data/com.xxx.xxx/
+     *
+     * @param uri
+     * @return
+     */
+    public static boolean isHuaWeiUri(Uri uri) {
+        return "com.huawei.hidisk.fileprovider".equals(uri.getAuthority());
     }
 
 }
