@@ -1,6 +1,9 @@
 # XUtil
 
-[![xutil][xutil-svg]][xutil] [![api][apisvg]][api]
+[![](https://jitpack.io/v/xuexiangjys/XUtil.svg)](https://jitpack.io/#xuexiangjys/XUtil)
+[![api][apisvg]][api]
+[![I](https://img.shields.io/github/issues/xuexiangjys/XUtil.svg)](https://github.com/xuexiangjys/XUtil/issues)
+[![Star](https://img.shields.io/github/stars/xuexiangjys/XUtil.svg)](https://github.com/xuexiangjys/XUtil)
 
 一个方便实用的Android工具类库
 
@@ -38,9 +41,9 @@ allprojects {
 
 ```
 //基础功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.5'
+implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.6'
 //附加功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.5'
+implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.6'
 ```
 
 3.在Application进行初始化:
@@ -67,7 +70,5 @@ https://github.com/Blankj/AndroidUtilCode
 
 [![](https://img.shields.io/badge/点击一键加入QQ群-602082750-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=9922861ef85c19f1575aecea0e8680f60d9386080a97ed310c971ae074998887)
 
-[xutil-svg]: https://img.shields.io/badge/XUtil-v1.1.5-brightgreen.svg
-[xutil]: https://github.com/xuexiangjys/XUtil
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
