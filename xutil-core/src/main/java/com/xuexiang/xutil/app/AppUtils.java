@@ -19,6 +19,8 @@ package com.xuexiang.xutil.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -322,6 +324,18 @@ public final class AppUtils {
     }
 
     /**
+     * 重启app
+     */
+    private void rebootApp() {
+        Intent intent = IntentUtils.getLaunchAppIntent(XUtil.getContext().getPackageName());
+        PendingIntent restartIntent = PendingIntent.getActivity(XUtil.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager mgr = (AlarmManager) XUtil.getContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
+        //退出程序
+        exitApp();
+    }
+
+    /**
      * 获取 App 包名
      *
      * @return App 包名
@@ -620,6 +634,7 @@ public final class AppUtils {
 
     /**
      * 是否是TopActivity
+     *
      * @param packageName
      * @return
      */
