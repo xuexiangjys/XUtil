@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.xuexiang.xutil.app.ActivityLifecycleHelper;
-import com.xuexiang.xutil.app.ProcessUtils;
 import com.xuexiang.xutil.app.ServiceUtils;
 import com.xuexiang.xutil.common.logger.Logger;
 
@@ -155,7 +154,6 @@ public final class XUtil {
             mActivityLifecycleHelper.exit();
         }
         ServiceUtils.stopAllRunningService(getContext());
-        ProcessUtils.killBackgroundProcesses(getContext().getPackageName());
         System.exit(0);
     }
 

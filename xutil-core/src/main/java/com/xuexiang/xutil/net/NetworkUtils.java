@@ -309,28 +309,6 @@ public final class NetworkUtils {
     }
 
     /**
-     * 打开或关闭移动数据
-     * <p>需系统应用 需添加权限
-     * {@code <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />}</p>
-     *
-     * @param enabled {@code true}: 打开<br>{@code false}: 关闭
-     */
-    public static void setMobileDataEnabled(final boolean enabled) {
-        try {
-            TelephonyManager tm =
-                    (TelephonyManager) XUtil.getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null) return;
-            Method setMobileDataEnabledMethod =
-                    tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
-            if (null != setMobileDataEnabledMethod) {
-                setMobileDataEnabledMethod.invoke(tm, enabled);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * 获取WifiManager
      * @return
      */

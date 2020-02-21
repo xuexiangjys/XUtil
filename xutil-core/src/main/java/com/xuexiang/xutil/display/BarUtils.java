@@ -479,40 +479,6 @@ public final class BarUtils {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // notification bar
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 设置通知栏是否可见
-     * <p>需添加权限
-     * {@code <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />}</p>
-     *
-     * @param isVisible {@code true}: 可见<br>{@code false}: 关闭
-     */
-    public static void setNotificationBarVisibility(final boolean isVisible) {
-        String methodName;
-        if (isVisible) {
-            methodName = (Build.VERSION.SDK_INT <= 16) ? "expand" : "expandNotificationsPanel";
-        } else {
-            methodName = (Build.VERSION.SDK_INT <= 16) ? "collapse" : "collapsePanels";
-        }
-        invokePanels(methodName);
-    }
-
-    private static void invokePanels(final String methodName) {
-        try {
-            @SuppressLint("WrongConstant")
-            Object service = XUtil.getContext().getSystemService("statusbar");
-            @SuppressLint("PrivateApi")
-            Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
-            Method expand = statusBarManager.getMethod(methodName);
-            expand.invoke(service);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
     // navigation bar
     ///////////////////////////////////////////////////////////////////////////
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 xuexiangjys(xuexiangjys@163.com)
+ * Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package com.xuexiang.xutil.app;
@@ -246,10 +247,10 @@ public final class ProcessUtils {
         List<ActivityManager.RunningServiceInfo> serviceList = am.getRunningServices(100);
         if (serviceList != null)
             for (ActivityManager.RunningServiceInfo service : serviceList) {
-                if (service.pid == android.os.Process.myPid())
+                if (service.pid == Process.myPid())
                     continue;
                 try {
-                    android.os.Process.killProcess(service.pid);
+                    Process.killProcess(service.pid);
                     count++;
                 } catch (Exception e) {
                     e.getStackTrace();

@@ -18,6 +18,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xuexiang.xutil_sub">
 
+    <!-- 蓝牙权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!--定位权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!--锁屏权限-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 前台服务，兼容9.0 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- 悬浮窗 -->
@@ -36,11 +45,30 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--修改手机状态-->
+    <uses-permission
+        android:name="android.permission.MODIFY_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
     <!--闪光灯-->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
+
+    <!--进程杀死-->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <!--状态栏权限-->
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+
+    <!-- 在SDCard中创建与删除文件权限 -->
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <!--修改系统设置-->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
 
 </manifest>
