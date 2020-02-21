@@ -20,10 +20,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.app.ActivityLifecycleHelper;
+import com.xuexiang.xutil.app.ProcessUtils;
 import com.xuexiang.xutil.app.ServiceUtils;
 import com.xuexiang.xutil.common.logger.Logger;
+
+import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
 
 /**
  * <pre>
@@ -149,11 +153,13 @@ public final class XUtil {
     /**
      * 退出程序
      */
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public void exitApp() {
         if (mActivityLifecycleHelper != null) {
             mActivityLifecycleHelper.exit();
         }
         ServiceUtils.stopAllRunningService(getContext());
+        ProcessUtils.killBackgroundProcesses(XUtil.getContext().getPackageName());
         System.exit(0);
     }
 

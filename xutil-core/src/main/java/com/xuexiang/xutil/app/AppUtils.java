@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.INSTALL_PACKAGES;
+import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
 import static android.Manifest.permission.PACKAGE_USAGE_STATS;
 import static android.Manifest.permission.REQUEST_INSTALL_PACKAGES;
 
@@ -314,6 +315,7 @@ public final class AppUtils {
     /**
      * 退出 App
      */
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static void exitApp() {
         if (XUtil.get().getActivityLifecycleHelper() != null) {
             XUtil.get().getActivityLifecycleHelper().exit();
@@ -326,6 +328,7 @@ public final class AppUtils {
     /**
      * 重启app
      */
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     private void rebootApp() {
         Intent intent = IntentUtils.getLaunchAppIntent(XUtil.getContext().getPackageName());
         PendingIntent restartIntent = PendingIntent.getActivity(XUtil.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);

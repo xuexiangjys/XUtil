@@ -17,6 +17,7 @@
 
 package com.xuexiang.xutil.app;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
@@ -239,6 +240,7 @@ public final class ProcessUtils {
      *
      * @return 被清理的数量
      */
+    @RequiresPermission(Manifest.permission.KILL_BACKGROUND_PROCESSES)
     public static int gc() {
         long beforeGCDeviceUsableMemory = getDeviceUsableMemory();
         int count = 0; // 清理掉的进程数
