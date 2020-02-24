@@ -4,7 +4,7 @@
 
 ## 在线文档
 
-[点击查看【v1.1.5】](https://jitpack.io/com/github/xuexiangjys/XUtil/xutil-core/1.1.5/javadoc/)
+[点击查看【v1.1.7】](https://jitpack.io/com/github/xuexiangjys/XUtil/xutil-core/1.1.7/javadoc/)
 
 ## APIs
 
