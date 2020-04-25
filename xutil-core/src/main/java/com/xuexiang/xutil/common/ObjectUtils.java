@@ -215,6 +215,19 @@ public final class ObjectUtils {
         return object;
     }
 
+
+    /**
+     * 类型强转
+     *
+     * @param object 需要强转的对象
+     * @param clazz  需要强转的类型
+     * @param <T>
+     * @return 类型强转结果
+     */
+    public static <T> T cast(final Object object, Class<T> clazz) {
+        return object != null && clazz.isInstance(object) ? (T) object : null;
+    }
+
     /**
      * Require the objects are not null.
      *

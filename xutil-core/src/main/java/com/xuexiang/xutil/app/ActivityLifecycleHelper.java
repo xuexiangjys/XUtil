@@ -120,6 +120,20 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     }
 
     /**
+     * 某一个Activity是否存在
+     *
+     * @return
+     */
+    public boolean isActivityExist(@NonNull Class<? extends Activity> clazz) {
+        for (Activity activity : mActivityStack) {
+            if (activity.getClass().equals(clazz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 结束当前Activity（堆栈中最后一个压入的）
      */
     public void finishCurrentActivity() {
