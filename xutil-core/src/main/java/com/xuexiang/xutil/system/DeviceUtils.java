@@ -276,7 +276,9 @@ public final class DeviceUtils {
             WifiManager wifi = (WifiManager) XUtil.getContext().getSystemService(Context.WIFI_SERVICE);
             if (wifi != null) {
                 WifiInfo info = wifi.getConnectionInfo();
-                if (info != null) return info.getMacAddress();
+                if (info != null) {
+                    return info.getMacAddress();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -295,7 +297,9 @@ public final class DeviceUtils {
         try {
             List<NetworkInterface> nis = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface ni : nis) {
-                if (!ni.getName().equalsIgnoreCase("wlan0")) continue;
+                if (!ni.getName().equalsIgnoreCase("wlan0")) {
+                    continue;
+                }
                 byte[] macBytes = ni.getHardwareAddress();
                 if (macBytes != null && macBytes.length > 0) {
                     StringBuilder res1 = new StringBuilder();
@@ -383,7 +387,9 @@ public final class DeviceUtils {
         PowerManager mPowerManager =
                 (PowerManager) XUtil.getContext().getSystemService(Context.POWER_SERVICE);
         try {
-            if (mPowerManager == null) return;
+            if (mPowerManager == null) {
+                return;
+            }
             mPowerManager.reboot(reason);
         } catch (Exception e) {
             e.printStackTrace();

@@ -79,7 +79,9 @@ public final class RomUtils {
      * @return the name of rom
      */
     public static RomBean getRom() {
-        if (bean != null) return bean;
+        if (bean != null) {
+            return bean;
+        }
         bean = new RomBean();
         // 小米
         if (!TextUtils.isEmpty(getSystemProperty(KEY_MIUI_VERSION_CODE))
@@ -131,9 +133,13 @@ public final class RomUtils {
 
     private static String getSystemProperty(final String name) {
         String prop = getSystemPropertyByShell(name);
-        if (!TextUtils.isEmpty(prop)) return prop;
+        if (!TextUtils.isEmpty(prop)) {
+            return prop;
+        }
         prop = getSystemPropertyByStream(name);
-        if (!TextUtils.isEmpty(prop)) return prop;
+        if (!TextUtils.isEmpty(prop)) {
+            return prop;
+        }
         if (Build.VERSION.SDK_INT < 28) {
             return getSystemPropertyByReflect(name);
         }
@@ -190,7 +196,9 @@ public final class RomUtils {
         private String romVersion;
 
         public String getRomName() {
-            if (romName == null) return "";
+            if (romName == null) {
+                return "";
+            }
             return romName;
         }
 
@@ -199,7 +207,9 @@ public final class RomUtils {
         }
 
         public String getRomVersion() {
-            if (romVersion == null) return "";
+            if (romVersion == null) {
+                return "";
+            }
             return romVersion;
         }
 

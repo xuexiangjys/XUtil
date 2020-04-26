@@ -210,8 +210,9 @@ public final class ArrayUtils {
 
         public int indexOf(byte[] text, int startIndex) {
             int j = 0;
-            if (text.length == 0 || startIndex > text.length)
+            if (text.length == 0 || startIndex > text.length) {
                 return -1;
+            }
             for (int i = startIndex; i < text.length; i++) {
                 while (j > 0 && bytePattern[j] != text[i]) {
                     j = failure[j - 1];
@@ -238,8 +239,9 @@ public final class ArrayUtils {
         public int lastIndexOf(byte[] text, int startIndex) {
             matchPoint = -1;
             int j = 0;
-            if (text.length == 0 || startIndex > text.length)
+            if (text.length == 0 || startIndex > text.length) {
                 return -1;
+            }
             int end = text.length;
             for (int i = startIndex; i < end; i++) {
                 while (j > 0 && bytePattern[j] != text[i]) {
@@ -277,8 +279,9 @@ public final class ArrayUtils {
         public int lastIndexOfWithNoLoop(byte[] text, int startIndex) {
             matchPoint = -1;
             int j = 0;
-            if (text.length == 0 || startIndex > text.length)
+            if (text.length == 0 || startIndex > text.length) {
                 return -1;
+            }
             for (int i = startIndex; i < text.length; i++) {
                 while (j > 0 && bytePattern[j] != text[i]) {
                     j = failure[j - 1];

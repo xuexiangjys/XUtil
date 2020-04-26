@@ -142,7 +142,9 @@ public final class PhoneUtils {
     public static String getSimOperatorByMnc() {
         TelephonyManager tm = getTelephonyManager();
         String operator = tm != null ? tm.getSimOperator() : null;
-        if (operator == null) return null;
+        if (operator == null) {
+            return null;
+        }
         switch (operator) {
             case "46000":
             case "46002":
@@ -185,7 +187,9 @@ public final class PhoneUtils {
     @RequiresPermission(READ_PHONE_STATE)
     public static String getPhoneInfo() {
         TelephonyManager tm = getTelephonyManager();
-        if (tm == null) return "";
+        if (tm == null) {
+            return "";
+        }
         String str = "";
         str += "DeviceId(IMEI) = " + tm.getDeviceId() + "\n";
         str += "DeviceSoftwareVersion = " + tm.getDeviceSoftwareVersion() + "\n";
@@ -244,7 +248,9 @@ public final class PhoneUtils {
      */
     @RequiresPermission(SEND_SMS)
     public static void sendSmsSilent(final String phoneNumber, final String content) {
-        if (StringUtils.isEmpty(content)) return;
+        if (StringUtils.isEmpty(content)) {
+            return;
+        }
         PendingIntent sentIntent = PendingIntent.getBroadcast(XUtil.getContext(), 0, new Intent(), 0);
         SmsManager smsManager = SmsManager.getDefault();
         if (content.length() >= 70) {
@@ -269,7 +275,9 @@ public final class PhoneUtils {
         try {
             TelephonyManager tm =
                     (TelephonyManager) XUtil.getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null) return;
+            if (tm == null) {
+                return;
+            }
             Method setMobileDataEnabledMethod =
                     tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
             setMobileDataEnabledMethod.invoke(tm, enabled);

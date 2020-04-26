@@ -125,7 +125,10 @@ public class BaseBuilder {
      */
     private int mPriority = NotificationCompat.PRIORITY_DEFAULT;
 
-    private int mDefaults = NotificationCompat.DEFAULT_LIGHTS;//默认只有走马灯提醒
+    /**
+     * 默认只有走马灯提醒
+     */
+    private int mDefaults = NotificationCompat.DEFAULT_LIGHTS;
     /**
      * 是否有声音
      */
@@ -349,18 +352,21 @@ public class BaseBuilder {
         mBuilder = new NotificationCompat.Builder(XUtil.getContext(), mChannelId);
 
         if (mSmallIcon > 0) {
-            mBuilder.setSmallIcon(mSmallIcon);// 设置顶部状态栏的小图标
+            // 设置顶部状态栏的小图标
+            mBuilder.setSmallIcon(mSmallIcon);
         }
         if (mBigIcon > 0) {
             mBuilder.setLargeIcon(BitmapFactory.decodeResource(ResUtils.getResources(), mBigIcon));
         }
+        // 在顶部状态栏中的提示信息
+        mBuilder.setTicker(mTicker);
 
-        mBuilder.setTicker(mTicker);  // 在顶部状态栏中的提示信息
+        // 设置通知中心的标题
+        mBuilder.setContentTitle(mContentTitle);
 
-        mBuilder.setContentTitle(mContentTitle);// 设置通知中心的标题
-
+        // 设置通知中心中的内容
         if (!TextUtils.isEmpty(mContentText)) {
-            mBuilder.setContentText(mContentText);// 设置通知中心中的内容
+            mBuilder.setContentText(mContentText);
         }
 
         if (!TextUtils.isEmpty(mSubText)) {
@@ -376,7 +382,8 @@ public class BaseBuilder {
         mBuilder.setShowWhen(mIsShowWhen);
 
         //事件
-        mBuilder.setContentIntent(mContentIntent);// 该通知要启动的Intent
+        // 该通知要启动的Intent
+        mBuilder.setContentIntent(mContentIntent);
         mBuilder.setDeleteIntent(mDeleteIntent);
         mBuilder.setFullScreenIntent(mFullscreenIntent, true);
 

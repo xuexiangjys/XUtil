@@ -66,7 +66,8 @@ public class MailboxBuilder extends BaseBuilder {
                 String text = "你收到了[" + mMessages.size() + "]条信息";
                 inboxStyle.setSummaryText(text);
                 setStyle(inboxStyle);
-            } else if (mMessages.size() == 1) {
+            } else {
+                mMessages.size();
                 setContentText(mMessages.get(0));
             }
         }

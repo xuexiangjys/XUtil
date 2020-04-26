@@ -87,7 +87,7 @@ public class AppExecutors {
 
     /**
      * 获取磁盘单线程池
-     * @return
+     * @return 单线程池
      */
     public ExecutorService diskIO() {
         return mSingleIO;
@@ -95,7 +95,7 @@ public class AppExecutors {
 
     /**
      * 获取多线程池
-     * @return
+     * @return 多线程池
      */
     public ExecutorService poolIO() {
         return mPoolIO;
@@ -103,7 +103,7 @@ public class AppExecutors {
 
     /**
      * 获取网络请求多线程池
-     * @return
+     * @return 多线程池
      */
     public ExecutorService networkIO() {
         return mPoolIO;
@@ -111,7 +111,7 @@ public class AppExecutors {
 
     /**
      * 获取主线程
-     * @return
+     * @return 主线程
      */
     public Executor mainThread() {
         return mMainThread;

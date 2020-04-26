@@ -150,7 +150,9 @@ public final class PackageUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentBelow24(Context context, String filePath) {
         File file = getFileByPath(filePath);
-        if (!isFileExists(file)) return false;
+        if (!isFileExists(file)) {
+            return false;
+        }
 
         String pmParams = " -r " + getInstallLocationParams();
 
@@ -177,7 +179,9 @@ public final class PackageUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentAbove24(String packageName, String filePath) {
         File file = getFileByPath(filePath);
-        if (!isFileExists(file)) return false;
+        if (!isFileExists(file)) {
+            return false;
+        }
         boolean isRoot = isDeviceRooted();
         String command = "pm install -i " + packageName + " --user 0 " + filePath;
         CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
@@ -264,7 +268,9 @@ public final class PackageUtils {
      * @return {@code true}: null 或全空白字符<br> {@code false}: 不为 null 且不全空白字符
      */
     private static boolean isSpace(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;
@@ -542,8 +548,9 @@ public final class PackageUtils {
      * @return
      */
     public static boolean checkAPP(Context context, String packageName) {
-        if (packageName == null || "".equals(packageName))
+        if (packageName == null || "".equals(packageName)) {
             return false;
+        }
         try {
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
             return true;

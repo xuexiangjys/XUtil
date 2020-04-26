@@ -83,7 +83,9 @@ public final class FlashlightUtils {
      * Unregister the utils of flashlight.
      */
     public void unregister() {
-        if (mCamera == null) return;
+        if (mCamera == null) {
+            return;
+        }
         mCamera.stopPreview();
         mCamera.release();
     }

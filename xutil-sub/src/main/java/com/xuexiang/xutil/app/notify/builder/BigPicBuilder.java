@@ -54,9 +54,7 @@ public class BigPicBuilder extends BaseBuilder {
     public void beforeBuild() {
         NotificationCompat.BigPictureStyle picStyle = new NotificationCompat.BigPictureStyle();
         if (mBitmap == null || mBitmap.isRecycled()) {
-            if (mBigPicResId > 0) {
-                mBitmap = ImageUtils.getBitmap(mBigPicResId);
-            }
+            mBitmap = ImageUtils.getBitmap(mBigPicResId);
         }
         picStyle.bigPicture(mBitmap);
         picStyle.setBigContentTitle(mContentTitle);

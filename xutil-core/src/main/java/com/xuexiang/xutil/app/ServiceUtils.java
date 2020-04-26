@@ -51,10 +51,14 @@ public final class ServiceUtils {
     public static Set getAllRunningService() {
         ActivityManager am =
                 (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return Collections.emptySet();
+        if (am == null) {
+            return Collections.emptySet();
+        }
         List<RunningServiceInfo> info = am.getRunningServices(Integer.MAX_VALUE);
         Set<String> names = new HashSet<>();
-        if (info == null || info.size() == 0) return null;
+        if (info == null || info.size() == 0) {
+            return null;
+        }
         for (RunningServiceInfo aInfo : info) {
             names.add(aInfo.service.getClassName());
         }
@@ -175,11 +179,17 @@ public final class ServiceUtils {
     public static boolean isServiceRunning(final String className) {
         ActivityManager am =
                 (ActivityManager) XUtil.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return false;
+        if (am == null) {
+            return false;
+        }
         List<RunningServiceInfo> info = am.getRunningServices(Integer.MAX_VALUE);
-        if (info == null || info.size() == 0) return false;
+        if (info == null || info.size() == 0) {
+            return false;
+        }
         for (RunningServiceInfo aInfo : info) {
-            if (className.equals(aInfo.service.getClassName())) return true;
+            if (className.equals(aInfo.service.getClassName())) {
+                return true;
+            }
         }
         return false;
     }

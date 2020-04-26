@@ -38,13 +38,13 @@ public final class Base64Utils {
 
 
 	/** The Constant base64EncodeChars. */
-    private static final char[] base64EncodeChars = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+    private static final char[] BASE_64_ENCODE_CHARS = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
 			'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
 			'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 	
     /** The Constant base64DecodeChars. */
-    private static final byte[] base64DecodeChars = new byte[] {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    private static final byte[] BASE_64_DECODE_CHARS = new byte[] {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1,
 			-1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -57,7 +57,7 @@ public final class Base64Utils {
 	 * @param str the str
 	 * @return the string
 	 */
-	public static final String encode(String str) {
+	public static String encode(String str) {
 		return encode(str, UTF_8.name(), 0);
 	}
 
@@ -67,7 +67,7 @@ public final class Base64Utils {
 	 * @param str the str
 	 * @return the string
 	 */
-	public static final String decode(String str) {
+	public static String decode(String str) {
 		return decode(str, UTF_8.name());
 	}
 
@@ -78,7 +78,7 @@ public final class Base64Utils {
      * @param charsetName the charset name
      * @return the string
      */
-    public static final String encode(String str, String charsetName) {
+    public static String encode(String str, String charsetName) {
 		return encode(str, charsetName, 0);
 	}
 	
@@ -90,7 +90,7 @@ public final class Base64Utils {
      * @param width the width
      * @return the string
      */
-    public static final String encode(String str, String charsetName, int width) {
+    public static String encode(String str, String charsetName, int width) {
 		byte[] data = null;
 		try {
 			data = str.getBytes(charsetName);
@@ -108,21 +108,21 @@ public final class Base64Utils {
 		int c;
 		while (i < len) {
 			c = (0x000000ff & data[i++]) << 16 | (0x000000ff & data[i++]) << 8 | (0x000000ff & data[i++]);
-			sb.append(base64EncodeChars[c >> 18]);
-			sb.append(base64EncodeChars[c >> 12 & 0x3f]);
-			sb.append(base64EncodeChars[c >> 6 & 0x3f]);
-			sb.append(base64EncodeChars[c & 0x3f]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 18]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 12 & 0x3f]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 6 & 0x3f]);
+			sb.append(BASE_64_ENCODE_CHARS[c & 0x3f]);
 		}
 		if (r == 1) {
 			c = 0x000000ff & data[i++];
-			sb.append(base64EncodeChars[c >> 2]);
-			sb.append(base64EncodeChars[(c & 0x03) << 4]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 2]);
+			sb.append(BASE_64_ENCODE_CHARS[(c & 0x03) << 4]);
 			sb.append("==");
 		} else if (r == 2) {
 			c = (0x000000ff & data[i++]) << 8 | (0x000000ff & data[i++]);
-			sb.append(base64EncodeChars[c >> 10]);
-			sb.append(base64EncodeChars[c >> 4 & 0x3f]);
-			sb.append(base64EncodeChars[(c & 0x0f) << 2]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 10]);
+			sb.append(BASE_64_ENCODE_CHARS[c >> 4 & 0x3f]);
+			sb.append(BASE_64_ENCODE_CHARS[(c & 0x0f) << 2]);
 			sb.append("=");
 		}
 		if (splitsize > 0) {
@@ -142,7 +142,7 @@ public final class Base64Utils {
 	 * @param charsetName the charset name
 	 * @return the string
 	 */
-	public static final String decode(String str, String charsetName) {
+	public static String decode(String str, String charsetName) {
 		byte[] data = null;
 		try {
 			data = str.getBytes(charsetName);
@@ -160,7 +160,7 @@ public final class Base64Utils {
 					b1 = -1;
 					break;
 				}
-				b1 = base64DecodeChars[data[i++]];
+				b1 = BASE_64_DECODE_CHARS[data[i++]];
 			} while (i < len && b1 == -1);
 			if (b1 == -1) {
 				break;
@@ -170,12 +170,12 @@ public final class Base64Utils {
 					b2 = -1;
 					break;
 				}
-				b2 = base64DecodeChars[data[i++]];
+				b2 = BASE_64_DECODE_CHARS[data[i++]];
 			} while (i < len && b2 == -1);
 			if (b2 == -1) {
 				break;
 			}
-			buf.write((int) ((b1 << 2) | ((b2 & 0x30) >>> 4)));
+			buf.write((b1 << 2) | ((b2 & 0x30) >>> 4));
 			do {
 				if (i >= len) {
 					b3 = -1;
@@ -186,12 +186,12 @@ public final class Base64Utils {
 					b3 = -1;
 					break;
 				}
-				b3 = base64DecodeChars[b3];
+				b3 = BASE_64_DECODE_CHARS[b3];
 			} while (i < len && b3 == -1);
 			if (b3 == -1) {
 				break;
 			}
-			buf.write((int) (((b2 & 0x0f) << 4) | ((b3 & 0x3c) >>> 2)));
+			buf.write(((b2 & 0x0f) << 4) | ((b3 & 0x3c) >>> 2));
 			do {
 				if (i >= len) {
 					b4 = -1;
@@ -202,12 +202,12 @@ public final class Base64Utils {
 					b4 = -1;
 					break;
 				}
-				b4 = base64DecodeChars[b4];
+				b4 = BASE_64_DECODE_CHARS[b4];
 			} while (b4 == -1);
 			if (b4 == -1) {
 				break;
 			}
-			buf.write((int) (((b3 & 0x03) << 6) | b4));
+			buf.write(((b3 & 0x03) << 6) | b4);
 		}
 		try {
 			return buf.toString(charsetName);

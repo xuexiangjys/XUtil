@@ -42,7 +42,9 @@ public class DoubleKeyValueMap<K1, K2, V> {
      * @param value
      */
     public void put(K1 key1, K2 key2, V value) {
-        if (key1 == null || key2 == null || value == null) return;
+        if (key1 == null || key2 == null || value == null) {
+            return;
+        }
         if (m_k1_k2V_map.containsKey(key1)) {
             ConcurrentHashMap<K2, V> k2V_map = m_k1_k2V_map.get(key1);
             if (k2V_map != null) {
@@ -117,7 +119,9 @@ public class DoubleKeyValueMap<K1, K2, V> {
      * @return
      */
     public int size() {
-        if (m_k1_k2V_map.size() == 0) return 0;
+        if (m_k1_k2V_map.size() == 0) {
+            return 0;
+        }
 
         int result = 0;
         for (ConcurrentHashMap<K2, V> k2V_map : m_k1_k2V_map.values()) {

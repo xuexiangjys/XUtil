@@ -236,9 +236,13 @@ public final class ObjectUtils {
      * @throws NullPointerException if any object is null in objects
      */
     public static void requireNonNull(final String message, final Object... objects) {
-        if (objects == null) throw new NullPointerException(message);
+        if (objects == null) {
+            throw new NullPointerException(message);
+        }
         for (Object object : objects) {
-            if (object == null) throw new NullPointerException(message);
+            if (object == null) {
+                throw new NullPointerException(message);
+            }
         }
     }
 

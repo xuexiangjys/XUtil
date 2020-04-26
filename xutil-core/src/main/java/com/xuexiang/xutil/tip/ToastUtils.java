@@ -35,7 +35,7 @@ import com.xuexiang.xutil.resource.ResUtils;
  */
 public final class ToastUtils {
 
-    private static Toast mToast = null;
+    private static Toast sToast = null;
 
     /**
      * 显示toast在主线程中
@@ -90,12 +90,12 @@ public final class ToastUtils {
      * @param duration 提示长度
      */
     private static void showToast(String text, int duration) {
-        if (mToast == null) {
-            mToast = makeText(XUtil.getContext(), text, duration);
+        if (sToast == null) {
+            sToast = makeText(XUtil.getContext(), text, duration);
         } else {
-            ((TextView) mToast.getView().findViewById(R.id.tv_info)).setText(text);
+            ((TextView) sToast.getView().findViewById(R.id.tv_info)).setText(text);
         }
-        mToast.show();
+        sToast.show();
     }
 
 
@@ -126,8 +126,8 @@ public final class ToastUtils {
      * 取消toast显示
      */
     public static void cancelToast() {
-        if (mToast != null) {
-            mToast.cancel();
+        if (sToast != null) {
+            sToast.cancel();
         }
     }
 }

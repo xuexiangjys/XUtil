@@ -17,10 +17,9 @@
 package com.xuexiang.xutil.system;
 
 import android.app.Activity;
-import android.app.AppOpsManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +28,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.WindowManager;
@@ -38,9 +38,6 @@ import com.xuexiang.constant.PermissionConstants.Permission;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.system.PermissionUtils.OnRationaleListener.ShouldRequest;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,14 +59,14 @@ public final class PermissionUtils {
     private static PermissionUtils sInstance;
 
     private OnRationaleListener mOnRationaleListener;
-    private SimpleCallback      mSimpleCallback;
-    private FullCallback        mFullCallback;
-    private ThemeCallback       mThemeCallback;
-    private Set<String>         mPermissions;
-    private List<String>        mPermissionsRequest;
-    private List<String>        mPermissionsGranted;
-    private List<String>        mPermissionsDenied;
-    private List<String>        mPermissionsDeniedForever;
+    private SimpleCallback mSimpleCallback;
+    private FullCallback mFullCallback;
+    private ThemeCallback mThemeCallback;
+    private Set<String> mPermissions;
+    private List<String> mPermissionsRequest;
+    private List<String> mPermissionsGranted;
+    private List<String> mPermissionsDenied;
+    private List<String> mPermissionsDeniedForever;
 
     /**
      * 获取应用权限
@@ -353,27 +350,124 @@ public final class PermissionUtils {
 
     public interface OnRationaleListener {
 
+        /**
+         * 显示重新申请的理由
+         *
+         * @param shouldRequest
+         */
         void rationale(ShouldRequest shouldRequest);
 
         interface ShouldRequest {
+            /**
+             * 是否需要重新申请
+             *
+             * @param again 是否需要重新申请
+             */
             void again(boolean again);
         }
     }
 
     public interface SimpleCallback {
+        /**
+         * 同意权限申请
+         */
         void onGranted();
 
+        /**
+         * 拒绝权限申请
+         */
         void onDenied();
     }
 
     public interface FullCallback {
+        /**
+         * 同意权限申请
+         *
+         * @param permissionsGranted 同意申请的权限内容
+         */
         void onGranted(List<String> permissionsGranted);
 
+        /**
+         * 拒绝权限申请
+         *
+         * @param permissionsDeniedForever 被永远拒绝的权限
+         * @param permissionsDenied        被拒绝的权限
+         */
         void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied);
     }
 
     public interface ThemeCallback {
+        /**
+         * 权限申请的Activity创建
+         *
+         * @param activity
+         */
         void onActivityCreate(Activity activity);
+    }
+
+    //===================通知栏权限设置==================//
+
+    /**
+     * 通知栏权限是否获取
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNotifyPermissionOpen(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return NotificationManagerCompat.from(context).getImportance() != NotificationManager.IMPORTANCE_NONE;
+        }
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+    }
+
+    /**
+     * 打开通知栏权限设置页面
+     *
+     * @param context
+     */
+    public static void openNotifyPermissionSetting(Context context) {
+        try {
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //直接跳转到应用通知设置的代码：
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, context.getApplicationInfo().uid);
+                context.startActivity(intent);
+                return;
+            }
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("app_package", context.getPackageName());
+                intent.putExtra("app_uid", context.getApplicationInfo().uid);
+                context.startActivity(intent);
+                return;
+            }
+            if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                context.startActivity(intent);
+                return;
+            }
+
+            //4.4以下没有从app跳转到应用通知设置页面的Action，可考虑跳转到应用详情页面,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+                context.startActivity(intent);
+                return;
+            }
+
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setClassName("com.android.settings", "com.android.setting.InstalledAppDetails");
+            intent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+            context.startActivity(intent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -382,17 +476,14 @@ public final class PermissionUtils {
      * @param activity
      */
     public static void requestNotifications(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!isNotificationEnable(activity)) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    openAppNotificationSettings(activity);
-                }
-            }
+        if (!isNotifyPermissionOpen(activity)) {
+            openNotifyPermissionSetting(activity);
         }
     }
 
     /**
      * 打开APP的通知权限设置界面
+     *
      * @param activity
      */
     private static void openAppNotificationSettings(Activity activity) {
@@ -404,39 +495,8 @@ public final class PermissionUtils {
     }
 
     /**
-     * 通知权限是否打开
-     * @param context
-     * @return
-     */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static boolean isNotificationEnable(Context context) {
-        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        ApplicationInfo appInfo = context.getApplicationInfo();
-        String pkg = context.getApplicationContext().getPackageName();
-        int uid = appInfo.uid;
-        try {
-            Class appOpsClass = Class.forName(AppOpsManager.class.getName());
-            Method checkOpNoThrowMethod = appOpsClass.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
-                    String.class);
-            Field opPostNotificationValue = appOpsClass.getDeclaredField("OP_POST_NOTIFICATION");
-            int value = (Integer) opPostNotificationValue.get(Integer.class);
-            return ((Integer) checkOpNoThrowMethod.invoke(appOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
      * 申请android.permission.SYSTEM_ALERT_WINDOW权限
+     *
      * @param activity
      */
     public static void requestSystemAlertWindow(Activity activity) {
@@ -451,6 +511,7 @@ public final class PermissionUtils {
 
     /**
      * 申请android.permission.WRITE_SETTINGS权限
+     *
      * @param activity
      */
     public static void requestWriteSettings(Activity activity) {

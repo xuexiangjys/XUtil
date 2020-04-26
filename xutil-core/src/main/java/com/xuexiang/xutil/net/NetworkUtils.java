@@ -96,7 +96,9 @@ public final class NetworkUtils {
     @RequiresPermission(ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager manager = getConnectivityManager();
-        if (manager == null) return null;
+        if (manager == null) {
+            return null;
+        }
         return manager.getActiveNetworkInfo();
     }
 
@@ -240,7 +242,9 @@ public final class NetworkUtils {
     public static void setWifiEnabled(final boolean enabled) {
         @SuppressLint("WifiManagerLeak")
         WifiManager manager = getWifiManager();
-        if (manager == null) return;
+        if (manager == null) {
+            return;
+        }
         if (enabled) {
             if (!manager.isWifiEnabled()) {
                 manager.setWifiEnabled(true);
@@ -274,7 +278,8 @@ public final class NetworkUtils {
      */
     public static boolean isAvailableByPing(String ip) {
         if (ip == null || ip.length() <= 0) {
-            ip = "223.5.5.5";// 阿里巴巴公共 ip
+            // 阿里巴巴公共 ip
+            ip = "223.5.5.5";
         }
         ShellUtils.CommandResult result = ShellUtils.execCommand(String.format("ping -c 1 %s", ip), false);
         boolean ret = result.result == 0;
@@ -296,7 +301,9 @@ public final class NetworkUtils {
         try {
             TelephonyManager tm =
                     (TelephonyManager) XUtil.getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null) return false;
+            if (tm == null) {
+                return false;
+            }
             @SuppressLint("PrivateApi")
             Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
             if (null != getMobileDataEnabledMethod) {
@@ -310,6 +317,7 @@ public final class NetworkUtils {
 
     /**
      * 获取WifiManager
+     *
      * @return
      */
     public static WifiManager getWifiManager() {
@@ -347,6 +355,7 @@ public final class NetworkUtils {
 
     /**
      * 通过枚举网络接口获取ip地址
+     *
      * @return
      */
     @Nullable
@@ -374,6 +383,7 @@ public final class NetworkUtils {
 
     /**
      * 获取wifi的ip地址
+     *
      * @param wifiManager
      * @return
      */
@@ -463,7 +473,9 @@ public final class NetworkUtils {
             while (nis.hasMoreElements()) {
                 NetworkInterface ni = nis.nextElement();
                 // To prevent phone of xiaomi return "10.0.2.15"
-                if (!ni.isUp() || ni.isLoopback()) continue;
+                if (!ni.isUp() || ni.isLoopback()) {
+                    continue;
+                }
                 Enumeration<InetAddress> addresses = ni.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     adds.addFirst(addresses.nextElement());
@@ -474,7 +486,9 @@ public final class NetworkUtils {
                     String hostAddress = add.getHostAddress();
                     boolean isIPv4 = hostAddress.indexOf(':') < 0;
                     if (useIPv4) {
-                        if (isIPv4) return hostAddress;
+                        if (isIPv4) {
+                            return hostAddress;
+                        }
                     } else {
                         if (!isIPv4) {
                             int index = hostAddress.indexOf('%');
@@ -502,7 +516,9 @@ public final class NetworkUtils {
             LinkedList<InetAddress> adds = new LinkedList<>();
             while (nis.hasMoreElements()) {
                 NetworkInterface ni = nis.nextElement();
-                if (!ni.isUp() || ni.isLoopback()) continue;
+                if (!ni.isUp() || ni.isLoopback()) {
+                    continue;
+                }
                 List<InterfaceAddress> ias = ni.getInterfaceAddresses();
                 for (int i = 0; i < ias.size(); i++) {
                     InterfaceAddress ia = ias.get(i);
@@ -542,14 +558,40 @@ public final class NetworkUtils {
     /**
      * 枚举网络状态  NET_NO：没有网络 , NET_2G:2g网络 , NET_3G：3g网络, NET_4G：4g网络, NET_WIFI：wifi, NET_ETHERNET：有线网络, NET_UNKNOWN：未知网络
      */
-    public static enum NetState {
-        NET_NO, NET_2G, NET_3G, NET_4G, NET_WIFI, NET_ETHERNET, NET_UNKNOWN
+    public enum NetState {
+        /**
+         * 没有网络
+         */
+        NET_NO,
+        /**
+         * 2g网络
+         */
+        NET_2G,
+        /**
+         * 3g网络
+         */
+        NET_3G,
+        /**
+         * 4g网络
+         */
+        NET_4G,
+        /**
+         * wifi
+         */
+        NET_WIFI,
+        /**
+         * 有线网络
+         */
+        NET_ETHERNET,
+        /**
+         * 未知网络
+         */
+        NET_UNKNOWN
     }
-
 
     /**
      * 判断当前是否网络连接,返回当前网络状态的类型
-     ** <p>需添加权限
+     * * <p>需添加权限
      * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
      * @return type of network
@@ -574,14 +616,18 @@ public final class NetworkUtils {
                     break;
                 case ConnectivityManager.TYPE_MOBILE:
                     switch (ni.getSubtype()) {
-                        case TelephonyManager.NETWORK_TYPE_GPRS: // 联通2g
-                        case TelephonyManager.NETWORK_TYPE_CDMA: // 电信2g
-                        case TelephonyManager.NETWORK_TYPE_EDGE: // 移动2g
+                        // 联通2g
+                        case TelephonyManager.NETWORK_TYPE_GPRS:
+                            // 电信2g
+                        case TelephonyManager.NETWORK_TYPE_CDMA:
+                            // 移动2g
+                        case TelephonyManager.NETWORK_TYPE_EDGE:
                         case TelephonyManager.NETWORK_TYPE_1xRTT:
                         case TelephonyManager.NETWORK_TYPE_IDEN:
                             stateCode = NetState.NET_2G;
                             break;
-                        case TelephonyManager.NETWORK_TYPE_EVDO_A: // 电信3g
+                        // 电信3g
+                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
                         case TelephonyManager.NETWORK_TYPE_UMTS:
                         case TelephonyManager.NETWORK_TYPE_EVDO_0:
                         case TelephonyManager.NETWORK_TYPE_HSDPA:
@@ -623,12 +669,23 @@ public final class NetworkUtils {
         TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String operator = telManager.getSimOperator();
         if (operator != null) {
-            if (operator.equals("46000") || operator.equals("46002") || operator.equals("46007")) {
-                networkOperatorName = "中国移动";
-            } else if (operator.equals("46001") || operator.equals("46006")) {
-                networkOperatorName = "中国联通";
-            } else if (operator.equals("46003") || operator.equals("46005") || operator.equals("46011")) {
-                networkOperatorName = "中国电信";
+            switch (operator) {
+                case "46000":
+                case "46002":
+                case "46007":
+                    networkOperatorName = "中国移动";
+                    break;
+                case "46001":
+                case "46006":
+                    networkOperatorName = "中国联通";
+                    break;
+                case "46003":
+                case "46005":
+                case "46011":
+                    networkOperatorName = "中国电信";
+                    break;
+                default:
+                    break;
             }
         }
         return networkOperatorName;
@@ -679,6 +736,7 @@ public final class NetworkUtils {
      * 解析网络请求的url
      * 解析前：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult?appId=10101
      * 解析后：https://xxx.xxx.xxx/app/chairdressing/skinAnalyzePower/skinTestResult
+     *
      * @param url
      * @return
      */

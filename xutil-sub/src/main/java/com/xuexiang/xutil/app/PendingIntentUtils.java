@@ -148,7 +148,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(String action, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(action);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -163,7 +163,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -192,7 +192,7 @@ public final class PendingIntentUtils {
      */
     public static PendingIntent buildBroadcastIntent(Class<? extends BroadcastReceiver> cls, String action, String key, Object param, int requestCode) {
         Intent intent = BroadcastUtils.getBroadCastIntent(cls, action);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return PendingIntent.getBroadcast(XUtil.getContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

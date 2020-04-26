@@ -99,7 +99,9 @@ public final class IntentUtils {
     public static Intent getInstallAppIntent(final File file,
                                              final String authority,
                                              final boolean isNewTask) {
-        if (file == null) return null;
+        if (file == null) {
+            return null;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
         String type = "application/vnd.android.package-archive";
@@ -155,7 +157,9 @@ public final class IntentUtils {
      */
     public static Intent getLaunchAppIntent(final String packageName, final boolean isNewTask) {
         Intent intent = XUtil.getContext().getPackageManager().getLaunchIntentForPackage(packageName);
-        if (intent == null) return null;
+        if (intent == null) {
+            return null;
+        }
         return getIntent(intent, isNewTask);
     }
 
@@ -230,7 +234,9 @@ public final class IntentUtils {
     public static Intent getShareImageIntent(final String content,
                                              final String imagePath,
                                              final boolean isNewTask) {
-        if (imagePath == null || imagePath.length() == 0) return null;
+        if (imagePath == null || imagePath.length() == 0) {
+            return null;
+        }
         return getShareImageIntent(content, new File(imagePath), isNewTask);
     }
 
@@ -256,7 +262,9 @@ public final class IntentUtils {
     public static Intent getShareImageIntent(final String content,
                                              final File image,
                                              final boolean isNewTask) {
-        if (image != null && image.isFile()) return null;
+        if (image != null && image.isFile()) {
+            return null;
+        }
         return getShareImageIntent(content, Uri.fromFile(image), isNewTask);
     }
 
@@ -342,7 +350,9 @@ public final class IntentUtils {
                                             final Bundle bundle,
                                             final boolean isNewTask) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (bundle != null) intent.putExtras(bundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
         ComponentName cn = new ComponentName(packageName, className);
         intent.setComponent(cn);
         return getIntent(intent, isNewTask);

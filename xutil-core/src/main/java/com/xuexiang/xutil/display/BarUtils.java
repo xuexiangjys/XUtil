@@ -16,7 +16,6 @@
 
 package com.xuexiang.xutil.display;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -37,8 +36,6 @@ import android.widget.LinearLayout;
 
 import com.xuexiang.xutil.XUtil;
 
-import java.lang.reflect.Method;
-
 /**
  * <pre>
  *     desc   : 状态栏工具类
@@ -52,10 +49,10 @@ public final class BarUtils {
     // status bar
     ///////////////////////////////////////////////////////////////////////////
 
-    private static final int    DEFAULT_ALPHA = 112;
-    private static final String TAG_COLOR     = "TAG_COLOR";
-    private static final String TAG_ALPHA     = "TAG_ALPHA";
-    private static final int    TAG_OFFSET    = -123;
+    private static final int DEFAULT_ALPHA = 112;
+    private static final String TAG_COLOR = "TAG_COLOR";
+    private static final String TAG_ALPHA = "TAG_ALPHA";
+    private static final int TAG_OFFSET = -123;
 
     private BarUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -105,7 +102,9 @@ public final class BarUtils {
      */
     public static void addMarginTopEqualStatusBarHeight(@NonNull View view) {
         Object haveSetOffset = view.getTag(TAG_OFFSET);
-        if (haveSetOffset != null && (Boolean) haveSetOffset) return;
+        if (haveSetOffset != null && (Boolean) haveSetOffset) {
+            return;
+        }
         MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
         layoutParams.setMargins(layoutParams.leftMargin,
                 layoutParams.topMargin + getStatusBarHeight(),
@@ -121,7 +120,9 @@ public final class BarUtils {
      */
     public static void subtractMarginTopEqualStatusBarHeight(@NonNull View view) {
         Object haveSetOffset = view.getTag(TAG_OFFSET);
-        if (haveSetOffset == null || !(Boolean) haveSetOffset) return;
+        if (haveSetOffset == null || !(Boolean) haveSetOffset) {
+            return;
+        }
         MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
         layoutParams.setMargins(layoutParams.leftMargin,
                 layoutParams.topMargin - getStatusBarHeight(),
@@ -167,7 +168,9 @@ public final class BarUtils {
                                          @ColorInt final int color,
                                          @IntRange(from = 0, to = 255) final int alpha,
                                          final boolean isDecor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         hideAlphaView(activity);
         transparentStatusBar(activity);
         addStatusBarColor(activity, color, alpha, isDecor);
@@ -203,7 +206,9 @@ public final class BarUtils {
     public static void setStatusBarAlpha(@NonNull final Activity activity,
                                          @IntRange(from = 0, to = 255) final int alpha,
                                          final boolean isDecor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         hideColorView(activity);
         transparentStatusBar(activity);
         addStatusBarAlpha(activity, alpha, isDecor);
@@ -230,7 +235,9 @@ public final class BarUtils {
     public static void setStatusBarColor(@NonNull final View fakeStatusBar,
                                          @ColorInt final int color,
                                          @IntRange(from = 0, to = 255) final int alpha) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         fakeStatusBar.setVisibility(View.VISIBLE);
         transparentStatusBar((Activity) fakeStatusBar.getContext());
         ViewGroup.LayoutParams layoutParams = fakeStatusBar.getLayoutParams();
@@ -256,7 +263,9 @@ public final class BarUtils {
      */
     public static void setStatusBarAlpha(@NonNull final View fakeStatusBar,
                                          @IntRange(from = 0, to = 255) final int alpha) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         fakeStatusBar.setVisibility(View.VISIBLE);
         transparentStatusBar((Activity) fakeStatusBar.getContext());
         ViewGroup.LayoutParams layoutParams = fakeStatusBar.getLayoutParams();
@@ -300,7 +309,9 @@ public final class BarUtils {
                                                 @ColorInt final int color,
                                                 @IntRange(from = 0, to = 255) final int alpha,
                                                 final boolean isTop) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         drawer.setFitsSystemWindows(false);
         transparentStatusBar(activity);
         setStatusBarColor(fakeStatusBar, color, isTop ? alpha : 0);
@@ -345,7 +356,9 @@ public final class BarUtils {
                                                 @NonNull final View fakeStatusBar,
                                                 @IntRange(from = 0, to = 255) final int alpha,
                                                 final boolean isTop) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         drawer.setFitsSystemWindows(false);
         transparentStatusBar(activity);
         setStatusBarAlpha(fakeStatusBar, isTop ? alpha : 0);
@@ -397,19 +410,25 @@ public final class BarUtils {
     private static void hideColorView(final Activity activity) {
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View fakeStatusBarView = decorView.findViewWithTag(TAG_COLOR);
-        if (fakeStatusBarView == null) return;
+        if (fakeStatusBarView == null) {
+            return;
+        }
         fakeStatusBarView.setVisibility(View.GONE);
     }
 
     private static void hideAlphaView(final Activity activity) {
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View fakeStatusBarView = decorView.findViewWithTag(TAG_ALPHA);
-        if (fakeStatusBarView == null) return;
+        if (fakeStatusBarView == null) {
+            return;
+        }
         fakeStatusBarView.setVisibility(View.GONE);
     }
 
     private static int getStatusBarColor(final int color, final int alpha) {
-        if (alpha == 0) return color;
+        if (alpha == 0) {
+            return color;
+        }
         float a = 1 - alpha / 255f;
         int red = (color >> 16) & 0xff;
         int green = (color >> 8) & 0xff;
@@ -447,7 +466,9 @@ public final class BarUtils {
     }
 
     private static void transparentStatusBar(final Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         Window window = activity.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
@@ -540,7 +561,9 @@ public final class BarUtils {
     public static boolean isNavBarVisible(final Activity activity) {
         boolean isNoLimits = (activity.getWindow().getAttributes().flags
                 & WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS) != 0;
-        if (isNoLimits) return false;
+        if (isNoLimits) {
+            return false;
+        }
         View decorView = activity.getWindow().getDecorView();
         int visibility = decorView.getSystemUiVisibility();
         return (visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;

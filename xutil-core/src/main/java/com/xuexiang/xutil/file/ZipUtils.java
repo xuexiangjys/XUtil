@@ -74,12 +74,16 @@ public final class ZipUtils {
                                    final String zipFilePath,
                                    final String comment)
             throws IOException {
-        if (resFilePaths == null || zipFilePath == null) return false;
+        if (resFilePaths == null || zipFilePath == null) {
+            return false;
+        }
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zipFilePath));
             for (String resFile : resFilePaths) {
-                if (!zipFile(getFileByPath(resFile), "", zos, comment)) return false;
+                if (!zipFile(getFileByPath(resFile), "", zos, comment)) {
+                    return false;
+                }
             }
             return true;
         } finally {
@@ -116,12 +120,16 @@ public final class ZipUtils {
                                    final File zipFile,
                                    final String comment)
             throws IOException {
-        if (resFiles == null || zipFile == null) return false;
+        if (resFiles == null || zipFile == null) {
+            return false;
+        }
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zipFile));
             for (File resFile : resFiles) {
-                if (!zipFile(resFile, "", zos, comment)) return false;
+                if (!zipFile(resFile, "", zos, comment)) {
+                    return false;
+                }
             }
             return true;
         } finally {
@@ -189,7 +197,9 @@ public final class ZipUtils {
                                   final File zipFile,
                                   final String comment)
             throws IOException {
-        if (resFile == null || zipFile == null) return false;
+        if (resFile == null || zipFile == null) {
+            return false;
+        }
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zipFile));
@@ -228,7 +238,9 @@ public final class ZipUtils {
             } else {
                 for (File file : fileList) {
                     // 如果递归返回 false 则返回 false
-                    if (!zipFile(file, rootPath, zos, comment)) return false;
+                    if (!zipFile(file, rootPath, zos, comment)) {
+                        return false;
+                    }
                 }
             }
         } else {
@@ -308,7 +320,9 @@ public final class ZipUtils {
                                                 final File destDir,
                                                 final String keyword)
             throws IOException {
-        if (zipFile == null || destDir == null) return null;
+        if (zipFile == null || destDir == null) {
+            return null;
+        }
         List<File> files = new ArrayList<>();
         ZipFile zf = new ZipFile(zipFile);
         Enumeration<?> entries = zf.entries();
@@ -316,14 +330,18 @@ public final class ZipUtils {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = ((ZipEntry) entries.nextElement());
                 String entryName = entry.getName();
-                if (!unzipChildFile(destDir, files, zf, entry, entryName)) return files;
+                if (!unzipChildFile(destDir, files, zf, entry, entryName)) {
+                    return files;
+                }
             }
         } else {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = ((ZipEntry) entries.nextElement());
                 String entryName = entry.getName();
                 if (entryName.contains(keyword)) {
-                    if (!unzipChildFile(destDir, files, zf, entry, entryName)) return files;
+                    if (!unzipChildFile(destDir, files, zf, entry, entryName)) {
+                        return files;
+                    }
                 }
             }
         }
@@ -339,15 +357,17 @@ public final class ZipUtils {
         File file = new File(filePath);
         files.add(file);
         if (entry.isDirectory()) {
-            if (!createOrExistsDir(file)) return false;
+            return createOrExistsDir(file);
         } else {
-            if (!createOrExistsFile(file)) return false;
+            if (!createOrExistsFile(file)) {
+                return false;
+            }
             InputStream in = null;
             OutputStream out = null;
             try {
                 in = new BufferedInputStream(zf.getInputStream(entry));
                 out = new BufferedOutputStream(new FileOutputStream(file));
-                byte buffer[] = new byte[BUFFER_LEN];
+                byte[] buffer = new byte[BUFFER_LEN];
                 int len;
                 while ((len = in.read(buffer)) != -1) {
                     out.write(buffer, 0, len);
@@ -380,7 +400,9 @@ public final class ZipUtils {
      */
     public static List<String> getFilesPath(final File zipFile)
             throws IOException {
-        if (zipFile == null) return null;
+        if (zipFile == null) {
+            return null;
+        }
         List<String> paths = new ArrayList<>();
         Enumeration<?> entries = new ZipFile(zipFile).entries();
         while (entries.hasMoreElements()) {
@@ -410,7 +432,9 @@ public final class ZipUtils {
      */
     public static List<String> getComments(final File zipFile)
             throws IOException {
-        if (zipFile == null) return null;
+        if (zipFile == null) {
+            return null;
+        }
         List<String> comments = new ArrayList<>();
         Enumeration<?> entries = new ZipFile(zipFile).entries();
         while (entries.hasMoreElements()) {
@@ -425,9 +449,15 @@ public final class ZipUtils {
     }
 
     private static boolean createOrExistsFile(final File file) {
-        if (file == null) return false;
-        if (file.exists()) return file.isFile();
-        if (!createOrExistsDir(file.getParentFile())) return false;
+        if (file == null) {
+            return false;
+        }
+        if (file.exists()) {
+            return file.isFile();
+        }
+        if (!createOrExistsDir(file.getParentFile())) {
+            return false;
+        }
         try {
             return file.createNewFile();
         } catch (IOException e) {
@@ -441,7 +471,9 @@ public final class ZipUtils {
     }
 
     private static boolean isSpace(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;

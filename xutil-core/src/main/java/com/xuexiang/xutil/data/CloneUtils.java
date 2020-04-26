@@ -42,12 +42,16 @@ public final class CloneUtils {
     }
 
     public static <T> T deepClone(final Serializable data) {
-        if (data == null) return null;
+        if (data == null) {
+            return null;
+        }
         return (T) bytes2Object(serializable2Bytes(data));
     }
 
     private static byte[] serializable2Bytes(final Serializable serializable) {
-        if (serializable == null) return null;
+        if (serializable == null) {
+            return null;
+        }
         ByteArrayOutputStream baos;
         ObjectOutputStream oos = null;
         try {
@@ -63,7 +67,9 @@ public final class CloneUtils {
     }
 
     private static Object bytes2Object(final byte[] bytes) {
-        if (bytes == null) return null;
+        if (bytes == null) {
+            return null;
+        }
         ObjectInputStream ois = null;
         try {
             ois = new ObjectInputStream(new ByteArrayInputStream(bytes));

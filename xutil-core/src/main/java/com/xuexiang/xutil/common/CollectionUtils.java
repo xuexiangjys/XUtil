@@ -441,6 +441,47 @@ public final class CollectionUtils {
     }
 
     /**
+     * 获取非空元素的list集合
+     *
+     * @param list 集合
+     * @param <T>
+     * @return 非空元素的list集合
+     */
+    @NonNull
+    public static <T> List<T> getNonNullList(List<T> list) {
+        if (isEmpty(list)) {
+            return Collections.emptyList();
+        } else {
+            List<T> res = new ArrayList<>(list);
+            List<T> toRemoved = new ArrayList<>(list.size());
+            Iterator<T> it = list.iterator();
+
+            while (it.hasNext()) {
+                T t = it.next();
+                if (null == t) {
+                    toRemoved.add(null);
+                }
+            }
+            res.removeAll(toRemoved);
+            return res;
+        }
+    }
+
+
+    /**
+     * 获取集合的子集合
+     *
+     * @param source 源集合
+     * @param start  开始索引
+     * @param end    结束索引
+     * @param <T>
+     * @return 集合的子集合
+     */
+    public static <T> List<T> getSubList(List<T> source, int start, int end) {
+        return source != null && start >= 0 && end >= start && end <= source.size() ? source.subList(start, end) : null;
+    }
+
+    /**
      * 遍历修改Collection的监听
      *
      * @param <E>

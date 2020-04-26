@@ -115,7 +115,9 @@ public final class AppUtils {
      */
     @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final File file, final String authority) {
-        if (!FileUtils.isFileExists(file)) return;
+        if (!FileUtils.isFileExists(file)) {
+            return;
+        }
         XUtil.getContext().startActivity(IntentUtils.getInstallAppIntent(file, authority, true));
     }
 
@@ -154,7 +156,9 @@ public final class AppUtils {
                                   final File file,
                                   final String authority,
                                   final int requestCode) {
-        if (!FileUtils.isFileExists(file)) return;
+        if (!FileUtils.isFileExists(file)) {
+            return;
+        }
         activity.startActivityForResult(IntentUtils.getInstallAppIntent(file, authority),
                 requestCode);
     }
@@ -187,7 +191,9 @@ public final class AppUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentBelow24(Context context, final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
-        if (!FileUtils.isFileExists(file)) return false;
+        if (!FileUtils.isFileExists(file)) {
+            return false;
+        }
 
         String pmParams = " -r " + getInstallLocationParams();
 
@@ -213,7 +219,9 @@ public final class AppUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentAbove24(final String packageName, final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
-        if (!FileUtils.isFileExists(file)) return false;
+        if (!FileUtils.isFileExists(file)) {
+            return false;
+        }
         boolean isRoot = isDeviceRooted();
         String command = "pm install -i " + packageName + " --user 0 " + filePath;
         ShellUtils.CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
@@ -227,7 +235,9 @@ public final class AppUtils {
      * @param packageName 包名
      */
     public static void uninstallApp(final String packageName) {
-        if (isSpace(packageName)) return;
+        if (isSpace(packageName)) {
+            return;
+        }
         XUtil.getContext().startActivity(IntentUtils.getUninstallAppIntent(packageName, true));
     }
 
@@ -241,7 +251,9 @@ public final class AppUtils {
     public static void uninstallApp(final Activity activity,
                                     final String packageName,
                                     final int requestCode) {
-        if (isSpace(packageName)) return;
+        if (isSpace(packageName)) {
+            return;
+        }
         activity.startActivityForResult(IntentUtils.getUninstallAppIntent(packageName), requestCode);
     }
 
@@ -255,7 +267,9 @@ public final class AppUtils {
      * @return {@code true}: 卸载成功<br>{@code false}: 卸载失败
      */
     public static boolean uninstallAppSilent(final String packageName, final boolean isKeepData) {
-        if (isSpace(packageName)) return false;
+        if (isSpace(packageName)) {
+            return false;
+        }
         boolean isRoot = isDeviceRooted();
         String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm uninstall "
                 + (isKeepData ? "-k " : "")
@@ -281,7 +295,9 @@ public final class AppUtils {
      */
     public static boolean isAppRoot() {
         ShellUtils.CommandResult result = ShellUtils.execCommand("echo root", true);
-        if (result.result == 0) return true;
+        if (result.result == 0) {
+            return true;
+        }
         if (result.errorMsg != null) {
             Logger.dTag("AppUtils", "isAppRoot() called" + result.errorMsg);
         }
@@ -294,7 +310,9 @@ public final class AppUtils {
      * @param packageName 包名
      */
     public static void launchApp(final String packageName) {
-        if (isSpace(packageName)) return;
+        if (isSpace(packageName)) {
+            return;
+        }
         XUtil.getContext().startActivity(IntentUtils.getLaunchAppIntent(packageName, true));
     }
 
@@ -308,7 +326,9 @@ public final class AppUtils {
     public static void launchApp(final Activity activity,
                                  final String packageName,
                                  final int requestCode) {
-        if (isSpace(packageName)) return;
+        if (isSpace(packageName)) {
+            return;
+        }
         activity.startActivityForResult(IntentUtils.getLaunchAppIntent(packageName), requestCode);
     }
 
@@ -360,7 +380,9 @@ public final class AppUtils {
      * @param packageName 包名
      */
     public static void getAppDetailsSettings(final String packageName) {
-        if (isSpace(packageName)) return;
+        if (isSpace(packageName)) {
+            return;
+        }
         XUtil.getContext().startActivity(IntentUtils.getAppDetailsSettingsIntent(packageName, true));
     }
 
@@ -380,7 +402,9 @@ public final class AppUtils {
      * @return App 名称
      */
     public static String getAppName(final String packageName) {
-        if (isSpace(packageName)) return null;
+        if (isSpace(packageName)) {
+            return null;
+        }
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -407,7 +431,9 @@ public final class AppUtils {
      * @return App 图标
      */
     public static Drawable getAppIcon(final String packageName) {
-        if (isSpace(packageName)) return null;
+        if (isSpace(packageName)) {
+            return null;
+        }
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -434,7 +460,9 @@ public final class AppUtils {
      * @return App 路径
      */
     public static String getAppPath(final String packageName) {
-        if (isSpace(packageName)) return null;
+        if (isSpace(packageName)) {
+            return null;
+        }
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -461,7 +489,9 @@ public final class AppUtils {
      * @return App 版本号
      */
     public static String getAppVersionName(final String packageName) {
-        if (isSpace(packageName)) return null;
+        if (isSpace(packageName)) {
+            return null;
+        }
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -488,7 +518,9 @@ public final class AppUtils {
      * @return App 版本码
      */
     public static int getAppVersionCode(final String packageName) {
-        if (isSpace(packageName)) return -1;
+        if (isSpace(packageName)) {
+            return -1;
+        }
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -515,7 +547,9 @@ public final class AppUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isSystemApp(final String packageName) {
-        if (isSpace(packageName)) return false;
+        if (isSpace(packageName)) {
+            return false;
+        }
         try {
             PackageManager pm = getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
@@ -542,7 +576,9 @@ public final class AppUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isAppDebug(final String packageName) {
-        if (isSpace(packageName)) return false;
+        if (isSpace(packageName)) {
+            return false;
+        }
         try {
             PackageManager pm = getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
@@ -569,7 +605,9 @@ public final class AppUtils {
      * @return App 签名
      */
     public static Signature[] getAppSignature(final String packageName) {
-        if (isSpace(packageName)) return null;
+        if (isSpace(packageName)) {
+            return null;
+        }
         try {
             PackageManager pm = getPackageManager();
             @SuppressLint("PackageManagerGetSignatures")
@@ -600,7 +638,9 @@ public final class AppUtils {
      */
     public static String getAppSignatureSHA1(final String packageName) {
         Signature[] signature = getAppSignature(packageName);
-        if (signature == null) return null;
+        if (signature == null) {
+            return null;
+        }
         return EncryptUtils.encryptSHA1ToString(signature[0].toByteArray()).
                 replaceAll("(?<=[0-9A-F]{2})[0-9A-F]{2}", ":$0");
     }
@@ -613,7 +653,9 @@ public final class AppUtils {
     public static boolean isAppForeground() {
         ActivityManager manager = getActivityManager();
         List<ActivityManager.RunningAppProcessInfo> info = manager.getRunningAppProcesses();
-        if (info == null || info.size() == 0) return false;
+        if (info == null || info.size() == 0) {
+            return false;
+        }
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return aInfo.processName.equals(XUtil.getContext().getPackageName());
@@ -805,7 +847,9 @@ public final class AppUtils {
      * @return AppInfo 类
      */
     private static AppInfo getBean(final PackageManager pm, final PackageInfo pi) {
-        if (pm == null || pi == null) return null;
+        if (pm == null || pi == null) {
+            return null;
+        }
         ApplicationInfo ai = pi.applicationInfo;
         String packageName = pi.packageName;
         String name = ai.loadLabel(pm).toString();
@@ -832,7 +876,9 @@ public final class AppUtils {
         List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
         for (PackageInfo pi : installedPackages) {
             AppInfo ai = getBean(pm, pi);
-            if (ai == null) continue;
+            if (ai == null) {
+                continue;
+            }
             list.add(ai);
         }
         return list;
@@ -944,7 +990,9 @@ public final class AppUtils {
     }
 
     private static boolean isSpace(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;

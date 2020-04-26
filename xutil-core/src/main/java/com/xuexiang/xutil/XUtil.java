@@ -52,6 +52,7 @@ public final class XUtil {
 
     /**
      * 初始化工具
+     *
      * @param application
      */
     public static void init(Application application) {
@@ -61,6 +62,7 @@ public final class XUtil {
 
     /**
      * 初始化工具
+     *
      * @param context
      */
     public static void init(Context context) {
@@ -69,6 +71,7 @@ public final class XUtil {
 
     /**
      * 注册activity的生命回调
+     *
      * @param application
      * @param lifecycleHelper
      * @return
@@ -81,6 +84,7 @@ public final class XUtil {
 
     /**
      * 获取全局上下文
+     *
      * @return
      */
     public static Context getContext() {
@@ -111,14 +115,16 @@ public final class XUtil {
 
     /**
      * 设置日志记录
+     *
      * @param tag
      */
     public static void debug(String tag) {
-       Logger.debug(tag);
+        Logger.debug(tag);
     }
 
     /**
      * 获取主线程的Handler
+     *
      * @return
      */
     public static Handler getMainHandler() {
@@ -127,6 +133,7 @@ public final class XUtil {
 
     /**
      * 在主线程中执行
+     *
      * @param runnable
      * @return
      */
@@ -137,6 +144,7 @@ public final class XUtil {
 
     /**
      * 获取实例
+     *
      * @return
      */
     public static XUtil get() {
@@ -162,6 +170,5 @@ public final class XUtil {
         ProcessUtils.killBackgroundProcesses(XUtil.getContext().getPackageName());
         System.exit(0);
     }
-
 
 }

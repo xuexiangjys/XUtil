@@ -123,19 +123,29 @@ public final class CleanUtils {
     }
 
     private static boolean deleteFilesInDir(final File dir) {
-        if (dir == null) return false;
+        if (dir == null) {
+            return false;
+        }
         // 目录不存在返回 true
-        if (!dir.exists()) return true;
+        if (!dir.exists()) {
+            return true;
+        }
         // 不是目录返回 false
-        if (!dir.isDirectory()) return false;
+        if (!dir.isDirectory()) {
+            return false;
+        }
         // 现在文件存在且是文件夹
         File[] files = dir.listFiles();
         if (files != null && files.length != 0) {
             for (File file : files) {
                 if (file.isFile()) {
-                    if (!file.delete()) return false;
+                    if (!file.delete()) {
+                        return false;
+                    }
                 } else if (file.isDirectory()) {
-                    if (!deleteDir(file)) return false;
+                    if (!deleteDir(file)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -148,19 +158,29 @@ public final class CleanUtils {
      * @return
      */
     private static boolean deleteDir(final File dir) {
-        if (dir == null) return false;
+        if (dir == null) {
+            return false;
+        }
         // 目录不存在返回 true
-        if (!dir.exists()) return true;
+        if (!dir.exists()) {
+            return true;
+        }
         // 不是目录返回 false
-        if (!dir.isDirectory()) return false;
+        if (!dir.isDirectory()) {
+            return false;
+        }
         // 现在文件存在且是文件夹
         File[] files = dir.listFiles();
         if (files != null && files.length != 0) {
             for (File file : files) {
                 if (file.isFile()) {
-                    if (!file.delete()) return false;
+                    if (!file.delete()) {
+                        return false;
+                    }
                 } else if (file.isDirectory()) {
-                    if (!deleteDir(file)) return false;
+                    if (!deleteDir(file)) {
+                        return false;
+                    }
                 }
             }
         }

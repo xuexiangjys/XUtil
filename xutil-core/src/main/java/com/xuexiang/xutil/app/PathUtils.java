@@ -433,7 +433,9 @@ public final class PathUtils {
      */
     @Nullable
     public static Uri getUriForFile(final File file) {
-        if (file == null) return null;
+        if (file == null) {
+            return null;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             String authority = XUtil.getContext().getPackageName() + ".xutil.provider";
             return FileProvider.getUriForFile(XUtil.getContext(), authority, file);
@@ -451,7 +453,9 @@ public final class PathUtils {
      * @return file
      */
     public static File uri2File(final Uri uri, final String columnName) {
-        if (uri == null) return null;
+        if (uri == null) {
+            return null;
+        }
         CursorLoader cl = new CursorLoader(XUtil.getContext());
         cl.setUri(uri);
         cl.setProjection(new String[]{columnName});
@@ -483,7 +487,9 @@ public final class PathUtils {
      */
     @RequiresPermission(READ_EXTERNAL_STORAGE)
     public static String getFilePathByUri(Context context, Uri uri) {
-        if (context == null || uri == null) return null;
+        if (context == null || uri == null) {
+            return null;
+        }
 
         String path = null;
         String scheme = uri.getScheme();
