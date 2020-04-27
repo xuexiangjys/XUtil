@@ -27,9 +27,11 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
@@ -65,6 +67,7 @@ public final class ProcessUtils {
      *
      * @return 前台应用包名
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @RequiresPermission(PACKAGE_USAGE_STATS)
     public static String getForegroundProcessName() {
         ActivityManager manager =

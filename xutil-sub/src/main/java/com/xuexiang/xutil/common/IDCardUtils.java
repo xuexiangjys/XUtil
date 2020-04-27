@@ -15,8 +15,6 @@
  */
 package com.xuexiang.xutil.common;
 
-import android.support.annotation.NonNull;
-
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.text.DateFormat;

@@ -630,8 +630,8 @@ public final class StringUtils {
     /**
      * 比较两个版本号
      *
-     * @param versionName1
-     * @param versionName2
+     * @param versionName1 比较版本1
+     * @param versionName2 比较版本2
      * @return [> 0 versionName1 > versionName2] [= 0 versionName1 = versionName2]  [< 0 versionName1 < versionName2]
      */
     public static int compareVersionName(@NonNull String versionName1, @NonNull String versionName2) {

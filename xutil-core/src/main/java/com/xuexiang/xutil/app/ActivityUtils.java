@@ -250,7 +250,7 @@ public final class ActivityUtils {
      */
     public static Intent getActivityIntent(final Class<? extends Activity> cls, final String key, final Object param) {
         Intent intent = getActivityIntent(cls);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return intent;
     }
 
@@ -265,7 +265,7 @@ public final class ActivityUtils {
         Intent intent = getActivityIntent(cls);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return intent;
@@ -318,7 +318,7 @@ public final class ActivityUtils {
      */
     public static boolean startActivityForResult(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, to);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return startActivityForResult(from, intent, requestCode);
     }
 
@@ -346,7 +346,7 @@ public final class ActivityUtils {
         Intent intent = getActivityIntent(from, to);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return startActivityForResult(from, intent, requestCode);
@@ -362,7 +362,7 @@ public final class ActivityUtils {
     public static boolean startActivityWithBundle(final Class<? extends Activity> cls, final String key, final Object param) {
         Intent intent = getActivityIntent(cls);
         Bundle bundle = new Bundle();
-        bundle = IntentUtils.putBundle(bundle, key, param);
+        IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
         return startActivity(intent);
     }
@@ -379,7 +379,7 @@ public final class ActivityUtils {
     public static boolean startActivityForResultWithBundle(final Activity from, final Class<? extends Activity> to, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, to);
         Bundle bundle = new Bundle();
-        bundle = IntentUtils.putBundle(bundle, key, param);
+        IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
         return startActivityForResult(from, intent, requestCode);
     }
@@ -395,7 +395,7 @@ public final class ActivityUtils {
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                bundle = IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
+                IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
             }
             intent.putExtras(bundle);
         }
@@ -415,7 +415,7 @@ public final class ActivityUtils {
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                bundle = IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
+                IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
             }
             intent.putExtras(bundle);
         }
@@ -455,7 +455,7 @@ public final class ActivityUtils {
      */
     public static boolean startActivity(final String action, final String key, final Object param) {
         Intent intent = getActivityIntent(action);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return startActivity(intent);
     }
 
@@ -470,7 +470,7 @@ public final class ActivityUtils {
      */
     public static boolean startActivityForResult(final Activity from, final String action, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, action);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         return startActivityForResult(from, intent, requestCode);
     }
 
@@ -484,7 +484,7 @@ public final class ActivityUtils {
         Intent intent = getActivityIntent(action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return startActivity(intent);
@@ -502,7 +502,7 @@ public final class ActivityUtils {
         Intent intent = getActivityIntent(from, action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return startActivityForResult(from, intent, requestCode);
@@ -518,7 +518,7 @@ public final class ActivityUtils {
     public static boolean startActivityWithBundle(final String action, final String key, final Object param) {
         Intent intent = getActivityIntent(action);
         Bundle bundle = new Bundle();
-        bundle = IntentUtils.putBundle(bundle, key, param);
+        IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
         return startActivity(intent);
     }
@@ -535,7 +535,7 @@ public final class ActivityUtils {
     public static boolean startActivityForResultWithBundle(final Activity from, final String action, final int requestCode, final String key, final Object param) {
         Intent intent = getActivityIntent(from, action);
         Bundle bundle = new Bundle();
-        bundle = IntentUtils.putBundle(bundle, key, param);
+        IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
         return startActivityForResult(from, intent, requestCode);
     }
@@ -552,7 +552,7 @@ public final class ActivityUtils {
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                bundle = IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
+                IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
             }
             intent.putExtras(bundle);
         }
@@ -572,7 +572,7 @@ public final class ActivityUtils {
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                bundle = IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
+                IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
             }
             intent.putExtras(bundle);
         }

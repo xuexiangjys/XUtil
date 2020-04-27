@@ -124,7 +124,7 @@ public final class BroadcastUtils {
         Intent intent = getBroadCastIntent(context, cls, action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return intent;
@@ -141,7 +141,7 @@ public final class BroadcastUtils {
         Intent intent = getBroadCastIntent(cls, action);
         if (map != null && !map.isEmpty()) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                intent = IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
+                IntentUtils.putExtra(intent, entry.getKey(), entry.getValue());
             }
         }
         return intent;
@@ -203,7 +203,7 @@ public final class BroadcastUtils {
      */
     public static void sendBroadCast(Context context, Class<? extends BroadcastReceiver> cls, String action, String key, Object param) {
         Intent intent = getBroadCastIntent(context, cls, action);
-        intent = IntentUtils.putExtra(intent, key, param);
+        IntentUtils.putExtra(intent, key, param);
         context.sendBroadcast(intent);
     }
 
@@ -223,7 +223,7 @@ public final class BroadcastUtils {
             throw new Exception("the number of keys must be equal to params");
         }
         for (int i = 0; i < params.length; i++) {
-            intent = IntentUtils.putExtra(intent, keys[i], params[i]);
+            IntentUtils.putExtra(intent, keys[i], params[i]);
         }
         context.sendBroadcast(intent);
     }
@@ -274,7 +274,7 @@ public final class BroadcastUtils {
     public static void sendBroadCastWithBundle(Context context, Class<? extends BroadcastReceiver> cls, String action, String key, Object param) {
         Intent intent = getBroadCastIntent(context, cls, action);
         Bundle bundle = new Bundle();
-        bundle = IntentUtils.putBundle(bundle, key, param);
+        IntentUtils.putBundle(bundle, key, param);
         intent.putExtras(bundle);
         context.sendBroadcast(intent);
     }
@@ -303,7 +303,7 @@ public final class BroadcastUtils {
         if (map != null && !map.isEmpty()) {
             Bundle bundle = new Bundle();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                bundle = IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
+                IntentUtils.putBundle(bundle, entry.getKey(), entry.getValue());
             }
             intent.putExtras(bundle);
         }
@@ -367,8 +367,8 @@ public final class BroadcastUtils {
     public static void registerReceiver(Context context, BroadcastReceiver receiver, String... actions) {
         IntentFilter iFilter = new IntentFilter();
         if (actions != null && actions.length > 0) {
-            for (int i = 0; i < actions.length; i++) {
-                iFilter.addAction(actions[i]);
+            for (String action : actions) {
+                iFilter.addAction(action);
             }
         }
         context.registerReceiver(receiver, iFilter);

@@ -37,10 +37,12 @@ import java.util.Stack;
  */
 public class ActivityLifecycleHelper implements Application.ActivityLifecycleCallbacks {
 
-    private Stack<Activity> mActivityStack;
+    private final Stack<Activity> mActivityStack = new Stack<>();
+
+    private final Object mLock = new Object();
 
     public ActivityLifecycleHelper() {
-        mActivityStack = new Stack<>();
+
     }
 
     @Override
@@ -84,9 +86,6 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
      * 添加Activity到堆栈
      */
     private void addActivity(Activity activity) {
-        if (mActivityStack == null) {
-            mActivityStack = new Stack<>();
-        }
         mActivityStack.add(activity);
     }
 
@@ -111,7 +110,7 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     /**
      * 获取上一个Activity
      *
-     * @return
+     * @return 上一个Activity
      */
     public Activity getPreActivity() {
         int size = mActivityStack.size();
@@ -122,7 +121,7 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     /**
      * 某一个Activity是否存在
      *
-     * @return
+     * @return true : 存在, false: 不存在
      */
     public boolean isActivityExist(@NonNull Class<? extends Activity> clazz) {
         for (Activity activity : mActivityStack) {
@@ -164,16 +163,14 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
      * @param clazz activity的类
      */
     public void finishActivity(@NonNull Class<? extends Activity> clazz) {
-        if (mActivityStack != null) {
-            Iterator<Activity> it = mActivityStack.iterator();
-            synchronized (it) {
-                while (it.hasNext()) {
-                    Activity activity = it.next();
-                    if (clazz.getCanonicalName().equals(activity.getClass().getCanonicalName())) {
-                        if (!activity.isFinishing()) {
-                            it.remove();
-                            activity.finish();
-                        }
+        Iterator<Activity> it = mActivityStack.iterator();
+        synchronized (mLock) {
+            while (it.hasNext()) {
+                Activity activity = it.next();
+                if (StringUtils.equals(clazz.getCanonicalName(), activity.getClass().getCanonicalName())) {
+                    if (!activity.isFinishing()) {
+                        it.remove();
+                        activity.finish();
                     }
                 }
             }
@@ -184,20 +181,23 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        if (mActivityStack != null) {
-            for (int i = 0, size = mActivityStack.size(); i < size; i++) {
-                Activity activity = mActivityStack.get(i);
-                if (activity != null) {
-                    if (!activity.isFinishing()) {
-                        Logger.d("[FinishActivity]:" + StringUtils.getName(activity));
-                        activity.finish();
-                    }
+        for (int i = 0, size = mActivityStack.size(); i < size; i++) {
+            Activity activity = mActivityStack.get(i);
+            if (activity != null) {
+                if (!activity.isFinishing()) {
+                    Logger.d("[FinishActivity]:" + StringUtils.getName(activity));
+                    activity.finish();
                 }
             }
-            mActivityStack.clear();
         }
+        mActivityStack.clear();
     }
 
+    /**
+     * 获取当前Activity的活动栈
+     *
+     * @return 当前Activity的活动栈
+     */
     public Stack<Activity> getActivityStack() {
         return mActivityStack;
     }

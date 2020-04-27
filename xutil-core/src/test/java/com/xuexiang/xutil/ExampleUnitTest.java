@@ -1,5 +1,7 @@
 package com.xuexiang.xutil;
 
+import android.support.annotation.NonNull;
+
 import com.xuexiang.xutil.common.MapUtils;
 import com.xuexiang.xutil.data.DateUtils;
 
@@ -39,7 +41,7 @@ public class ExampleUnitTest {
 
         MapUtils.modifyMap(map, new MapUtils.OnModifyMapListener<String, String>() {
             @Override
-            public void onModifyMap(Iterator<Map.Entry<String, String>> it, Map.Entry<String, String> entry) {
+            public void onModifyMap(@NonNull Iterator<Map.Entry<String, String>> it, @NonNull Map.Entry<String, String> entry) {
                 String key = entry.getKey();
                 if ("4".equals(key)) {
                     it.remove();

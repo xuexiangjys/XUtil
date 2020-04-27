@@ -32,6 +32,8 @@ import java.util.Set;
  */
 public final class MapUtils {
 
+    private static final Object sLock = new Object();
+
     private MapUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -39,8 +41,8 @@ public final class MapUtils {
     /**
      * 获取map所有的key
      *
-     * @param map
-     * @return
+     * @param map map集合
+     * @return map所有的key
      */
     public static <T> String[] mapKeyToArray(@NonNull Map<String, T> map) {
         try {
@@ -56,9 +58,9 @@ public final class MapUtils {
     /**
      * 根据map中的key获取value值: key -> value
      *
-     * @param map
-     * @param key
-     * @return
+     * @param map map集合
+     * @param key 键
+     * @return 值
      */
     @Nullable
     public static <K, V> V getMapValueByKey(@NonNull Map<K, V> map, @NonNull K key) {
@@ -68,20 +70,18 @@ public final class MapUtils {
     /**
      * 根据map中的value获取对应的key: value -> key
      *
-     * @param map
-     * @param value
-     * @return
+     * @param map   map集合
+     * @param value 值
+     * @return key键
      */
     @Nullable
     public static <K, V> K getMapKeyByValue(@NonNull Map<K, V> map, @NonNull V value) {
-        K key = null;
         for (K item : map.keySet()) {
             if (value.equals(map.get(item))) {
-                key = item;
-                break;
+                return item;
             }
         }
-        return key;
+        return null;
     }
 
 
@@ -89,49 +89,45 @@ public final class MapUtils {
      * 获取map中第一个value
      *
      * @param map 数据源
-     * @return
+     * @return map中第一个非空value
      */
     @Nullable
     public static <K, V> V getFirstValue(LinkedHashMap<K, V> map) {
-        V value = null;
         for (V item : map.values()) {
             if (item != null) {
-                value = item;
-                break;
+                return item;
             }
         }
-        return value;
+        return null;
     }
 
     /**
      * 获取map中第一个key
      *
      * @param map 数据源
-     * @return
+     * @return map中第一个非空key
      */
     @Nullable
     public static <K, V> K getFirstKey(LinkedHashMap<K, V> map) {
-        K key = null;
         for (K item : map.keySet()) {
             if (item != null) {
-                key = item;
-                break;
+                return item;
             }
         }
-        return key;
+        return null;
     }
 
     /**
      * 修改map集合
      *
-     * @param map
-     * @param listener
+     * @param map      数据源
+     * @param listener 遍历修改map的监听
      * @param <K>
      * @param <V>
      */
     public static <K, V> void modifyMap(@NonNull Map<K, V> map, @NonNull OnModifyMapListener<K, V> listener) {
         Iterator<Map.Entry<K, V>> it = map.entrySet().iterator();
-        synchronized (it) {
+        synchronized (sLock) {
             while (it.hasNext()) {
                 Map.Entry<K, V> entry = it.next();
                 listener.onModifyMap(it, entry);
@@ -149,8 +145,8 @@ public final class MapUtils {
         /**
          * 修改map
          *
-         * @param it
-         * @param entry
+         * @param it    迭代器
+         * @param entry 迭代元素
          */
         void onModifyMap(@NonNull Iterator<Map.Entry<K, V>> it, @NonNull Map.Entry<K, V> entry);
     }
