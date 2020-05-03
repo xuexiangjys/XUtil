@@ -61,6 +61,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("通知");
         lists.add("社会化分享");
         lists.add("拍照");
+        lists.add("uri获取文件路径测试");
         return lists;
     }
 
@@ -92,6 +93,9 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 3:
                 openCamera();
+                break;
+            case 4:
+                openPage(UriPathFragment.class);
                 break;
             default:
                 break;

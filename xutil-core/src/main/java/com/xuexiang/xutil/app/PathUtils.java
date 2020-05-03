@@ -25,18 +25,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.content.FileProvider;
 
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.common.logger.Logger;
 
 import java.io.File;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 
 /**
  * <pre>
@@ -412,9 +414,8 @@ public final class PathUtils {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.DATA, filePath);
                 return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            } else {
-                return null;
             }
+            return null;
         }
     }
 
@@ -463,10 +464,9 @@ public final class PathUtils {
     /**
      * 根据uri获取文件的绝对路径，解决Android 4.4以上 根据uri获取路径的方法
      *
-     * @param uri
-     * @return
+     * @param uri 资源路径
+     * @return 文件路径
      */
-    @RequiresPermission(READ_EXTERNAL_STORAGE)
     public static String getFilePathByUri(Uri uri) {
         return getFilePathByUri(XUtil.getContext(), uri);
     }
@@ -474,25 +474,23 @@ public final class PathUtils {
     /**
      * 根据uri获取文件的绝对路径，解决Android 4.4以上 根据uri获取路径的方法
      *
-     * @param context
-     * @param uri
-     * @return
+     * @param context 上下文
+     * @param uri     资源路径
+     * @return 文件路径
      */
-    @RequiresPermission(READ_EXTERNAL_STORAGE)
     public static String getFilePathByUri(Context context, Uri uri) {
         if (context == null || uri == null) {
             return null;
         }
 
-        String path = null;
         String scheme = uri.getScheme();
         // 以 file:// 开头的
         if (ContentResolver.SCHEME_FILE.equals(scheme)) {
-            path = uri.getPath();
-            return path;
+            return uri.getPath();
         }
         // 以 content:// 开头的，比如 content://media/extenral/images/media/17766
         if (ContentResolver.SCHEME_CONTENT.equals(scheme) && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            String path = null;
             Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -511,14 +509,78 @@ public final class PathUtils {
             if (isExternalStorageDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
-                String type = split[0];
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                if (split.length == 2) {
+                    final String type = split[0];
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    } else {
+                        StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+                        try {
+                            Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+                            Method getVolumeList = storageManager.getClass().getMethod("getVolumeList");
+                            Method getUuid = storageVolumeClazz.getMethod("getUuid");
+                            Method getState = storageVolumeClazz.getMethod("getState");
+                            Method getPath = storageVolumeClazz.getMethod("getPath");
+                            Method isPrimary = storageVolumeClazz.getMethod("isPrimary");
+                            Method isEmulated = storageVolumeClazz.getMethod("isEmulated");
+
+                            Object result = getVolumeList.invoke(storageManager);
+
+                            final int length = Array.getLength(result);
+                            for (int i = 0; i < length; i++) {
+                                Object storageVolumeElement = Array.get(result, i);
+                                final boolean mounted = Environment.MEDIA_MOUNTED.equals(getState.invoke(storageVolumeElement))
+                                        || Environment.MEDIA_MOUNTED_READ_ONLY.equals(getState.invoke(storageVolumeElement));
+                                //if the media is not mounted, we need not get the volume details
+                                if (!mounted) {
+                                    continue;
+                                }
+                                //Primary storage is already handled.
+                                if ((Boolean) isPrimary.invoke(storageVolumeElement)
+                                        && (Boolean) isEmulated.invoke(storageVolumeElement)) {
+                                    continue;
+                                }
+                                String uuid = (String) getUuid.invoke(storageVolumeElement);
+                                if (uuid != null && uuid.equals(type)) {
+                                    return getPath.invoke(storageVolumeElement) + "/" + split[1];
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Logger.dTag("PathUtils", uri.toString() + " parse failed. " + ex.toString());
+                        }
+                    }
                 }
             } else if (isDownloadsDocument(uri)) {
-                String id = DocumentsContract.getDocumentId(uri);
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
-                return getDataColumn(context, contentUri, null, null);
+                String documentId = DocumentsContract.getDocumentId(uri);
+                long id = StringUtils.toLong(documentId, -1);
+                if (id != -1) {
+                    String[] contentUriPrefixesToTry = new String[]{
+                            "content://downloads/public_downloads",
+                            "content://downloads/all_downloads",
+                            "content://downloads/my_downloads"
+                    };
+                    for (String contentUriPrefix : contentUriPrefixesToTry) {
+                        Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), id);
+                        String filePath = getDataColumn(context, contentUri, null, null);
+                        if (filePath != null) {
+                            return filePath;
+                        }
+                    }
+                    return null;
+                } else {
+                    String[] split = documentId.split(":");
+                    String type = split[0];
+                    if (split.length == 2) {
+                        if ("raw".equals(type)) {
+                            return split[1];
+                        } else if ("msf".equals(type) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                            Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+                            String selection = MediaStore.Images.Media._ID + "=?";
+                            String[] selectionArgs = new String[]{split[1]};
+                            return getDataColumn(context, contentUri, selection, selectionArgs);
+                        }
+                    }
+                }
             } else if (isMediaDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
@@ -535,29 +597,29 @@ public final class PathUtils {
                 String[] selectionArgs = new String[]{split[1]};
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
-        } // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(scheme)) {
-            // Return the remote address
+        } else if (ContentResolver.SCHEME_CONTENT.equalsIgnoreCase(scheme)) {
             if (isGooglePhotosUri(uri)) {
                 return uri.getLastPathSegment();
             } else if (isHuaWeiUri(uri)) {
                 String uriPath = uri.getPath();
-                //content://com.huawei.hidisk.fileprovider/root/storage/emulated/0/Android/data/com.xxx.xxx/
-                if (uriPath != null && uriPath.startsWith("/root")) {
-                    return uriPath.replaceAll("/root", "");
+                if (!StringUtils.isEmpty(uriPath) && uriPath.startsWith("/root")) {
+                    return uriPath.replace("/root", "");
+                }
+            } else if (isQQUri(uri)) {
+                String uriPath = uri.getPath();
+                if (!StringUtils.isEmpty(uriPath)) {
+                    return Environment.getExternalStorageDirectory() + uriPath.substring("/QQBrowser".length());
                 }
             }
             return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(scheme)) {
+        } else if (ContentResolver.SCHEME_FILE.equalsIgnoreCase(scheme)) {
             return uri.getPath();
         }
         return null;
     }
 
 
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         String column = MediaStore.Images.Media.DATA;
         String[] projection = {column};
@@ -612,11 +674,21 @@ public final class PathUtils {
     /**
      * content://com.huawei.hidisk.fileprovider/root/storage/emulated/0/Android/data/com.xxx.xxx/
      *
-     * @param uri
-     * @return
+     * @param uri uri The Uri to check.
+     * @return Whether the Uri authority is HuaWei Uri.
      */
     public static boolean isHuaWeiUri(Uri uri) {
         return "com.huawei.hidisk.fileprovider".equals(uri.getAuthority());
+    }
+
+    /**
+     * content://com.tencent.mtt.fileprovider/QQBrowser/Android/data/com.xxx.xxx/
+     *
+     * @param uri uri The Uri to check.
+     * @return Whether the Uri authority is QQ Uri.
+     */
+    public static boolean isQQUri(Uri uri) {
+        return "com.tencent.mtt.fileprovider".equals(uri.getAuthority());
     }
 
 }
