@@ -18,7 +18,6 @@ package com.xuexiang.xutil.common;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -244,7 +243,7 @@ public final class ShellUtils {
         /**
          * result of command *
          */
-        public int result;
+        public final int result;
         /**
          * success message of command result *
          */

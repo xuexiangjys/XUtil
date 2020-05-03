@@ -77,15 +77,11 @@ public class TestRouterActivity extends BaseActivity {
 
     @OnClick(R.id.back)
     void OnClick(View v) {
-        switch(v.getId()) {
-            case R.id.back:
-                Intent i = new Intent();
-                i = IntentUtils.putExtra(i, "back", "返回的是1111");
-                setResult(RESULT_OK, i);
-                finish();
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.back) {
+            Intent i = new Intent();
+            IntentUtils.putExtra(i, "back", "返回的是1111");
+            setResult(RESULT_OK, i);
+            finish();
         }
     }
 

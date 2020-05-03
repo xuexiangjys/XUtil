@@ -85,10 +85,8 @@ public final class ObjectUtils {
             return true;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (obj instanceof android.util.LongSparseArray
-                    && ((android.util.LongSparseArray) obj).size() == 0) {
-                return true;
-            }
+            return obj instanceof android.util.LongSparseArray
+                    && ((android.util.LongSparseArray) obj).size() == 0;
         }
         return false;
     }

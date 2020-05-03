@@ -27,7 +27,7 @@ import java.lang.reflect.Type;
  * </pre>
  */
 public abstract class TypeToken<T> {
-    private final Type type;
+    private Type type;
 
     public TypeToken() {
         Type superclass = getClass().getGenericSuperclass();
@@ -35,7 +35,9 @@ public abstract class TypeToken<T> {
             throw new TypeException("No generics found!");
         } else {
             ParameterizedType type = (ParameterizedType)superclass;
-            this.type = type.getActualTypeArguments()[0];
+            if (type != null) {
+                this.type = type.getActualTypeArguments()[0];
+            }
         }
     }
 

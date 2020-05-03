@@ -35,7 +35,7 @@ public final class ConvertTools {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     public static String byte2HexString(byte byte1) {
         return bytes2HexString(new byte[]{byte1});
@@ -77,8 +77,8 @@ public final class ConvertTools {
         if (src == null || src.length <= 0) {
             return null;
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+        for (byte b : src) {
+            int v = b & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);

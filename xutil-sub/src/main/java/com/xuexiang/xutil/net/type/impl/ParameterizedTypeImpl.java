@@ -16,6 +16,8 @@
 
 package com.xuexiang.xutil.net.type.impl;
 
+import android.support.annotation.NonNull;
+
 import com.xuexiang.xutil.net.type.TypeException;
 
 import java.lang.reflect.ParameterizedType;
@@ -54,18 +56,25 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         }
     }
 
+    @NonNull
+    @Override
     public Type[] getActualTypeArguments() {
         return this.args;
     }
 
+    @NonNull
+    @Override
     public Type getRawType() {
         return raw;
     }
 
+    @Override
     public Type getOwnerType() {
         return owner;
     }
 
+    @NonNull
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(raw.getName());
@@ -107,17 +116,19 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         return sb.toString();
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         } else if (o != null && o instanceof ParameterizedTypeImpl) {
             ParameterizedTypeImpl that = (ParameterizedTypeImpl) o;
-            return !raw.equals(that.raw) ? false : (!Arrays.equals(args, that.args) ? false : (owner != null ? owner.equals(that.owner) : that.owner == null));
+            return raw.equals(that.raw) && (Arrays.equals(args, that.args) && (owner != null ? owner.equals(that.owner) : that.owner == null));
         } else {
             return false;
         }
     }
 
+    @Override
     public int hashCode() {
         int result = raw.hashCode();
         result = 31 * result + Arrays.hashCode(args);

@@ -454,10 +454,8 @@ public final class CollectionUtils {
         } else {
             List<T> res = new ArrayList<>(list);
             List<T> toRemoved = new ArrayList<>(list.size());
-            Iterator<T> it = list.iterator();
 
-            while (it.hasNext()) {
-                T t = it.next();
+            for (T t : list) {
                 if (null == t) {
                     toRemoved.add(null);
                 }

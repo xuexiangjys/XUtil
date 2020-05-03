@@ -145,7 +145,7 @@ public final class SpanUtils {
     private int spaceSize;
     private int spaceColor;
 
-    private SpannableStringBuilder mBuilder;
+    private final SpannableStringBuilder mBuilder;
 
     private int mType;
     private final int mTypeCharSequence = 0;
@@ -942,7 +942,7 @@ public final class SpanUtils {
         mBuilder.setSpan(new SpaceSpan(spaceSize, spaceColor), start, end, flag);
     }
 
-    class CustomLineHeightSpan extends CharacterStyle
+    static class CustomLineHeightSpan extends CharacterStyle
             implements LineHeightSpan {
 
         private final int height;
@@ -991,7 +991,7 @@ public final class SpanUtils {
         }
     }
 
-    class SpaceSpan extends ReplacementSpan {
+    static class SpaceSpan extends ReplacementSpan {
 
         private final int width;
         private final int color;
@@ -1033,7 +1033,7 @@ public final class SpanUtils {
         }
     }
 
-    class CustomQuoteSpan implements LeadingMarginSpan {
+    static class CustomQuoteSpan implements LeadingMarginSpan {
 
         private final int color;
         private final int stripeWidth;
@@ -1069,7 +1069,7 @@ public final class SpanUtils {
         }
     }
 
-    class CustomBulletSpan implements LeadingMarginSpan {
+    static class CustomBulletSpan implements LeadingMarginSpan {
 
         private final int color;
         private final int radius;
@@ -1119,6 +1119,7 @@ public final class SpanUtils {
     }
 
     @SuppressLint("ParcelCreator")
+    static
     class CustomTypefaceSpan extends TypefaceSpan {
 
         private final Typeface newType;
@@ -1129,12 +1130,12 @@ public final class SpanUtils {
         }
 
         @Override
-        public void updateDrawState(final TextPaint textPaint) {
+        public void updateDrawState(@NonNull final TextPaint textPaint) {
             apply(textPaint, newType);
         }
 
         @Override
-        public void updateMeasureState(final TextPaint paint) {
+        public void updateMeasureState(@NonNull final TextPaint paint) {
             apply(paint, newType);
         }
 
@@ -1217,9 +1218,9 @@ public final class SpanUtils {
             } else {
                 try {
                     drawable = ContextCompat.getDrawable(XUtil.getContext(), mResourceId);
-                    drawable.setBounds(
-                            0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()
-                    );
+                    if (drawable != null) {
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                    }
                 } catch (Exception e) {
                     Log.e("sms", "Unable to find resource: " + mResourceId);
                 }
@@ -1228,7 +1229,7 @@ public final class SpanUtils {
         }
     }
 
-    abstract class CustomDynamicDrawableSpan extends ReplacementSpan {
+    abstract static class CustomDynamicDrawableSpan extends ReplacementSpan {
 
         static final int ALIGN_BOTTOM = 0;
 
@@ -1318,8 +1319,8 @@ public final class SpanUtils {
         private WeakReference<Drawable> mDrawableRef;
     }
 
-    class ShaderSpan extends CharacterStyle implements UpdateAppearance {
-        private Shader mShader;
+    static class ShaderSpan extends CharacterStyle implements UpdateAppearance {
+        private final Shader mShader;
 
         private ShaderSpan(final Shader shader) {
             this.mShader = shader;
@@ -1331,10 +1332,11 @@ public final class SpanUtils {
         }
     }
 
-    class ShadowSpan extends CharacterStyle implements UpdateAppearance {
-        private float radius;
-        private float dx, dy;
-        private int shadowColor;
+    static class ShadowSpan extends CharacterStyle implements UpdateAppearance {
+        private final float radius;
+        private final float dx;
+        private final float dy;
+        private final int shadowColor;
 
         private ShadowSpan(final float radius,
                            final float dx,

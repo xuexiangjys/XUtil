@@ -43,7 +43,7 @@ public final class BLEHelper {
     /**
      * 系统蓝牙适配器
      */
-    private BluetoothAdapter mBluetoothAdapter;
+    private final BluetoothAdapter mBluetoothAdapter;
     /**
      * 已绑定蓝牙设备集合
      */
@@ -98,7 +98,7 @@ public final class BLEHelper {
     /**
      * BLE扫描回调
      */
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
             if (isCorrectDevice(device)) {
@@ -283,10 +283,10 @@ public final class BLEHelper {
             return;
         }
         if (mBondedList == null) {
-            mBondedList = new ArrayList<BluetoothDevice>();
+            mBondedList = new ArrayList<>();
         }
         if (mNewList == null) {
-            mNewList = new ArrayList<BluetoothDevice>();
+            mNewList = new ArrayList<>();
         }
         mBondedList.clear();
         mNewList.clear();

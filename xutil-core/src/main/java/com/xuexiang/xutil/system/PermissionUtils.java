@@ -62,7 +62,7 @@ public final class PermissionUtils {
     private SimpleCallback mSimpleCallback;
     private FullCallback mFullCallback;
     private ThemeCallback mThemeCallback;
-    private Set<String> mPermissions;
+    private final Set<String> mPermissions;
     private List<String> mPermissionsRequest;
     private List<String> mPermissionsGranted;
     private List<String> mPermissionsDenied;

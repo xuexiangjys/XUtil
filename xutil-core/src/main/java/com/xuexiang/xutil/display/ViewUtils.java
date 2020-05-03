@@ -199,7 +199,7 @@ public final class ViewUtils {
      * @return
      */
     public static <T extends View> List<T> getDescendants(ViewGroup parent, Class<T> filter, boolean includeSubClass) {
-        List<T> descendedViewList = new ArrayList<T>();
+        List<T> descendedViewList = new ArrayList<>();
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);

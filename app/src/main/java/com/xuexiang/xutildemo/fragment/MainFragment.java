@@ -17,7 +17,6 @@
 package com.xuexiang.xutildemo.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -26,10 +25,8 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xutil.app.IntentUtils;
-import com.xuexiang.xutil.app.SocialShareUtils;
 import com.xuexiang.xutil.app.router.Router;
 import com.xuexiang.xutil.common.ClickUtils;
-import com.xuexiang.xutil.data.DateUtils;
 import com.xuexiang.xutil.system.CameraUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
 import com.xuexiang.xutildemo.activity.TestRouterActivity;
@@ -41,7 +38,6 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.xuexiang.xaop.consts.PermissionConsts.CAMERA;
-import static com.xuexiang.xaop.consts.PermissionConsts.STORAGE;
 import static com.xuexiang.xutil.system.CameraUtils.REQUEST_CAMERA;
 
 /**

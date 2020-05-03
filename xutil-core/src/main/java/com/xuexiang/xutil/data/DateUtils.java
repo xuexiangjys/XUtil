@@ -32,8 +32,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.xuexiang.constant.TimeConstants.DAY;
-import static com.xuexiang.constant.TimeConstants.HOUR;
 import static com.xuexiang.constant.TimeConstants.MIN;
 import static com.xuexiang.constant.TimeConstants.SEC;
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
@@ -232,7 +230,9 @@ public final class DateUtils {
      * @return 转换成功：新时间格式，转换失败：{@link StringUtils#EMPTY}
      */
     public static String translateDateFormat(final String time, final DateFormat oldFormat, final DateFormat newFormat) {
-        if (StringUtils.isSpace(time)) return EMPTY;
+        if (StringUtils.isSpace(time)) {
+            return EMPTY;
+        }
 
         Date date = string2Date(time, oldFormat); //String -> Date
         return date != null ? date2String(date, newFormat) : EMPTY; //Date -> String
@@ -259,7 +259,9 @@ public final class DateUtils {
      */
     public static boolean isDateFormatRight(final String time, final DateFormat format) {
         //内容和格式出错，直接返回false
-        if (StringUtils.isSpace(time) || format == null) return false;
+        if (StringUtils.isSpace(time) || format == null) {
+            return false;
+        }
 
         try {
             Date date = format.parse(time);
@@ -280,7 +282,9 @@ public final class DateUtils {
      */
     @Nullable
     public static String convertTimeToFileName(String dateTime, String suffix) {
-        if (StringUtils.isSpace(dateTime)) return null;
+        if (StringUtils.isSpace(dateTime)) {
+            return null;
+        }
 
         Pattern p = Pattern.compile("[^\\d]+");
         Matcher m = p.matcher(dateTime);
@@ -764,7 +768,9 @@ public final class DateUtils {
         long span = now - millis;
         if (span < 0)
             // U can read http://www.apihome.cn/api/java/Formatter.html to understand it.
+        {
             return String.format("%tc", millis);
+        }
         if (span < 1000) {
             return "刚刚";
         } else if (span < MIN) {
@@ -884,10 +890,14 @@ public final class DateUtils {
      * @return
      */
     private static String millis2FitTimeSpan(long millis, int precision) {
-        if (millis < 0 || precision <= 0) return null;
+        if (millis < 0 || precision <= 0) {
+            return null;
+        }
         precision = Math.min(precision, 5);
         String[] units = {"天", "小时", "分钟", "秒", "毫秒"};
-        if (millis == 0) return 0 + units[precision - 1];
+        if (millis == 0) {
+            return 0 + units[precision - 1];
+        }
         StringBuilder sb = new StringBuilder();
         int[] unitLen = {DAY, HOUR, MIN, SEC, 1};
         for (int i = 0; i < precision; i++) {

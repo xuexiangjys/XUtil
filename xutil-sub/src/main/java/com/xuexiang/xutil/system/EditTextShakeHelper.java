@@ -17,7 +17,6 @@
 package com.xuexiang.xutil.system;
 
 import android.app.Service;
-import android.content.Context;
 import android.os.Vibrator;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
@@ -43,7 +42,7 @@ public class EditTextShakeHelper {
 	/**
 	 * 振动器
 	 */
-	private Vibrator mShakeVibrator;
+	private final Vibrator mShakeVibrator;
 
 	/**
 	 * 获取实例

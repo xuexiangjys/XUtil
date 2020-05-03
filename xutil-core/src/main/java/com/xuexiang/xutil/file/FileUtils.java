@@ -20,7 +20,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
 
@@ -92,7 +91,8 @@ public final class FileUtils {
      * 存在: /storage/emulated/0/Android/data/com.xxx.xxx/files;
      */
     public static String getDiskFilesDir() {
-        return isSDCardExist() && XUtil.getContext().getExternalFilesDir(null) != null ? XUtil.getContext().getExternalFilesDir(null).getPath() : XUtil.getContext().getFilesDir().getPath();
+        File file = XUtil.getContext().getExternalFilesDir(null);
+        return isSDCardExist() && file != null ? file.getPath() : XUtil.getContext().getFilesDir().getPath();
     }
 
     /**
@@ -1443,7 +1443,7 @@ public final class FileUtils {
     // copy from ConvertUtils
     ///////////////////////////////////////////////////////////////////////////
 
-    private static final char hexDigits[] =
+    private static final char[] hexDigits =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     /**

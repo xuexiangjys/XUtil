@@ -36,8 +36,8 @@ import java.util.Map;
  */
 public class BaseSPUtil {
 
-	private SharedPreferences mSP;
-	private Context mContext;
+	private final SharedPreferences mSP;
+	private final Context mContext;
 	
 	//=======================================初始化构造==================================================//
 	/**

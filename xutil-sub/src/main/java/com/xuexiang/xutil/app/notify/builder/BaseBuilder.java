@@ -483,9 +483,9 @@ public class BaseBuilder {
      * 按钮类
      */
     public static class BtnActionBean {
-        public int icon;
-        public CharSequence text;
-        public PendingIntent pendingIntent;
+        public final int icon;
+        public final CharSequence text;
+        public final PendingIntent pendingIntent;
 
         public BtnActionBean(int icon, CharSequence text, PendingIntent pendingIntent) {
             this.icon = icon;

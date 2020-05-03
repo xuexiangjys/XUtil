@@ -250,7 +250,7 @@ public final class ZipUtils {
                 ZipEntry entry = new ZipEntry(rootPath);
                 entry.setComment(comment);
                 zos.putNextEntry(entry);
-                byte buffer[] = new byte[BUFFER_LEN];
+                byte[] buffer = new byte[BUFFER_LEN];
                 int len;
                 while ((len = is.read(buffer, 0, BUFFER_LEN)) != -1) {
                     zos.write(buffer, 0, len);

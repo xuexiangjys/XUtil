@@ -17,9 +17,7 @@
 package com.xuexiang.xutil.common;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
@@ -355,8 +353,10 @@ public final class StringUtils {
      * @return 首字母大写字符串
      */
     public static String upperFirstLetter(final String s) {
-        if (isEmpty(s) || !Character.isLowerCase(s.charAt(0))) return s;
-        return String.valueOf((char) (s.charAt(0) - 32)) + s.substring(1);
+        if (isEmpty(s) || !Character.isLowerCase(s.charAt(0))) {
+            return s;
+        }
+        return (char) (s.charAt(0) - 32) + s.substring(1);
     }
 
     /**
@@ -366,8 +366,10 @@ public final class StringUtils {
      * @return 首字母小写字符串
      */
     public static String lowerFirstLetter(final String s) {
-        if (isEmpty(s) || !Character.isUpperCase(s.charAt(0))) return s;
-        return String.valueOf((char) (s.charAt(0) + 32)) + s.substring(1);
+        if (isEmpty(s) || !Character.isUpperCase(s.charAt(0))) {
+            return s;
+        }
+        return (char) (s.charAt(0) + 32) + s.substring(1);
     }
 
     /**

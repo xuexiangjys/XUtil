@@ -32,7 +32,7 @@ import java.util.*;
  */
 public final class JSONUtils {
 
-    public static boolean isPrintException = true;
+    public static final boolean isPrintException = true;
 
     private JSONUtils() {
         throw new UnsupportedOperationException("Do not need instantiate!");
@@ -471,7 +471,7 @@ public final class JSONUtils {
         try {
             JSONArray statusArray = jsonObject.getJSONArray(key);
             if (statusArray != null) {
-                List<String> list = new ArrayList<String>();
+                List<String> list = new ArrayList<>();
                 for (int i = 0; i < statusArray.length(); i++) {
                     list.add(statusArray.getString(i));
                 }
@@ -770,7 +770,7 @@ public final class JSONUtils {
             return null;
         }
         if (jsonData.length() == 0) {
-            return new HashMap<String, String>();
+            return new HashMap<>();
         }
 
         try {
@@ -799,7 +799,7 @@ public final class JSONUtils {
             return null;
         }
 
-        Map<String, String> keyAndValueMap = new HashMap<String, String>();
+        Map<String, String> keyAndValueMap = new HashMap<>();
         for (Iterator iter = sourceObj.keys(); iter.hasNext();) {
             String key = (String)iter.next();
             keyAndValueMap.put(key, getString(sourceObj, key, ""));

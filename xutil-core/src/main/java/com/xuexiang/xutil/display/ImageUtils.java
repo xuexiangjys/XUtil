@@ -267,7 +267,9 @@ public final class ImageUtils {
      * @return bitmap
      */
     public static Bitmap getBitmap(final InputStream is) {
-        if (is == null) return null;
+        if (is == null) {
+            return null;
+        }
         return BitmapFactory.decodeStream(is);
     }
 
@@ -333,6 +335,9 @@ public final class ImageUtils {
      */
     public static Bitmap getBitmap(@DrawableRes final int resId) {
         Drawable drawable = ContextCompat.getDrawable(XUtil.getContext(), resId);
+        if (drawable == null) {
+            return null;
+        }
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                 drawable.getIntrinsicHeight(),
@@ -370,7 +375,9 @@ public final class ImageUtils {
      * @return bitmap
      */
     public static Bitmap getBitmap(final FileDescriptor fd) {
-        if (fd == null) return null;
+        if (fd == null) {
+            return null;
+        }
         return BitmapFactory.decodeFileDescriptor(fd);
     }
 
@@ -402,7 +409,9 @@ public final class ImageUtils {
      * @param imageView
      */
     public static void clearImgMemory(ImageView imageView) {
-        if (imageView == null) return;
+        if (imageView == null) {
+            return;
+        }
 
         Drawable d = imageView.getDrawable();
         if (d != null && d instanceof BitmapDrawable) {
@@ -1427,15 +1436,15 @@ public final class ImageUtils {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }

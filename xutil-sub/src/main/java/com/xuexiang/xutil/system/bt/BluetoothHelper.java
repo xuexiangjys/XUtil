@@ -55,7 +55,7 @@ public class BluetoothHelper {
     /**
      * 系统蓝牙适配器
      */
-    private BluetoothAdapter mBluetoothAdapter;
+    private final BluetoothAdapter mBluetoothAdapter;
     /**
      * 已绑定蓝牙设备集合
      */
@@ -261,10 +261,10 @@ public class BluetoothHelper {
         registerBTReceiver();
 
         if (mBondedList == null) {
-            mBondedList = new ArrayList<BluetoothDevice>();
+            mBondedList = new ArrayList<>();
         }
         if (mNewList == null) {
-            mNewList = new ArrayList<BluetoothDevice>();
+            mNewList = new ArrayList<>();
         }
         mBondedList.clear();
         mNewList.clear();
@@ -384,11 +384,7 @@ public class BluetoothHelper {
      */
     public boolean isBluetoothBond(String address) {
         BluetoothDevice device = getBluetoothDevice(address);
-        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-            return true;
-        } else {
-            return false;
-        }
+        return device.getBondState() == BluetoothDevice.BOND_BONDED;
     }
 
     // ================================================对象销毁================================================//

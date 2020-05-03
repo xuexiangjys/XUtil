@@ -47,7 +47,7 @@ public final class WifiHelper {
     /**
      * wifi管理对象
      */
-    private WifiManager mWifiManager;
+    private final WifiManager mWifiManager;
     /**
      * wifi信息
      */
@@ -139,11 +139,11 @@ public final class WifiHelper {
         /**
          * 路由名称
          */
-        private String mWifiSsid;
+        private final String mWifiSsid;
         /**
          * 路由密码
          */
-        private String mWifiPassword;
+        private final String mWifiPassword;
 
         public WifiConnectRunnable(String wifiSsid, String wifiPassword) {
             mWifiSsid = wifiSsid;
@@ -414,9 +414,7 @@ public final class WifiHelper {
     public boolean checkSSIDState(String ssid) {
         mWifiInfo = mWifiManager.getConnectionInfo();
         if (mWifiInfo != null && getSSID() != null) {
-            if (getSSID().equals("\"" + ssid + "\"") || getSSID().equals(ssid)) {
-                return true;
-            }
+            return getSSID().equals("\"" + ssid + "\"") || getSSID().equals(ssid);
         }
         return false;
     }
@@ -471,7 +469,7 @@ public final class WifiHelper {
      * @return
      */
     public List<String> getScanResultList() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         if (mWifiList != null && mWifiList.size() > 0) {
             for (int i = 0; i < mWifiList.size(); i++) {
                 list.add(i + "号--  " + mWifiList.get(i).SSID);
@@ -486,7 +484,7 @@ public final class WifiHelper {
      * @return
      */
     public List<String> getConfigWifiList() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         if (mWifiConfiguration != null && mWifiConfiguration.size() > 0) {
             for (int i = 0; i < mWifiConfiguration.size(); i++) {
                 list.add(i + "号--  " + mWifiConfiguration.get(i).SSID);

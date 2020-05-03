@@ -19,6 +19,7 @@ package com.xuexiang.xutil.system;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
@@ -217,6 +218,7 @@ public final class RomUtils {
             this.romVersion = romVersion;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "romName: " + romName +

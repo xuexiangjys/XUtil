@@ -32,6 +32,7 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
@@ -802,6 +803,7 @@ public final class AppUtils {
             this.setSystem(isSystem);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "pkg name: " + getPackageName() +
@@ -928,7 +930,6 @@ public final class AppUtils {
      * @param key
      * @return Int类型的值
      */
-    @Nullable
     public static int getIntValueInMetaData(String key) {
         Bundle metaData = AppUtils.getMetaDatas();
         return metaData != null ? metaData.getInt(key) : 0;
@@ -940,7 +941,6 @@ public final class AppUtils {
      * @param key
      * @return Float类型的值
      */
-    @Nullable
     public static float getFloatValueInMetaData(String key) {
         Bundle metaData = AppUtils.getMetaDatas();
         return metaData != null ? metaData.getFloat(key) : 0F;
@@ -952,7 +952,6 @@ public final class AppUtils {
      * @param key
      * @return Double类型的值
      */
-    @Nullable
     public static double getDoubleValueInMetaData(String key) {
         Bundle metaData = AppUtils.getMetaDatas();
         return metaData != null ? metaData.getDouble(key) : 0D;

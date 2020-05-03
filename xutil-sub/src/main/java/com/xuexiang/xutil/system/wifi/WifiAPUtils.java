@@ -145,7 +145,7 @@ public final class WifiAPUtils {
 	public static int getAndroidSDKVersion() { 
 	   int version = 0; 
 	   try { 
-	     version = Integer.valueOf(android.os.Build.VERSION.SDK); 
+	     version = Integer.parseInt(android.os.Build.VERSION.SDK);
 	   } catch (NumberFormatException e) { 
 
 	   } 

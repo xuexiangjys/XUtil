@@ -16,7 +16,6 @@
 
 package com.xuexiang.xutil.app;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -251,7 +250,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的缓存目录
      */
     public static String getAppExtCachePath() {
-        return XUtil.getContext().getExternalCacheDir().getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalCacheDir());
     }
 
     /**
@@ -261,7 +260,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的文件目录
      */
     public static String getAppExtFilePath() {
-        return XUtil.getContext().getExternalFilesDir(null).getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(null));
     }
 
     /**
@@ -271,8 +270,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的闹钟铃声目录
      */
     public static String getAppExtAlarmsPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_ALARMS)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_ALARMS));
     }
 
     /**
@@ -281,9 +279,8 @@ public final class PathUtils {
      *
      * @return 此应用在外置储存中的相机目录
      */
-    public static String getAppExtDcimPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DCIM)
-                .getAbsolutePath();
+    public static String getAppExtDCIMPath() {
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DCIM));
     }
 
     /**
@@ -294,8 +291,7 @@ public final class PathUtils {
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getAppExtDocumentsPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS));
     }
 
     /**
@@ -305,8 +301,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的闹钟目录
      */
     public static String getAppExtDownloadPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
     }
 
     /**
@@ -316,8 +311,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的视频目录
      */
     public static String getAppExtMoviesPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_MOVIES)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_MOVIES));
     }
 
     /**
@@ -327,8 +321,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的音乐目录
      */
     public static String getAppExtMusicPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC));
     }
 
     /**
@@ -338,8 +331,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的提示音目录
      */
     public static String getAppExtNotificationsPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_NOTIFICATIONS)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_NOTIFICATIONS));
     }
 
     /**
@@ -349,8 +341,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的图片目录
      */
     public static String getAppExtPicturesPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES));
     }
 
     /**
@@ -360,8 +351,7 @@ public final class PathUtils {
      * @return 此应用在外置储存中的 Podcasts 目录
      */
     public static String getAppExtPodcastsPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_PODCASTS)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_PODCASTS));
     }
 
     /**
@@ -371,8 +361,11 @@ public final class PathUtils {
      * @return 此应用在外置储存中的铃声目录
      */
     public static String getAppExtRingtonesPath() {
-        return XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_RINGTONES)
-                .getAbsolutePath();
+        return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_RINGTONES));
+    }
+
+    private static String getFilePath(File file) {
+        return file != null ? file.getAbsolutePath() : "";
     }
 
     /**
@@ -524,7 +517,7 @@ public final class PathUtils {
                 }
             } else if (isDownloadsDocument(uri)) {
                 String id = DocumentsContract.getDocumentId(uri);
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
                 return getDataColumn(context, contentUri, null, null);
             } else if (isMediaDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);

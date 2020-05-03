@@ -121,7 +121,9 @@ public final class ACache {
      * @return {@link ACache}
      */
     public static ACache get(String cacheName, final long maxSize, final int maxCount) {
-        if (isSpace(cacheName)) cacheName = "ACache";
+        if (isSpace(cacheName)) {
+            cacheName = "ACache";
+        }
         File file = new File(XUtil.getContext().getCacheDir(), cacheName);
         return get(file, maxSize, maxCount);
     }
@@ -189,8 +191,12 @@ public final class ACache {
      * @param saveTime 保存时长，单位：秒
      */
     public void put(@NonNull final String key, @NonNull byte[] value, final int saveTime) {
-        if (value.length <= 0) return;
-        if (saveTime >= 0) value = CacheHelper.newByteArrayWithTime(saveTime, value);
+        if (value.length <= 0) {
+            return;
+        }
+        if (saveTime >= 0) {
+            value = CacheHelper.newByteArrayWithTime(saveTime, value);
+        }
         File file = mCacheManager.getFileBeforePut(key);
         CacheHelper.writeFileFromBytes(file, value);
         mCacheManager.updateModify(file);
@@ -216,7 +222,9 @@ public final class ACache {
      */
     public byte[] getBytes(@NonNull final String key, final byte[] defaultValue) {
         final File file = mCacheManager.getFileIfExists(key);
-        if (file == null) return defaultValue;
+        if (file == null) {
+            return defaultValue;
+        }
         byte[] data = CacheHelper.readFile2Bytes(file);
         if (CacheHelper.isDue(data)) {
             mCacheManager.removeByKey(key);
@@ -270,7 +278,9 @@ public final class ACache {
      */
     public String getString(@NonNull final String key, final String defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2String(bytes);
     }
 
@@ -320,7 +330,9 @@ public final class ACache {
      */
     public JSONObject getJSONObject(@NonNull final String key, final JSONObject defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2JSONObject(bytes);
     }
 
@@ -369,7 +381,9 @@ public final class ACache {
      */
     public JSONArray getJSONArray(@NonNull final String key, final JSONArray defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2JSONArray(bytes);
     }
 
@@ -418,7 +432,9 @@ public final class ACache {
      */
     public Bitmap getBitmap(@NonNull final String key, final Bitmap defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2Bitmap(bytes);
     }
 
@@ -466,7 +482,9 @@ public final class ACache {
      */
     public Drawable getDrawable(@NonNull final String key, final Drawable defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2Drawable(bytes);
     }
 
@@ -521,7 +539,9 @@ public final class ACache {
                                @NonNull final Parcelable.Creator<T> creator,
                                final T defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2Parcelable(bytes, creator);
     }
 
@@ -571,7 +591,9 @@ public final class ACache {
      */
     public Object getSerializable(@NonNull final String key, final Object defaultValue) {
         byte[] bytes = getBytes(key);
-        if (bytes == null) return defaultValue;
+        if (bytes == null) {
+            return defaultValue;
+        }
         return CacheHelper.bytes2Object(getBytes(key));
     }
 
@@ -615,7 +637,7 @@ public final class ACache {
         return mCacheManager.clear();
     }
 
-    private class CacheManager {
+    private static class CacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
         private final long sizeLimit;
@@ -680,7 +702,9 @@ public final class ACache {
 
         private File getFileIfExists(final String key) {
             File file = new File(cacheDir, String.valueOf(key.hashCode()));
-            if (!file.exists()) return null;
+            if (!file.exists()) {
+                return null;
+            }
             return file;
         }
 
@@ -701,8 +725,12 @@ public final class ACache {
 
         private boolean removeByKey(final String key) {
             File file = getFileIfExists(key);
-            if (file == null) return true;
-            if (!file.delete()) return false;
+            if (file == null) {
+                return true;
+            }
+            if (!file.delete()) {
+                return false;
+            }
             cacheSize.addAndGet(-file.length());
             cacheCount.addAndGet(-1);
             lastUsageDates.remove(file);
@@ -711,7 +739,9 @@ public final class ACache {
 
         private boolean clear() {
             File[] files = cacheDir.listFiles();
-            if (files == null || files.length <= 0) return true;
+            if (files == null || files.length <= 0) {
+                return true;
+            }
             boolean flag = true;
             for (File file : files) {
                 if (!file.delete()) {
@@ -736,7 +766,9 @@ public final class ACache {
          * @return 移除的字节数
          */
         private long removeOldest() {
-            if (lastUsageDates.isEmpty()) return 0;
+            if (lastUsageDates.isEmpty()) {
+                return 0;
+            }
             Long oldestUsage = Long.MAX_VALUE;
             File oldestFile = null;
             Set<Map.Entry<File, Long>> entries = lastUsageDates.entrySet();
@@ -749,7 +781,9 @@ public final class ACache {
                     }
                 }
             }
-            if (oldestFile == null) return 0;
+            if (oldestFile == null) {
+                return 0;
+            }
             long fileSize = oldestFile.length();
             if (oldestFile.delete()) {
                 lastUsageDates.remove(oldestFile);
@@ -828,7 +862,9 @@ public final class ACache {
 
         private static byte[] copyOfRange(final byte[] original, final int from, final int to) {
             int newLength = to - from;
-            if (newLength < 0) throw new IllegalArgumentException(from + " > " + to);
+            if (newLength < 0) {
+                throw new IllegalArgumentException(from + " > " + to);
+            }
             byte[] copy = new byte[newLength];
             System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
             return copy;
@@ -886,22 +922,30 @@ public final class ACache {
         }
 
         private static byte[] string2Bytes(final String string) {
-            if (string == null) return null;
+            if (string == null) {
+                return null;
+            }
             return string.getBytes();
         }
 
         private static String bytes2String(final byte[] bytes) {
-            if (bytes == null) return null;
+            if (bytes == null) {
+                return null;
+            }
             return new String(bytes);
         }
 
         private static byte[] jsonObject2Bytes(final JSONObject jsonObject) {
-            if (jsonObject == null) return null;
+            if (jsonObject == null) {
+                return null;
+            }
             return jsonObject.toString().getBytes();
         }
 
         private static JSONObject bytes2JSONObject(final byte[] bytes) {
-            if (bytes == null) return null;
+            if (bytes == null) {
+                return null;
+            }
             try {
                 return new JSONObject(new String(bytes));
             } catch (Exception e) {
@@ -911,12 +955,16 @@ public final class ACache {
         }
 
         private static byte[] jsonArray2Bytes(final JSONArray jsonArray) {
-            if (jsonArray == null) return null;
+            if (jsonArray == null) {
+                return null;
+            }
             return jsonArray.toString().getBytes();
         }
 
         private static JSONArray bytes2JSONArray(final byte[] bytes) {
-            if (bytes == null) return null;
+            if (bytes == null) {
+                return null;
+            }
             try {
                 return new JSONArray(new String(bytes));
             } catch (Exception e) {
@@ -926,7 +974,9 @@ public final class ACache {
         }
 
         private static byte[] parcelable2Bytes(final Parcelable parcelable) {
-            if (parcelable == null) return null;
+            if (parcelable == null) {
+                return null;
+            }
             Parcel parcel = Parcel.obtain();
             parcelable.writeToParcel(parcel, 0);
             byte[] bytes = parcel.marshall();
@@ -936,7 +986,9 @@ public final class ACache {
 
         private static <T> T bytes2Parcelable(final byte[] bytes,
                                               final Parcelable.Creator<T> creator) {
-            if (bytes == null) return null;
+            if (bytes == null) {
+                return null;
+            }
             Parcel parcel = Parcel.obtain();
             parcel.unmarshall(bytes, 0, bytes.length);
             parcel.setDataPosition(0);
@@ -946,7 +998,9 @@ public final class ACache {
         }
 
         private static byte[] serializable2Bytes(final Serializable serializable) {
-            if (serializable == null) return null;
+            if (serializable == null) {
+                return null;
+            }
             ByteArrayOutputStream baos;
             ObjectOutputStream oos = null;
             try {
@@ -962,7 +1016,9 @@ public final class ACache {
         }
 
         private static Object bytes2Object(final byte[] bytes) {
-            if (bytes == null) return null;
+            if (bytes == null) {
+                return null;
+            }
             ObjectInputStream ois = null;
             try {
                 ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
@@ -976,7 +1032,9 @@ public final class ACache {
         }
 
         private static byte[] bitmap2Bytes(final Bitmap bitmap) {
-            if (bitmap == null) return null;
+            if (bitmap == null) {
+                return null;
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
             return baos.toByteArray();
@@ -1035,7 +1093,9 @@ public final class ACache {
     }
 
     private static boolean isSpace(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;

@@ -41,7 +41,7 @@ public class NotifyFragment extends XPageSimpleListFragment {
 
     private int progresses = 0;
 
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     /**
      * 初始化例子

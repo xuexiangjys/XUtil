@@ -47,8 +47,8 @@ public class WifiAPHelper {
      */
     private String mWifiAPPassword;
 
-    private Handler mWifiHandler;
-    private WifiManager mWifiManager;
+    private final Handler mWifiHandler;
+    private final WifiManager mWifiManager;
 
     //工作进程
     private CloseWifiRunnable mCloseWifiRunnable;
@@ -182,6 +182,7 @@ public class WifiAPHelper {
      * 打开wifi热点的线程
      */
     private class StartWifiApRunnable implements Runnable {
+        @Override
         public void run() {
             int state = WifiAPUtils.getWifiApState();
             if (state == WifiAPUtils.WIFI_AP_STATE_FAILED) {
@@ -268,9 +269,7 @@ public class WifiAPHelper {
         if (wifiInfo != null) {
             String SSID = getSSID(wifiInfo);
             if (!StringUtils.isEmpty(SSID)) {
-                if (SSID.equals("\"" + ssid + "\"") || SSID.equals(ssid)) {
-                    return true;
-                }
+                return SSID.equals("\"" + ssid + "\"") || SSID.equals(ssid);
             }
         }
         return false;

@@ -251,7 +251,7 @@ public final class KeyboardUtils {
 
     /**
      * 修复软键盘内存泄漏
-     * <p>在{@link Activity#onDestroy()}中使用</p>
+     * <p>在 中使用</p>
      *
      * @param context context
      */
@@ -366,21 +366,14 @@ public final class KeyboardUtils {
      * <p>
      * 使用方法：
      * <p>需重写 onKeyDown</p>
-     *
-     * @param keyCode
-     * @return
-     * @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+     * public boolean onKeyDown(int keyCode, KeyEvent event) {
      * return KeyboardUtils.onDisableBackKeyDown(keyCode) && super.onKeyDown(keyCode, event) ;
      * }
+     *
+     * @param keyCode
      */
     public static boolean onDisableBackKeyDown(int keyCode) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                return false;
-            case KeyEvent.KEYCODE_HOME:
-                return false;
-        }
-        return true;
+        return keyCode != KeyEvent.KEYCODE_BACK && keyCode != KeyEvent.KEYCODE_HOME;
     }
 
     /**

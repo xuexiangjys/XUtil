@@ -41,7 +41,7 @@ public class ThreadPoolManager {
     /**
      * 线程池实例
      */
-    private ThreadPoolUtils mThreadPoolUtils;
+    private final ThreadPoolUtils mThreadPoolUtils;
 
     private ThreadPoolManager() {
         int num = Runtime.getRuntime().availableProcessors(); //默认使用固定大小的线程池，大小为可用进程数的两倍

@@ -714,7 +714,7 @@ public final class NetworkUtils {
         try {
             String[] urlParts = url.split("\\?");
             if (urlParts.length > 1) {
-                params = new HashMap<String, String>();
+                params = new HashMap<>();
                 String query = urlParts[1];
                 for (String param : query.split("&")) {
                     String[] pair = param.split("=");

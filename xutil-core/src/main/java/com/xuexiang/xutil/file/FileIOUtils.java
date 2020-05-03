@@ -795,7 +795,9 @@ public final class FileIOUtils {
      * @return 字符数组
      */
     public static byte[] readFile2BytesByMap(final File file) {
-        if (!isFileExists(file)) return null;
+        if (!isFileExists(file)) {
+            return null;
+        }
         FileChannel fc = null;
         try {
             fc = new RandomAccessFile(file, "r").getChannel();

@@ -114,7 +114,9 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
      */
     public Activity getPreActivity() {
         int size = mActivityStack.size();
-        if (size < 2) return null;
+        if (size < 2) {
+            return null;
+        }
         return mActivityStack.elementAt(size - 2);
     }
 

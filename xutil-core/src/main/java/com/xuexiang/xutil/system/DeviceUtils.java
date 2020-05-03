@@ -33,7 +33,6 @@ import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.AppUtils;
 import com.xuexiang.xutil.common.ShellUtils;
 import com.xuexiang.xutil.common.StringUtils;
-import com.xuexiang.xutil.net.JsonUtil;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -297,7 +296,7 @@ public final class DeviceUtils {
         try {
             List<NetworkInterface> nis = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface ni : nis) {
-                if (!ni.getName().equalsIgnoreCase("wlan0")) {
+                if (!"wlan0".equalsIgnoreCase(ni.getName())) {
                     continue;
                 }
                 byte[] macBytes = ni.getHardwareAddress();

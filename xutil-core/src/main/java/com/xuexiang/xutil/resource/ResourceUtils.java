@@ -17,7 +17,6 @@ package com.xuexiang.xutil.resource;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,11 +27,9 @@ import com.xuexiang.xutil.file.CloseUtils;
 import com.xuexiang.xutil.file.FileIOUtils;
 import com.xuexiang.xutil.file.FileUtils;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 
@@ -77,9 +74,11 @@ public final class ResourceUtils {
         InputStream inputStream = null;
         try {
             inputStream = openAssetsFile(fileName);
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-            return new String(buffer, encodingCode);
+            if (inputStream != null) {
+                byte[] buffer = new byte[inputStream.available()];
+                inputStream.read(buffer);
+                return new String(buffer, encodingCode);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -273,7 +272,7 @@ public final class ResourceUtils {
      */
     public static void copyFilesFromAssets(String oldPath, String newPath) {
         try {
-            String fileNames[] = getAssetManager().list(oldPath);// 获取assets目录下的所有文件及目录名
+            String[] fileNames = getAssetManager().list(oldPath);// 获取assets目录下的所有文件及目录名
             if (fileNames != null && fileNames.length > 0) {// 如果是目录
                 if (FileUtils.createOrExistsDir(newPath)) {
                     for (String fileName : fileNames) {

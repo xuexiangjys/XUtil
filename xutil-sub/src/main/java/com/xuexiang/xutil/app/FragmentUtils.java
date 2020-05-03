@@ -476,7 +476,7 @@ public final class FragmentUtils {
     public static void add(@NonNull final FragmentManager fm,
                            @NonNull final List<Fragment> adds,
                            @IdRes final int containerId,
-                           final String tags[],
+                           final String[] tags,
                            final int showIndex) {
         add(fm, adds.toArray(new Fragment[adds.size()]), containerId, tags, showIndex);
     }
@@ -492,7 +492,7 @@ public final class FragmentUtils {
     public static void add(@NonNull final FragmentManager fm,
                            @NonNull final Fragment[] adds,
                            @IdRes final int containerId,
-                           final String tags[],
+                           final String[] tags,
                            final int showIndex) {
         if (tags == null) {
             for (int i = 0, len = adds.length; i < len; ++i) {
@@ -1617,7 +1617,9 @@ public final class FragmentUtils {
     public static List<Fragment> getFragments(@NonNull final FragmentManager fm) {
         @SuppressWarnings("RestrictedApi")
         List<Fragment> fragments = fm.getFragments();
-        if (fragments == null || fragments.isEmpty()) return Collections.emptyList();
+        if (fragments == null || fragments.isEmpty()) {
+            return Collections.emptyList();
+        }
         return fragments;
     }
 
@@ -1806,10 +1808,10 @@ public final class FragmentUtils {
     }
 
     private static class Args {
-        int id;
-        boolean isHide;
-        boolean isAddStack;
-        String tag;
+        final int id;
+        final boolean isHide;
+        final boolean isAddStack;
+        final String tag;
 
         private Args(final int id, final boolean isHide, final boolean isAddStack) {
             this(id, null, isHide, isAddStack);
@@ -1825,14 +1827,15 @@ public final class FragmentUtils {
     }
 
     public static class FragmentNode {
-        Fragment fragment;
-        List<FragmentNode> next;
+        final Fragment fragment;
+        final List<FragmentNode> next;
 
         public FragmentNode(final Fragment fragment, final List<FragmentNode> next) {
             this.fragment = fragment;
             this.next = next;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return fragment.getClass().getSimpleName()

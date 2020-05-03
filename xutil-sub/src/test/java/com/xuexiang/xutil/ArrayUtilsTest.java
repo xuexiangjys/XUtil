@@ -16,11 +16,7 @@
 
 package com.xuexiang.xutil;
 
-import com.xuexiang.xutil.data.ArrayUtils;
-
 import org.junit.Test;
-
-import java.io.UnsupportedEncodingException;
 
 import static com.xuexiang.xutil.data.ArrayUtils.indexOf;
 import static com.xuexiang.xutil.data.ArrayUtils.lastIndexOf;
