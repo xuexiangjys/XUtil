@@ -134,7 +134,8 @@ public final class ClickUtils {
      */
     public static void exitBy2Click(long intervalMillis, OnClick2ExitListener listener) {
         if (!sIsExit) {
-            sIsExit = true; // 准备退出
+            sIsExit = true;
+            // 准备退出
             if (listener != null) {
                 listener.onRetry();
             } else {
@@ -144,14 +145,16 @@ public final class ClickUtils {
             tExit.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    sIsExit = false; // 取消退出
+                    // 取消退出
+                    sIsExit = false;
                 }
-            }, intervalMillis); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+                // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+            }, intervalMillis);
         } else {
             if (listener != null) {
                 listener.onExit();
             } else {
-                XUtil.get().exitApp();
+                XUtil.exitApp();
             }
         }
     }

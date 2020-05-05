@@ -83,6 +83,8 @@ public final class PathUtils {
         return Environment.getDownloadCacheDirectory().getAbsolutePath();
     }
 
+    //===============================内置私有存储空间===========================================//
+
     /**
      * 获取此应用的缓存目录
      * <pre>path: /data/data/package/cache</pre>
@@ -113,6 +115,8 @@ public final class PathUtils {
     public static String getAppIntDbPath(String name) {
         return XUtil.getContext().getDatabasePath(name).getAbsolutePath();
     }
+
+    //===============================外置公共存储空间，这部分需要获取读取权限，并且在Android10以后文件读取都需要使用ContentResolver进行操作===========================================//
 
     /**
      * 获取 Android 外置储存的根目录
@@ -245,6 +249,8 @@ public final class PathUtils {
                 .getAbsolutePath();
     }
 
+    //===============================外置内部存储空间，这部分不需要获取读取权限===========================================//
+
     /**
      * 获取此应用在外置储存中的缓存目录
      * <pre>path: /storage/emulated/0/Android/data/package/cache</pre>
@@ -300,7 +306,7 @@ public final class PathUtils {
      * 获取此应用在外置储存中的下载目录
      * <pre>path: /storage/emulated/0/Android/data/package/files/Download</pre>
      *
-     * @return 此应用在外置储存中的闹钟目录
+     * @return 此应用在外置储存中的下载目录
      */
     public static String getAppExtDownloadPath() {
         return getFilePath(XUtil.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
@@ -573,7 +579,8 @@ public final class PathUtils {
                     if (split.length == 2) {
                         if ("raw".equals(type)) {
                             return split[1];
-                        } else if ("msf".equals(type) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        } else if ("msf".equals(type) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            // content://media/external/downloads
                             Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
                             String selection = MediaStore.Images.Media._ID + "=?";
                             String[] selectionArgs = new String[]{split[1]};

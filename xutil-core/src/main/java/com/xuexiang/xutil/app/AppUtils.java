@@ -117,7 +117,7 @@ public final class AppUtils {
      */
     @RequiresPermission(REQUEST_INSTALL_PACKAGES)
     public static void installApp(final File file, final String authority) {
-        if (!FileUtils.isFileExists(file)) {
+        if (FileUtils.isFileExists(file)) {
             return;
         }
         XUtil.getContext().startActivity(IntentUtils.getInstallAppIntent(file, authority, true));
@@ -158,7 +158,7 @@ public final class AppUtils {
                                   final File file,
                                   final String authority,
                                   final int requestCode) {
-        if (!FileUtils.isFileExists(file)) {
+        if (FileUtils.isFileExists(file)) {
             return;
         }
         activity.startActivityForResult(IntentUtils.getInstallAppIntent(file, authority),
@@ -193,7 +193,7 @@ public final class AppUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentBelow24(Context context, final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
-        if (!FileUtils.isFileExists(file)) {
+        if (FileUtils.isFileExists(file)) {
             return false;
         }
 
@@ -221,7 +221,7 @@ public final class AppUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentAbove24(final String packageName, final String filePath) {
         File file = FileUtils.getFileByPath(filePath);
-        if (!FileUtils.isFileExists(file)) {
+        if (FileUtils.isFileExists(file)) {
             return false;
         }
         boolean isRoot = isDeviceRooted();
@@ -339,8 +339,8 @@ public final class AppUtils {
      */
     @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static void exitApp() {
-        if (XUtil.get().getActivityLifecycleHelper() != null) {
-            XUtil.get().getActivityLifecycleHelper().exit();
+        if (XUtil.getActivityLifecycleHelper() != null) {
+            XUtil.getActivityLifecycleHelper().exit();
         }
         ServiceUtils.stopAllRunningService(XUtil.getContext());
         ProcessUtils.killBackgroundProcesses(XUtil.getContext().getPackageName());
@@ -351,11 +351,14 @@ public final class AppUtils {
      * 重启app
      */
     @RequiresPermission(KILL_BACKGROUND_PROCESSES)
-    private void rebootApp() {
+    public static void rebootApp() {
         Intent intent = IntentUtils.getLaunchAppIntent(XUtil.getContext().getPackageName());
         PendingIntent restartIntent = PendingIntent.getActivity(XUtil.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager) XUtil.getContext().getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
+        if (mgr != null) {
+            // 1秒钟后重启应用
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent);
+        }
         //退出程序
         exitApp();
     }

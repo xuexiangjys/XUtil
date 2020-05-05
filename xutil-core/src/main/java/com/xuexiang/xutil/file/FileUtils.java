@@ -17,11 +17,19 @@
 package com.xuexiang.xutil.file;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StatFs;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.app.PathUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -173,23 +181,63 @@ public final class FileUtils {
     /**
      * 判断文件是否存在
      *
-     * @param filePath 文件路径
+     * @param file 文件
      * @return {@code true}: 存在<br>{@code false}: 不存在
      */
-    public static boolean isFileExists(final String filePath) {
-        return isFileExists(getFileByPath(filePath));
+    public static boolean isFileExists(final File file) {
+        if (file == null) {
+            return false;
+        }
+        if (file.exists()) {
+            return true;
+        }
+        return isFileExists(file.getAbsolutePath());
     }
 
     /**
      * 判断文件是否存在
      *
-     * @param file 文件
+     * @param filePath 文件路径
      * @return {@code true}: 存在<br>{@code false}: 不存在
      */
-    public static boolean isFileExists(final File file) {
-        return file != null && file.exists();
+    public static boolean isFileExists(final String filePath) {
+        File file = getFileByPath(filePath);
+        if (file == null) {
+            return false;
+        }
+        if (file.exists()) {
+            return true;
+        }
+        return isFileExistsApi29(filePath);
     }
 
+    /**
+     * Android 10判断文件是否存在的方法
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    private static boolean isFileExistsApi29(String filePath) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            AssetFileDescriptor afd = null;
+            ContentResolver cr = XUtil.getContentResolver();
+            try {
+                Uri uri = Uri.parse(filePath);
+                afd = cr.openAssetFileDescriptor(uri, "r");
+                if (afd == null) {
+                    return false;
+                } else {
+                    CloseUtils.closeIOQuietly(afd);
+                }
+            } catch (FileNotFoundException e) {
+                return false;
+            } finally {
+                CloseUtils.closeIOQuietly(afd);
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 判断文件目录是否存在
@@ -685,6 +733,32 @@ public final class FileUtils {
     //=======================文件删除=======================//
 
     /**
+     * 删除文件或目录
+     *
+     * @param filePath 文件的路径
+     * @return {@code true}: 删除成功<br>{@code false}: 删除失败
+     */
+    public static boolean delete(final String filePath) {
+        return delete(getFileByPath(filePath));
+    }
+
+    /**
+     * 删除文件或目录
+     *
+     * @param file 文件
+     * @return {@code true}: 删除成功<br>{@code false}: 删除失败
+     */
+    public static boolean delete(final File file) {
+        if (file == null) {
+            return false;
+        }
+        if (file.isDirectory()) {
+            return deleteDir(file);
+        }
+        return deleteFile(file);
+    }
+
+    /**
      * 删除目录
      *
      * @param dirPath 目录路径
@@ -753,8 +827,8 @@ public final class FileUtils {
     /**
      * 安全删除文件.
      *
-     * @param file
-     * @return
+     * @param file 需要删除的文件
+     * @return 是否删除成功
      */
     public static boolean deleteFileSafely(File file) {
         if (file != null && file.exists()) {
@@ -1513,6 +1587,76 @@ public final class FileUtils {
         } else {
             return String.format("%." + length + "fGB", (double) byteNum / 1073741824);
         }
+    }
+
+    /**
+     * 通知系统去扫描文件
+     *
+     * @param filePath The path of file.
+     */
+    public static void notifySystemToScan(final String filePath) {
+        notifySystemToScan(getFileByPath(filePath));
+    }
+
+    /**
+     * 通知系统去扫描文件.
+     *
+     * @param file The file.
+     */
+    public static void notifySystemToScan(final File file) {
+        if (file == null || !file.exists()) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = PathUtils.getUriForFile(file);
+        intent.setData(uri);
+        XUtil.getContext().sendBroadcast(intent);
+    }
+
+    /**
+     * 获取手机文件大小的总和
+     *
+     * @param anyPathInFs 任意文件路径.
+     * @return 手机文件大小的总和
+     */
+    public static long getFsTotalSize(String anyPathInFs) {
+        if (TextUtils.isEmpty(anyPathInFs)) {
+            return 0;
+        }
+        StatFs statFs = new StatFs(anyPathInFs);
+        long blockSize;
+        long totalSize;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockSize = statFs.getBlockSizeLong();
+            totalSize = statFs.getBlockCountLong();
+        } else {
+            blockSize = statFs.getBlockSize();
+            totalSize = statFs.getBlockCount();
+        }
+        return blockSize * totalSize;
+    }
+
+    /**
+     * 获取手机文件可用大小
+     *
+     * @param anyPathInFs 任意文件路径
+     * @return 手机文件可用大小
+     */
+    public static long getFsAvailableSize(final String anyPathInFs) {
+        if (TextUtils.isEmpty(anyPathInFs)) {
+            return 0;
+        }
+        StatFs statFs = new StatFs(anyPathInFs);
+        long blockSize;
+        long availableSize;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockSize = statFs.getBlockSizeLong();
+            availableSize = statFs.getAvailableBlocksLong();
+        } else {
+            blockSize = statFs.getBlockSize();
+            availableSize = statFs.getAvailableBlocks();
+        }
+        return blockSize * availableSize;
     }
 
     private static boolean isSpace(final String s) {

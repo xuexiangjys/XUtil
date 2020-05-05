@@ -41,18 +41,20 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         XUtil.init(this);
-        XUtil.debug(true);
+        XUtil.debug(isDebug());
 
         PageConfig.getInstance().setPageConfiguration(new PageConfiguration() {
             @Override
             public List<PageInfo> registerPages(Context context) {
                 return AppPageConfig.getInstance().getPages();
             }
-        }).debug("PageLog").init(this);
+        }).debug(isDebug() ? "PageLog" : null).init(this);
 
 
-        XAOP.init(this); //初始化插件
-        XAOP.debug(true); //日志打印切片开启
+        //初始化插件
+        XAOP.init(this);
+        //日志打印切片开启
+        XAOP.debug(isDebug());
         //设置动态申请权限切片 申请权限被拒绝的事件响应监听
         XAOP.setOnPermissionDeniedListener(new PermissionUtils.OnPermissionDeniedListener() {
             @Override
@@ -62,5 +64,10 @@ public class MyApp extends Application {
 
         });
     }
+
+    public static boolean isDebug() {
+        return BuildConfig.DEBUG;
+    }
+
 
 }
