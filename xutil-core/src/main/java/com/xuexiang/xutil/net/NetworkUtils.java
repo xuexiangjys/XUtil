@@ -325,9 +325,9 @@ public final class NetworkUtils {
     }
 
     /**
-     * 获取ConnectivityManager
+     * 获取获取连接管理者ConnectivityManager
      *
-     * @return
+     * @return 获取连接管理者
      */
     public static ConnectivityManager getConnectivityManager() {
         return (ConnectivityManager) XUtil.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -556,7 +556,7 @@ public final class NetworkUtils {
     //==============================================================网络状态==========================================================================//
 
     /**
-     * 枚举网络状态  NET_NO：没有网络 , NET_2G:2g网络 , NET_3G：3g网络, NET_4G：4g网络, NET_WIFI：wifi, NET_ETHERNET：有线网络, NET_UNKNOWN：未知网络
+     * 枚举网络状态  NET_NO：没有网络 , NET_2G:2g网络 , NET_3G：3g网络, NET_4G：4g网络, NET_5G：5g网络, NET_WIFI：wifi, NET_ETHERNET：有线网络, NET_UNKNOWN：未知网络
      */
     public enum NetState {
         /**
@@ -575,6 +575,10 @@ public final class NetworkUtils {
          * 4g网络
          */
         NET_4G,
+        /**
+         * 5g网络
+         */
+        NET_5G,
         /**
          * wifi
          */
@@ -597,6 +601,7 @@ public final class NetworkUtils {
      * @return type of network
      * <ul>
      * <li>{@link NetworkUtils.NetState#NET_WIFI   } </li>
+     * <li>{@link NetworkUtils.NetState#NET_5G     } </li>
      * <li>{@link NetworkUtils.NetState#NET_4G     } </li>
      * <li>{@link NetworkUtils.NetState#NET_3G     } </li>
      * <li>{@link NetworkUtils.NetState#NET_2G     } </li>
@@ -606,56 +611,80 @@ public final class NetworkUtils {
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static NetState getNetStateType() {
-        NetState stateCode = NetState.NET_NO;
-        ConnectivityManager cm = getConnectivityManager();
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni != null && ni.isConnectedOrConnecting()) {
-            switch (ni.getType()) {
-                case ConnectivityManager.TYPE_WIFI:
-                    stateCode = NetState.NET_WIFI;
-                    break;
-                case ConnectivityManager.TYPE_MOBILE:
-                    switch (ni.getSubtype()) {
-                        // 联通2g
-                        case TelephonyManager.NETWORK_TYPE_GPRS:
-                            // 电信2g
-                        case TelephonyManager.NETWORK_TYPE_CDMA:
-                            // 移动2g
-                        case TelephonyManager.NETWORK_TYPE_EDGE:
-                        case TelephonyManager.NETWORK_TYPE_1xRTT:
-                        case TelephonyManager.NETWORK_TYPE_IDEN:
-                            stateCode = NetState.NET_2G;
-                            break;
-                        // 电信3g
-                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
-                        case TelephonyManager.NETWORK_TYPE_UMTS:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                        case TelephonyManager.NETWORK_TYPE_HSDPA:
-                        case TelephonyManager.NETWORK_TYPE_HSUPA:
-                        case TelephonyManager.NETWORK_TYPE_HSPA:
-                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                        case TelephonyManager.NETWORK_TYPE_EHRPD:
-                        case TelephonyManager.NETWORK_TYPE_HSPAP:
-                            stateCode = NetState.NET_3G;
-                            break;
-                        case TelephonyManager.NETWORK_TYPE_LTE:
-                            stateCode = NetState.NET_4G;
-                            break;
-                        default:
-                            stateCode = NetState.NET_UNKNOWN;
-                            break;
-                    }
-                    break;
-                case ConnectivityManager.TYPE_ETHERNET:
-                    stateCode = NetState.NET_ETHERNET;
-                    break;
-                default:
-                    stateCode = NetState.NET_UNKNOWN;
-                    break;
-            }
-
+        if (isEthernet()) {
+            return NetState.NET_ETHERNET;
         }
-        return stateCode;
+        NetworkInfo info = getActiveNetworkInfo();
+        if (info != null && info.isAvailable()) {
+            if (info.getType() == ConnectivityManager.TYPE_WIFI) {
+                return NetState.NET_WIFI;
+            } else if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
+                switch (info.getSubtype()) {
+                    case TelephonyManager.NETWORK_TYPE_GSM:
+                    case TelephonyManager.NETWORK_TYPE_GPRS:
+                    case TelephonyManager.NETWORK_TYPE_CDMA:
+                    case TelephonyManager.NETWORK_TYPE_EDGE:
+                    case TelephonyManager.NETWORK_TYPE_1xRTT:
+                    case TelephonyManager.NETWORK_TYPE_IDEN:
+                        return NetState.NET_2G;
+
+                    case TelephonyManager.NETWORK_TYPE_TD_SCDMA:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                    case TelephonyManager.NETWORK_TYPE_UMTS:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                    case TelephonyManager.NETWORK_TYPE_HSDPA:
+                    case TelephonyManager.NETWORK_TYPE_HSUPA:
+                    case TelephonyManager.NETWORK_TYPE_HSPA:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                    case TelephonyManager.NETWORK_TYPE_EHRPD:
+                    case TelephonyManager.NETWORK_TYPE_HSPAP:
+                        return NetState.NET_3G;
+
+                    case TelephonyManager.NETWORK_TYPE_IWLAN:
+                    case TelephonyManager.NETWORK_TYPE_LTE:
+                        return NetState.NET_4G;
+
+                    case TelephonyManager.NETWORK_TYPE_NR:
+                        return NetState.NET_5G;
+                    default:
+                        String subtypeName = info.getSubtypeName();
+                        if (subtypeName.equalsIgnoreCase("TD-SCDMA")
+                                || subtypeName.equalsIgnoreCase("WCDMA")
+                                || subtypeName.equalsIgnoreCase("CDMA2000")) {
+                            return NetState.NET_3G;
+                        } else {
+                            return NetState.NET_UNKNOWN;
+                        }
+                }
+            } else {
+                return NetState.NET_UNKNOWN;
+            }
+        }
+        return NetState.NET_NO;
+    }
+
+    /**
+     * 是否是以太网
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
+     *
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    @RequiresPermission(ACCESS_NETWORK_STATE)
+    private static boolean isEthernet() {
+        final ConnectivityManager cm = getConnectivityManager();
+        if (cm == null) {
+            return false;
+        }
+        final NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
+        if (info == null) {
+            return false;
+        }
+        NetworkInfo.State state = info.getState();
+        if (null == state) {
+            return false;
+        }
+        return state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING;
     }
 
     /**
