@@ -1289,7 +1289,7 @@ public final class SpanUtils {
                 if (mVerticalAlignment == ALIGN_TOP) {
                     transY = top;
                 } else if (mVerticalAlignment == ALIGN_CENTER) {
-                    transY = (bottom + top - rect.height()) / 2;
+                    transY = (bottom + top - rect.height()) / 2F;
                 } else if (mVerticalAlignment == ALIGN_BASELINE) {
                     transY = y - rect.height();
                 } else {

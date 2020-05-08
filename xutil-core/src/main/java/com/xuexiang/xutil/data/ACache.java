@@ -718,7 +718,7 @@ public final class ACache {
         }
 
         private void updateModify(final File file) {
-            Long millis = System.currentTimeMillis();
+            long millis = System.currentTimeMillis();
             file.setLastModified(millis);
             lastUsageDates.put(file, millis);
         }

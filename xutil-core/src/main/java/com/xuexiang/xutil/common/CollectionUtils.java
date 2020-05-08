@@ -122,8 +122,22 @@ public final class CollectionUtils {
      * @param <E>
      */
     public static <E> void addListItem(final List<E> list, final int index, final E e) {
-        if (isIndexValid(list, index) && e != null) {
+        if (e != null && list != null && index >= 0 && index <= list.size()) {
             list.add(index, e);
+        }
+    }
+
+
+    /**
+     * 向集合指定索引位置增加元素
+     *
+     * @param list 集合
+     * @param e    增加的元素
+     * @param <E>
+     */
+    public static <E> void addListItem(final List<E> list, final E e) {
+        if (list != null && e != null) {
+            list.add(e);
         }
     }
 

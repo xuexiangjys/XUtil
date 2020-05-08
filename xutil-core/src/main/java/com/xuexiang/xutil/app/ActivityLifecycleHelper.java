@@ -46,38 +46,38 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
         Logger.v("[onActivityCreated]:" + StringUtils.getName(activity));
         addActivity(activity);
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
+    public void onActivityStarted(@NonNull Activity activity) {
         Logger.v("[onActivityStarted]:" + StringUtils.getName(activity));
     }
 
     @Override
-    public void onActivityResumed(Activity activity) {
+    public void onActivityResumed(@NonNull Activity activity) {
         Logger.v("[onActivityResumed]:" + StringUtils.getName(activity));
     }
 
     @Override
-    public void onActivityPaused(Activity activity) {
+    public void onActivityPaused(@NonNull Activity activity) {
         Logger.v("[onActivityPaused]:" + StringUtils.getName(activity));
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {
+    public void onActivityStopped(@NonNull Activity activity) {
         Logger.v("[onActivityStopped]:" + StringUtils.getName(activity));
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         Logger.v("[onActivitySaveInstanceState]:" + StringUtils.getName(activity));
     }
 
     @Override
-    public void onActivityDestroyed(Activity activity) {
+    public void onActivityDestroyed(@NonNull Activity activity) {
         Logger.v("[onActivityDestroyed]:" + StringUtils.getName(activity));
         removeActivity(activity);
     }

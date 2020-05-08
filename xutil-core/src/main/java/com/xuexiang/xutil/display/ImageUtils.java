@@ -1064,7 +1064,7 @@ public final class ImageUtils {
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(src, 0, 0, null);
         //画分隔线
-        canvas.drawLine(src.getWidth() + spaceWidth / 2, 0, src.getWidth() + spaceWidth / 2, height, getDividerLinePaint(spaceWidth, dividerLineColor));
+        canvas.drawLine(src.getWidth() + spaceWidth / 2F, 0, src.getWidth() + spaceWidth / 2F, height, getDividerLinePaint(spaceWidth, dividerLineColor));
 
         canvas.drawBitmap(mergeBitmap, src.getWidth() + spaceWidth, 0, null);
         return result;
@@ -1086,7 +1086,7 @@ public final class ImageUtils {
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(src, 0, 0, null);
         //画分隔线
-        canvas.drawLine(0, src.getHeight() + spaceWidth / 2, width, src.getHeight() + spaceWidth / 2, getDividerLinePaint(spaceWidth, dividerLineColor));
+        canvas.drawLine(0, src.getHeight() + spaceWidth / 2F, width, src.getHeight() + spaceWidth / 2F, getDividerLinePaint(spaceWidth, dividerLineColor));
 
         canvas.drawBitmap(mergeBitmap, 0, src.getHeight() + spaceWidth, null);
         return result;
