@@ -15,23 +15,24 @@
  */
 package com.xuexiang.xutil.resource;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import com.xuexiang.xutil.common.StringUtils;
-import com.xuexiang.xutil.display.ImageUtils;
-import com.xuexiang.xutil.file.CloseUtils;
-import com.xuexiang.xutil.file.FileIOUtils;
-import com.xuexiang.xutil.file.FileUtils;
-
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+
+import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.common.logger.Logger;
+import com.xuexiang.xutil.display.ImageUtils;
+import com.xuexiang.xutil.file.CloseUtils;
+import com.xuexiang.xutil.file.FileIOUtils;
+import com.xuexiang.xutil.file.FileUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
 
@@ -44,7 +45,10 @@ import static com.xuexiang.xutil.common.StringUtils.EMPTY;
  */
 public final class ResourceUtils {
 
-    private static final String LINE_BREAK = "\r\n";// 换行符
+    /**
+     * 换行符
+     */
+    private static final String LINE_BREAK = "\r\n";
 
     /**
      * Don't let anyone instantiate this class.
@@ -57,7 +61,7 @@ public final class ResourceUtils {
      * 读取assert下的txt文件
      *
      * @param fileName 文件名
-     * @return
+     * @return 文本内容
      */
     public static String readStringFromAssert(String fileName) {
         return readStringFromAssert(fileName, "utf-8");
@@ -68,7 +72,7 @@ public final class ResourceUtils {
      *
      * @param fileName     文件名
      * @param encodingCode 字符编码
-     * @return
+     * @return 文本内容
      */
     public static String readStringFromAssert(String fileName, String encodingCode) {
         InputStream inputStream = null;
@@ -80,7 +84,7 @@ public final class ResourceUtils {
                 return new String(buffer, encodingCode);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(inputStream);
         }
@@ -90,14 +94,14 @@ public final class ResourceUtils {
     /**
      * 打开Assets下的文件
      *
-     * @param fileName
-     * @return
+     * @param fileName Assets下的文件名
+     * @return 文件流
      */
     public static InputStream openAssetsFile(String fileName) {
         try {
-            return getAssetManager().open(fileName);
+            return openAssetsFileWithException(fileName);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.e(e);
         }
         return null;
     }
@@ -105,8 +109,8 @@ public final class ResourceUtils {
     /**
      * 打开Assets下的文件
      *
-     * @param fileName
-     * @return
+     * @param fileName Assets下的文件名
+     * @return 文件流
      * @throws IOException
      */
     public static InputStream openAssetsFileWithException(String fileName) throws IOException {
@@ -201,7 +205,7 @@ public final class ResourceUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(br);
         }
@@ -221,7 +225,7 @@ public final class ResourceUtils {
             is = am.open(fileName);
             return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(is);
         }
@@ -240,7 +244,7 @@ public final class ResourceUtils {
             is = openAssetsFileWithException(RUtils.DRAWABLE + "/" + fileName);
             return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(is);
         }
@@ -257,7 +261,7 @@ public final class ResourceUtils {
             is = openAssetsFileWithException(RUtils.DRAWABLE + "/" + fileName);
             return ImageUtils.bitmap2Drawable(BitmapFactory.decodeStream(is));
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.e(e);
         } finally {
             CloseUtils.closeIO(is);
         }
@@ -272,8 +276,10 @@ public final class ResourceUtils {
      */
     public static void copyFilesFromAssets(String oldPath, String newPath) {
         try {
-            String[] fileNames = getAssetManager().list(oldPath);// 获取assets目录下的所有文件及目录名
-            if (fileNames != null && fileNames.length > 0) {// 如果是目录
+            // 获取assets目录下的所有文件及目录名
+            String[] fileNames = getAssetManager().list(oldPath);
+            // 如果是目录
+            if (fileNames != null && fileNames.length > 0) {
                 if (FileUtils.createOrExistsDir(newPath)) {
                     for (String fileName : fileNames) {
                         copyFilesFromAssets(oldPath + File.separator + fileName, newPath + File.separator + fileName);
@@ -283,7 +289,7 @@ public final class ResourceUtils {
                 FileIOUtils.writeFileFromIS(newPath, getAssetManager().open(oldPath));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e);
         }
     }
 
@@ -300,7 +306,7 @@ public final class ResourceUtils {
                 return FileIOUtils.writeFileFromIS(destDir + File.separator + fileName, getAssetManager().open(srcDir + File.separator + fileName));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e);
         }
         return false;
     }
@@ -322,9 +328,9 @@ public final class ResourceUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e);
         }
-        return "";
+        return EMPTY;
     }
 
 }

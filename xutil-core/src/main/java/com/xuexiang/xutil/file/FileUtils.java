@@ -30,6 +30,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.PathUtils;
+import com.xuexiang.xutil.app.SAFUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -218,12 +219,11 @@ public final class FileUtils {
      * @return {@code true}: 存在<br>{@code false}: 不存在
      */
     private static boolean isFileExistsApi29(String filePath) {
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AssetFileDescriptor afd = null;
-            ContentResolver cr = XUtil.getContentResolver();
             try {
                 Uri uri = Uri.parse(filePath);
-                afd = cr.openAssetFileDescriptor(uri, "r");
+                afd = SAFUtils.openAssetFileDescriptor(uri);
                 if (afd == null) {
                     return false;
                 } else {
