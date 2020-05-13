@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresPermission;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.app.ActivityLifecycleHelper;
 import com.xuexiang.xutil.app.AppUtils;
@@ -133,6 +134,36 @@ public final class XUtil {
      */
     public static PackageManager getPackageManager() {
         return getContext().getPackageManager();
+    }
+
+    /**
+     * 获取系统服务
+     *
+     * @param name  服务名
+     * @param clazz 服务类
+     * @param <T>
+     * @return 系统服务
+     */
+    public static <T> T getSystemService(String name, Class<T> clazz) {
+        return getSystemService(getContext(), name, clazz);
+    }
+
+    /**
+     * 获取系统服务
+     *
+     * @param context 上下文
+     * @param name    服务名
+     * @param clazz   服务类
+     * @param <T>
+     * @return 系统服务
+     */
+    public static <T> T getSystemService(Context context, String name, Class<T> clazz) {
+        if (!TextUtils.isEmpty(name) && clazz != null && context != null) {
+            Object obj = context.getSystemService(name);
+            return clazz.isInstance(obj) ? (T) obj : null;
+        } else {
+            return null;
+        }
     }
 
     /**

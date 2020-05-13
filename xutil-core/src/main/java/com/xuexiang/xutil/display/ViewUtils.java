@@ -29,6 +29,7 @@ import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.view.TouchDelegate;
@@ -489,7 +490,6 @@ public final class ViewUtils {
 
     //=====================设置Padding==============================//
 
-
     /**
      * 扩展点击区域的范围
      *
@@ -576,5 +576,66 @@ public final class ViewUtils {
         }
     }
 
+    //=====================设置Margin==============================//
+
+    /**
+     * 设置view的margin<br>
+     * 当且仅当 新的start,top,end,bottom 至少有之一 与原值不相同，为避免不必要的requestlayout
+     *
+     * @param view   控件
+     * @param start  左侧距离
+     * @param top    顶部距离
+     * @param end    右侧距离
+     * @param bottom 底部距离
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static void setViewMargin(View view, int start, int top, int end, int bottom) {
+        ViewGroup.MarginLayoutParams lp = getLayoutParams(view, ViewGroup.MarginLayoutParams.class);
+        if (lp != null) {
+            int oldStart = lp.getMarginStart();
+            int oldTop = lp.topMargin;
+            int oldEnd = lp.getMarginEnd();
+            int oldBottom = lp.bottomMargin;
+
+            if (oldStart != start || oldTop != top || oldEnd != end || oldBottom != bottom) {
+                lp.setMarginStart(start);
+                lp.topMargin = top;
+                lp.setMarginEnd(end);
+                lp.bottomMargin = bottom;
+                setLayoutParams(view, lp);
+            }
+        }
+    }
+
+    /**
+     * 获取视图布局参数
+     *
+     * @param view  视图
+     * @param clazz 待转换的类型
+     * @param <T>   数据类型模板
+     * @return 视图布局参数
+     */
+    public static <T> T getLayoutParams(View view, Class<? extends ViewGroup.LayoutParams> clazz) {
+        if (view == null || clazz == null) {
+            return null;
+        }
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (clazz.isInstance(layoutParams)) {
+            return (T) layoutParams;
+        }
+        return null;
+    }
+
+    /**
+     * 设置视图布局参数
+     *
+     * @param view   视图
+     * @param params 布局参数
+     */
+    public static void setLayoutParams(View view, ViewGroup.LayoutParams params) {
+        if (view != null && params != null) {
+            view.setLayoutParams(params);
+        }
+    }
 
 }

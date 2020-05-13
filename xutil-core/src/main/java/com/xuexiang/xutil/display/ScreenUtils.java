@@ -27,6 +27,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
@@ -56,7 +57,7 @@ public final class ScreenUtils {
      * @return 屏幕宽
      */
     public static int getScreenWidth() {
-        WindowManager wm = (WindowManager) XUtil.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
         if (wm == null) {
             return ResUtils.getResources().getDisplayMetrics().widthPixels;
         }
@@ -75,7 +76,7 @@ public final class ScreenUtils {
      * @return 屏幕高
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) XUtil.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
         if (wm == null) {
             return ResUtils.getResources().getDisplayMetrics().heightPixels;
         }
@@ -86,6 +87,71 @@ public final class ScreenUtils {
             wm.getDefaultDisplay().getSize(point);
         }
         return point.y;
+    }
+
+    /**
+     * 获取屏幕高度尺寸 <BR>
+     *
+     * @param isReal 是否忽略导航栏显示隐藏
+     * @return 屏幕高度尺寸
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static int getDisplayMetrics(boolean isReal) {
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
+        DisplayMetrics dm = new DisplayMetrics();
+        if (wm != null) {
+            if (isReal) {
+                wm.getDefaultDisplay().getRealMetrics(dm);
+            } else {
+                wm.getDefaultDisplay().getMetrics(dm);
+            }
+        }
+        return dm.heightPixels;
+    }
+
+    /**
+     * 获取屏幕实际尺寸<BR>
+     * 忽略导航栏显示隐藏
+     *
+     * @return 屏幕实际尺寸
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static DisplayMetrics getRealDisplayMetrics() {
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
+        if (wm != null) {
+            wm.getDefaultDisplay().getRealMetrics(dm);
+        }
+        return dm;
+    }
+
+    /**
+     * 获取屏幕的尺寸
+     *
+     * @return 屏幕的尺寸
+     */
+    private static Point getDisplaySize() {
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
+        Point size = new Point();
+        if (wm != null) {
+            wm.getDefaultDisplay().getSize(size);
+        }
+        return size;
+    }
+
+    /**
+     * 获取显示的实际大小，而不减去应用任何兼容性比例因子的任何窗口装饰。
+     *
+     * @return 屏幕的实际尺寸
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private static Point getDisplayRealSize() {
+        WindowManager wm = XUtil.getSystemService(Context.WINDOW_SERVICE, WindowManager.class);
+        Point size = new Point();
+        if (wm != null) {
+            wm.getDefaultDisplay().getRealSize(size);
+        }
+        return size;
     }
 
     /**
@@ -329,7 +395,7 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    XUtil.getContext().getContentResolver(),
+                    XUtil.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT
             );
         } catch (Settings.SettingNotFoundException e) {
@@ -410,7 +476,7 @@ public final class ScreenUtils {
     private static void adaptScreen(final Activity activity,
                                     final float sizeInDp,
                                     final boolean isVerticalSlide) {
-        final DisplayMetrics appDm = XUtil.getContext().getResources().getDisplayMetrics();
+        final DisplayMetrics appDm = ResUtils.getResources().getDisplayMetrics();
         final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
         if (isVerticalSlide) {
             activityDm.density = activityDm.widthPixels / sizeInDp;
