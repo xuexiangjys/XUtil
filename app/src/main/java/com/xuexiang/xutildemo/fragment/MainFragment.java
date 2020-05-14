@@ -49,6 +49,7 @@ import static com.xuexiang.xutil.system.CameraUtils.REQUEST_CAMERA;
 @Page(name = "XUtil")
 public class MainFragment extends XPageSimpleListFragment {
     private File mCameraFile;
+
     /**
      * 初始化例子
      *
@@ -62,6 +63,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("社会化分享");
         lists.add("拍照");
         lists.add("uri获取文件路径测试");
+        lists.add("测试SAFUtils");
         return lists;
     }
 
@@ -96,6 +98,9 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 4:
                 openPage(UriPathFragment.class);
+                break;
+            case 5:
+                openPage(SAFFragment.class);
                 break;
             default:
                 break;

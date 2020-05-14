@@ -125,6 +125,35 @@ public final class FileIOUtils {
         }
     }
 
+    /**
+     * 将输入流写入输出流
+     *
+     * @param is       输入流
+     * @param targetOs 目标输出流
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileFromIS(final InputStream is, final OutputStream targetOs) {
+        if (targetOs == null) {
+            return false;
+        }
+        OutputStream os = null;
+        try {
+            os = new BufferedOutputStream(targetOs);
+            byte[] data = new byte[sBufferSize];
+            int len;
+            while ((len = is.read(data, 0, sBufferSize)) != -1) {
+                os.write(data, 0, len);
+            }
+            os.flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            CloseUtils.closeIO(is, os);
+        }
+    }
+
     //========================写Bytes文件（通过流）============================//
 
     /**
@@ -669,7 +698,7 @@ public final class FileIOUtils {
     /**
      * 读取输入流到字符串中
      *
-     * @param is  输入流
+     * @param is 输入流
      * @return 字符串
      */
     public static String readInputStream2String(InputStream is, final String charsetName) {

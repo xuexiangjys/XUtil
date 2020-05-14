@@ -17,7 +17,6 @@
 package com.xuexiang.xutil.file;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -147,7 +146,7 @@ public final class FileUtils {
      * @param fileName 文件名
      * @return 拼接的文件的路径
      */
-    private String getFilePath(String dirPath, String fileName) {
+    public static String getFilePath(String dirPath, String fileName) {
         return getDirPath(dirPath) + fileName;
     }
 
@@ -157,7 +156,7 @@ public final class FileUtils {
      * @param dirPath 目录路径
      * @return 自动补齐"/"的目录路径
      */
-    private String getDirPath(String dirPath) {
+    public static String getDirPath(String dirPath) {
         if (isSpace(dirPath)) {
             return "";
         }
@@ -223,7 +222,7 @@ public final class FileUtils {
             AssetFileDescriptor afd = null;
             try {
                 Uri uri = Uri.parse(filePath);
-                afd = SAFUtils.openAssetFileDescriptor(uri);
+                afd = SAFUtils.openAssetFileDescriptorWithException(uri);
                 if (afd == null) {
                     return false;
                 } else {

@@ -21,7 +21,7 @@ package com.xuexiang.constant;
  * @author xuexiang
  * @date 2018/2/16 下午10:23
  */
-public class DateFormatConstants {
+public final class DateFormatConstants {
 
     /**
      * yyyy-MM-dd
