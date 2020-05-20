@@ -376,7 +376,13 @@ public final class IntentUtils {
      * @return 关机的意图
      */
     public static Intent getShutdownIntent(final boolean isNewTask) {
-        Intent intent = new Intent(Intent.ACTION_SHUTDOWN);
+        Intent intent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent = new Intent(Intent.ACTION_SHUTDOWN);
+        } else {
+            intent = new Intent("com.android.internal.intent.action.REQUEST_SHUTDOWN");
+        }
+        intent.putExtra("android.intent.extra.KEY_CONFIRM", false);
         return getIntent(intent, isNewTask);
     }
 
@@ -578,9 +584,10 @@ public final class IntentUtils {
 
     /**
      * 获取Intent意图
+     *
      * @param context
-     * @param cls 类名
-     * @param action 动作
+     * @param cls     类名
+     * @param action  动作
      * @return
      */
     @NonNull
@@ -590,9 +597,10 @@ public final class IntentUtils {
 
     /**
      * 获取Intent意图
+     *
      * @param context
-     * @param cls 类名
-     * @param action 动作
+     * @param cls     类名
+     * @param action  动作
      * @return
      */
     @NonNull
@@ -612,9 +620,10 @@ public final class IntentUtils {
 
     /**
      * 传递数据
+     *
      * @param intent
-     * @param key 关键字
-     * @param param 数据
+     * @param key    关键字
+     * @param param  数据
      * @return
      */
     public static Intent putExtra(Intent intent, String key, Object param) {
@@ -657,9 +666,10 @@ public final class IntentUtils {
 
     /**
      * 传递数据
+     *
      * @param bundle
-     * @param key 关键字
-     * @param param 数据
+     * @param key    关键字
+     * @param param  数据
      * @return
      */
     public static Bundle putBundle(Bundle bundle, String key, Object param) {
@@ -710,19 +720,10 @@ public final class IntentUtils {
     }
 
     /**
-     * 获取从文件中选择照片的 Intent
-     *
-     * @return
-     */
-    public static Intent getPickIntentWithDocuments() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        return intent.setType("image/*");
-    }
-
-    /**
      * 获取文件选择的 Intent
+     *
      * @param documentType 文件类型
-     * @return
+     * @return 文件选择的 Intent
      */
     public static Intent getDocumentPickerIntent(@DocumentType String documentType) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

@@ -19,16 +19,20 @@ package com.xuexiang.xutil.app;
 
 import android.content.ContentValues;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringDef;
 
 import com.xuexiang.constant.MimeTypeConstants;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.logger.Logger;
+import com.xuexiang.xutil.display.ImageUtils;
 import com.xuexiang.xutil.file.FileIOUtils;
 import com.xuexiang.xutil.file.FileUtils;
 
@@ -38,6 +42,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import static com.xuexiang.constant.MimeTypeConstants.JPEG;
+import static com.xuexiang.constant.MimeTypeConstants.PNG;
+import static com.xuexiang.constant.MimeTypeConstants.WEBP;
 
 /**
  * SAF（Storage Access Framework）使用工具类
@@ -73,6 +81,29 @@ public final class SAFUtils {
     private SAFUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
+
+    /**
+     * 当前应用是否是以兼容模式运行;
+     *
+     * @return true: 是，false: 不是
+     */
+    public static boolean isExternalStorageLegacy() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return Environment.isExternalStorageLegacy();
+        }
+        return false;
+    }
+
+    /**
+     * 是否是分区存储模式：在公共目录下file的api无效了
+     *
+     * @return 是否是分区存储模式
+     */
+    public static boolean isScopedStorageMode() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Environment.isExternalStorageLegacy();
+    }
+
+    //================从uri资源符中获取输入/输出流====================//
 
     /**
      * 从uri资源符中获取输入流
@@ -124,7 +155,7 @@ public final class SAFUtils {
         return XUtil.getContentResolver().openOutputStream(uri);
     }
 
-    //====================================//
+    //================从uri资源符中读取文件描述====================//
 
     /**
      * 从uri资源符中读取文件描述
@@ -257,30 +288,199 @@ public final class SAFUtils {
         return XUtil.getContentResolver().openAssetFileDescriptor(uri, mode);
     }
 
+    //============删除文件===============//
 
-    //===========================//
+    /**
+     * 根据uri删除指定文件【需要权限】
+     *
+     * @param uri 文件uri
+     * @return 是否删除成功
+     */
+    public static boolean deleteFile(Uri uri) {
+        try {
+            deleteFileWithException(uri);
+        } catch (FileNotFoundException e) {
+            Logger.e(e);
+        }
+        return false;
+    }
+
+    /**
+     * 根据uri删除指定文件【需要权限】
+     *
+     * @param uri 文件uri
+     * @return 是否删除成功
+     */
+    public static boolean deleteFileWithException(Uri uri) throws FileNotFoundException {
+        if (isScopedStorageMode()) {
+            return DocumentsContract.deleteDocument(XUtil.getContentResolver(), uri);
+        } else {
+            return FileUtils.deleteFile(PathUtils.getFilePathByUri(uri));
+        }
+    }
+
+    //============写文件===============//
 
     /**
      * 写文件到外部公共下载目录
      *
-     * @param dirPath 外部公共下载目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/Download/test/
-     * @param name    文件名
+     * @param dirPath  外部公共下载目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/Download/test/
+     * @param fileName 文件名
      * @return {@code true}: 写入成功<br>{@code false}: 写入失败
      */
-    public static boolean writeFileToPublicDownloads(String dirPath, String name, InputStream inputStream) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Downloads.DISPLAY_NAME, name);
-            values.put(MediaStore.Downloads.MIME_TYPE, MimeTypeConstants.TXT);
-            values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + File.separator + dirPath);
-            Uri insertUri = XUtil.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+    public static boolean writeFileToPublicDownloads(String dirPath, String fileName, InputStream inputStream) {
+        if (isScopedStorageMode()) {
+            Uri insertUri = getFileDownloadUri(dirPath, fileName);
             if (insertUri != null) {
                 return FileIOUtils.writeFileFromIS(inputStream, SAFUtils.openOutputStream(insertUri));
             }
             return false;
         } else {
-            return FileIOUtils.writeFileFromIS(FileUtils.getFilePath(PathUtils.getExtDownloadsPath() + File.separator + dirPath, name), inputStream);
+            return FileIOUtils.writeFileFromIS(FileUtils.getFilePath(PathUtils.getExtDownloadsPath() + File.separator + dirPath, fileName), inputStream);
         }
+    }
+
+    /**
+     * 获取文件保存到外部公共下载目录的uri
+     *
+     * @param dirPath  外部公共下载目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/Download/test/
+     * @param fileName 文件名
+     * @return uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private static Uri getFileDownloadUri(String dirPath, String fileName) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, MimeTypeConstants.TXT);
+        values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + File.separator + dirPath);
+        return XUtil.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+    }
+
+    private static final String _PNG = ".png";
+    private static final String _WEBP = ".webp";
+    private static final String _JPG = ".jpg";
+    private static final String _JPEG = ".jpeg";
+
+    /**
+     * 保存图片到外部公共相机目录
+     *
+     * @param dirPath  外部公共相机目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/DCIM/test/
+     * @param fileName 文件名
+     * @param format   图片文件类型
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean saveImageToPublicDCIM(String dirPath, String fileName, Bitmap bitmap, Bitmap.CompressFormat format) {
+        if (isScopedStorageMode()) {
+            Uri insertUri = getImageDCIMUri(dirPath, fileName, format);
+            if (insertUri != null) {
+                return ImageUtils.save(bitmap, SAFUtils.openOutputStream(insertUri), format);
+            }
+            return false;
+        } else {
+            return ImageUtils.save(bitmap, FileUtils.getFilePath(PathUtils.getExtDCIMPath() + File.separator + dirPath, fileName), format);
+        }
+    }
+
+    /**
+     * 获取保存图片到外部公共相机目录的uri
+     *
+     * @param dirPath  外部公共相机目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/DCIM/test/
+     * @param fileName 文件名
+     * @param format   图片文件类型
+     * @return 图片的uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private static Uri getImageDCIMUri(String dirPath, String fileName, Bitmap.CompressFormat format) {
+        ContentValues values = new ContentValues();
+        String mimeType;
+        switch (format) {
+            case PNG:
+                mimeType = PNG;
+                if (!fileName.endsWith(_PNG)) {
+                    fileName = FileUtils.changeFileExtension(fileName, _PNG);
+                }
+                break;
+            case WEBP:
+                mimeType = WEBP;
+                if (!fileName.endsWith(_WEBP)) {
+                    fileName = FileUtils.changeFileExtension(fileName, _WEBP);
+                }
+                break;
+            case JPEG:
+            default:
+                mimeType = JPEG;
+                if (!(fileName.endsWith(_JPEG) || fileName.endsWith(_JPG))) {
+                    fileName = FileUtils.changeFileExtension(fileName, _JPEG);
+                }
+                break;
+        }
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM + File.separator + dirPath);
+        return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
+
+    /**
+     * 写图片文件到外部公共相机目录
+     *
+     * @param dirPath     外部公共相机目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/DCIM/test/
+     * @param fileName    文件名
+     * @param mimeType    图片文件类型
+     * @param inputStream 图片输入流
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeImageToPublicDCIM(String dirPath, String fileName, String mimeType, InputStream inputStream) {
+        if (isScopedStorageMode()) {
+            Uri insertUri = getImageDCIMUri(dirPath, fileName, mimeType);
+            if (insertUri != null) {
+                return FileIOUtils.writeFileFromIS(inputStream, SAFUtils.openOutputStream(insertUri));
+            }
+            return false;
+        } else {
+            return FileIOUtils.writeFileFromIS(FileUtils.getFilePath(PathUtils.getExtDCIMPath() + File.separator + dirPath, fileName), inputStream);
+        }
+    }
+
+    /**
+     * 获取保存图片到外部公共相机目录的uri
+     *
+     * @param dirPath  外部公共相机目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/DCIM/test/
+     * @param fileName 文件名
+     * @param mimeType 图片文件类型
+     * @return 图片的uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private static Uri getImageDCIMUri(String dirPath, String fileName, String mimeType) {
+        ContentValues values = new ContentValues();
+        switch (mimeType) {
+            case PNG:
+                if (!fileName.endsWith(_PNG)) {
+                    fileName = FileUtils.changeFileExtension(fileName, _PNG);
+                }
+                break;
+            case WEBP:
+                if (!fileName.endsWith(_WEBP)) {
+                    fileName = FileUtils.changeFileExtension(fileName, _WEBP);
+                }
+                break;
+            case JPEG:
+                if (!(fileName.endsWith(_JPEG) || fileName.endsWith(_JPG))) {
+                    fileName = FileUtils.changeFileExtension(fileName, _JPEG);
+                }
+                break;
+            default:
+                break;
+        }
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM + File.separator + dirPath);
+        return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
 }

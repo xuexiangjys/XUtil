@@ -65,6 +65,8 @@ public class SAFFragment extends XPageFragment {
      */
     public static final int REQUEST_FILE = 1000;
 
+    @BindView(R.id.tv_mode)
+    TextView tvMode;
     @BindView(R.id.tv_content)
     TextView tvContent;
     @BindView(R.id.tv_operation)
@@ -82,6 +84,7 @@ public class SAFFragment extends XPageFragment {
 
     @Override
     protected void initViews() {
+        tvMode.setText("当前是否是兼容模式运行:" + SAFUtils.isExternalStorageLegacy());
         tvOperation.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
 
@@ -104,11 +107,13 @@ public class SAFFragment extends XPageFragment {
                 readFile();
                 break;
             case R.id.btn_delete:
+                deleteFile();
                 break;
             case R.id.btn_read_image:
                 readImage();
                 break;
             case R.id.btn_write_image:
+                saveImage();
                 break;
             default:
                 break;
@@ -158,8 +163,8 @@ public class SAFFragment extends XPageFragment {
             return;
         }
 
-        if (!mFilePath.endsWith(".jpg")) {
-            ToastUtils.toast("请选择jpg图片");
+        if (!mFilePath.endsWith(".jpg") && !mFilePath.endsWith(".png")) {
+            ToastUtils.toast("请选择jpg或png图片");
             return;
         }
 
@@ -167,10 +172,49 @@ public class SAFFragment extends XPageFragment {
         showImg(bitmap);
     }
 
+    @IOThread
+    @Permission(STORAGE)
+    private void saveImage() {
+        if (!isSelectFile()) {
+            ToastUtils.toast("请先选择文件");
+            return;
+        }
+
+        if (!mFilePath.endsWith(".jpg") && !mFilePath.endsWith(".png")) {
+            ToastUtils.toast("请选择jpg或png图片");
+            return;
+        }
+
+        Bitmap bitmap = ImageUtils.getBitmap(SAFUtils.openInputStream(mUri));
+
+        String path = "test" + File.separator;
+        String name = DateUtils.getNowString(DateUtils.yyyyMMddHHmmssNoSep.get()) + ".jpg";
+        if (SAFUtils.saveImageToPublicDCIM(path, name, bitmap, Bitmap.CompressFormat.JPEG)) {
+            ToastUtils.toast("图片保存成功");
+        } else {
+            ToastUtils.toast("图片保存失败");
+        }
+    }
+
     @Permission(STORAGE)
     private void selectFile() {
         startActivityForResult(IntentUtils.getDocumentPickerIntent(IntentUtils.DocumentType.ANY), REQUEST_FILE);
     }
+
+    @Permission(STORAGE)
+    private void deleteFile() {
+        if (!isSelectFile()) {
+            ToastUtils.toast("请先选择文件");
+            return;
+        }
+
+        if (SAFUtils.deleteFile(mUri)) {
+            ToastUtils.toast("删除文件成功");
+        } else {
+            ToastUtils.toast("删除文件失败");
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -203,4 +247,5 @@ public class SAFFragment extends XPageFragment {
     private void showImg(Bitmap bitmap) {
         ivContent.setImageBitmap(bitmap);
     }
+
 }

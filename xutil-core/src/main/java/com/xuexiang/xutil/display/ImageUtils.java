@@ -55,6 +55,7 @@ import android.widget.ImageView;
 
 import com.xuexiang.constant.MemoryConstants;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.file.CloseUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -1701,13 +1702,52 @@ public final class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            CloseUtils.closeIOQuietly(os);
+        }
+        return ret;
+    }
+
+    /**
+     * Save the bitmap.
+     *
+     * @param src      The source of bitmap.
+     * @param targetOs The file of outputStream.
+     * @param format   The format of the image.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean save(final Bitmap src,
+                               final OutputStream targetOs,
+                               final CompressFormat format) {
+        return save(src, targetOs, format, false);
+    }
+
+
+    /**
+     * Save the bitmap.
+     *
+     * @param src      The source of bitmap.
+     * @param targetOs The file of outputStream.
+     * @param format   The format of the image.
+     * @param recycle  True to recycle the source of bitmap, false otherwise.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean save(final Bitmap src,
+                               final OutputStream targetOs,
+                               final CompressFormat format,
+                               final boolean recycle) {
+        if (isEmptyBitmap(src) || targetOs == null) {
+            return false;
+        }
+        OutputStream os = null;
+        boolean ret;
+        try {
+            os = new BufferedOutputStream(targetOs);
+            ret = src.compress(format, 100, os);
+            if (recycle && !src.isRecycled()) {
+                src.recycle();
             }
+        } finally {
+            CloseUtils.closeIOQuietly(os);
         }
         return ret;
     }

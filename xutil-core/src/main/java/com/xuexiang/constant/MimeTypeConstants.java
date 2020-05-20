@@ -37,6 +37,8 @@ public final class MimeTypeConstants {
 
     public static final String PNG = "image/png";
 
+    public static final String WEBP = "image/webp";
+
     public static final String MP3 = "audio/x-mpeg";
 
     public static final String MP4 = "video/mp4";

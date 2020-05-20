@@ -31,6 +31,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
@@ -146,7 +147,7 @@ public final class PathUtils {
      *
      * @return 照片和视频目录
      */
-    public static String getExtDcimPath() {
+    public static String getExtDCIMPath() {
         return Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
                 .getAbsolutePath();
@@ -558,6 +559,25 @@ public final class PathUtils {
                 }
             } else if (isDownloadsDocument(uri)) {
                 String documentId = DocumentsContract.getDocumentId(uri);
+
+                if (TextUtils.isEmpty(documentId)) {
+                    return null;
+                }
+                if (documentId.startsWith("raw:")) {
+                    return documentId.substring("raw:".length());
+                }
+
+                if (documentId.startsWith("msf:") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    String[] split = documentId.split(":");
+                    if (split.length == 2) {
+                        // content://media/external/downloads
+                        Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+                        String selection = MediaStore.Images.Media._ID + "=?";
+                        String[] selectionArgs = new String[]{split[1]};
+                        return getDataColumn(context, contentUri, selection, selectionArgs);
+                    }
+                }
+
                 long id = StringUtils.toLong(documentId, -1);
                 if (id != -1) {
                     String[] contentUriPrefixesToTry = new String[]{
@@ -573,20 +593,6 @@ public final class PathUtils {
                         }
                     }
                     return null;
-                } else {
-                    String[] split = documentId.split(":");
-                    String type = split[0];
-                    if (split.length == 2) {
-                        if ("raw".equals(type)) {
-                            return split[1];
-                        } else if ("msf".equals(type) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            // content://media/external/downloads
-                            Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
-                            String selection = MediaStore.Images.Media._ID + "=?";
-                            String[] selectionArgs = new String[]{split[1]};
-                            return getDataColumn(context, contentUri, selection, selectionArgs);
-                        }
-                    }
                 }
             } else if (isMediaDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
