@@ -350,14 +350,23 @@ public final class AppUtils {
     /**
      * 重启app
      */
-    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static void rebootApp() {
+        rebootApp(1000);
+    }
+
+    /**
+     * 重启app
+     *
+     * @param delayMillis 延迟时间
+     */
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
+    public static void rebootApp(int delayMillis) {
         Intent intent = IntentUtils.getLaunchAppIntent(XUtil.getContext().getPackageName());
         PendingIntent restartIntent = PendingIntent.getActivity(XUtil.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager mgr = (AlarmManager) XUtil.getContext().getSystemService(Context.ALARM_SERVICE);
+        AlarmManager mgr = XUtil.getSystemService(Context.ALARM_SERVICE, AlarmManager.class);
         if (mgr != null) {
             // 1秒钟后重启应用
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent);
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + delayMillis, restartIntent);
         }
         //退出程序
         exitApp();
@@ -1033,6 +1042,8 @@ public final class AppUtils {
                 return "-f";
             case APP_INSTALL_EXTERNAL:
                 return "-s";
+            default:
+                break;
         }
         return "";
     }
@@ -1053,6 +1064,8 @@ public final class AppUtils {
                         return APP_INSTALL_INTERNAL;
                     case APP_INSTALL_EXTERNAL:
                         return APP_INSTALL_EXTERNAL;
+                    default:
+                        break;
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();

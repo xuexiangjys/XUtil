@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.xuexiang.xutil.common.logger.Logger;
+import com.xuexiang.xutil.XUtil;
 
 /**
  * <pre>
@@ -33,7 +33,6 @@ import com.xuexiang.xutil.common.logger.Logger;
  */
 public final class PollingUtils {
 
-    private static final boolean DEBUG = true;
     private static final String TAG = "PollingUtils";
 
     /**
@@ -52,13 +51,7 @@ public final class PollingUtils {
      */
     public static boolean isPollingServiceExist(Context context, Class<?> cls) {
         Intent intent = new Intent(context, cls);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
-        if (DEBUG) {
-            if (pendingIntent != null) {
-                Logger.vTag(TAG, pendingIntent.toString());
-            }
-            Logger.vTag(TAG, pendingIntent != null ? "Exist" : "Not exist");
-        }
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
         return pendingIntent != null;
     }
 
@@ -82,14 +75,16 @@ public final class PollingUtils {
      * @param action   Action
      */
     public static void startPollingService(Context context, int interval, Class<?> cls, String action) {
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = XUtil.getSystemService(Context.ALARM_SERVICE, AlarmManager.class);
         Intent intent = new Intent(context, cls);
         if (!TextUtils.isEmpty(action)) {
             intent.setAction(action);
         }
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         long triggerAtTime = SystemClock.elapsedRealtime();
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime, interval * 1000, pendingIntent);
+        if (manager != null) {
+            manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime, interval * 1000, pendingIntent);
+        }
     }
 
     /**
@@ -110,13 +105,15 @@ public final class PollingUtils {
      * @param action  Action
      */
     public static void stopPollingService(Context context, Class<?> cls, String action) {
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = XUtil.getSystemService(Context.ALARM_SERVICE, AlarmManager.class);
         Intent intent = new Intent(context, cls);
         if (!TextUtils.isEmpty(action)) {
             intent.setAction(action);
         }
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        manager.cancel(pendingIntent);
+        if (manager != null) {
+            manager.cancel(pendingIntent);
+        }
     }
 
 }
