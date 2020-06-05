@@ -33,11 +33,13 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
+import com.xuexiang.constant.PathConstants;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.common.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
@@ -118,6 +120,35 @@ public final class PathUtils {
     }
 
     //===============================外置公共存储空间，这部分需要获取读取权限，并且在Android10以后文件读取都需要使用ContentResolver进行操作===========================================//
+
+    /**
+     * 是否是公有目录
+     *
+     * @return 是否是公有目录
+     */
+    public static boolean isPublicPath(File file) {
+        if (file == null) {
+            return false;
+        }
+        try {
+            return isPublicPath(file.getCanonicalFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 是否是公有目录
+     *
+     * @return 是否是公有目录
+     */
+    public static boolean isPublicPath(String filePath) {
+        if (StringUtils.isEmpty(filePath)) {
+            return false;
+        }
+        return filePath.startsWith(PathConstants.EXT_STORAGE_PATH) && !filePath.startsWith(PathConstants.APP_EXT_STORAGE_PATH);
+    }
 
     /**
      * 获取 Android 外置储存的根目录
@@ -580,19 +611,7 @@ public final class PathUtils {
 
                 long id = StringUtils.toLong(documentId, -1);
                 if (id != -1) {
-                    String[] contentUriPrefixesToTry = new String[]{
-                            "content://downloads/public_downloads",
-                            "content://downloads/all_downloads",
-                            "content://downloads/my_downloads"
-                    };
-                    for (String contentUriPrefix : contentUriPrefixesToTry) {
-                        Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), id);
-                        String filePath = getDataColumn(context, contentUri, null, null);
-                        if (filePath != null) {
-                            return filePath;
-                        }
-                    }
-                    return null;
+                    return getDownloadPathById(context, id);
                 }
             } else if (isMediaDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
@@ -629,6 +648,12 @@ public final class PathUtils {
             return uri.getPath();
         }
         return null;
+    }
+
+    @Nullable
+    private static String getDownloadPathById(Context context, long id) {
+        Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), id);
+        return getDataColumn(context, contentUri, null, null);
     }
 
 

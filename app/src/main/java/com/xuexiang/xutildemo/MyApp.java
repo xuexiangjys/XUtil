@@ -37,10 +37,16 @@ import java.util.List;
  */
 public class MyApp extends Application {
 
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        // 这个地方关闭自动初始化
+//        XUtil.disableAutoInit();
+//        super.attachBaseContext(base);
+//    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        XUtil.init(this);
         XUtil.debug(isDebug());
 
         PageConfig.getInstance().setPageConfiguration(new PageConfiguration() {
@@ -68,6 +74,5 @@ public class MyApp extends Application {
     public static boolean isDebug() {
         return BuildConfig.DEBUG;
     }
-
 
 }

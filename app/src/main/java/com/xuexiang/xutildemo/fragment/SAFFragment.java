@@ -25,6 +25,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import com.xuexiang.constant.MimeTypeConstants;
 import com.xuexiang.xaop.annotation.IOThread;
 import com.xuexiang.xaop.annotation.MainThread;
 import com.xuexiang.xaop.annotation.Permission;
@@ -94,7 +95,7 @@ public class SAFFragment extends XPageFragment {
     }
 
     @SingleClick
-    @OnClick({R.id.btn_select, R.id.btn_read, R.id.btn_write, R.id.btn_delete, R.id.btn_read_image, R.id.btn_write_image})
+    @OnClick({R.id.btn_select, R.id.btn_read, R.id.btn_write, R.id.btn_write_any, R.id.btn_read_image, R.id.btn_write_image})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_select:
@@ -106,8 +107,8 @@ public class SAFFragment extends XPageFragment {
             case R.id.btn_read:
                 readFile();
                 break;
-            case R.id.btn_delete:
-                deleteFile();
+            case R.id.btn_write_any:
+                writeAny();
                 break;
             case R.id.btn_read_image:
                 readImage();
@@ -127,7 +128,7 @@ public class SAFFragment extends XPageFragment {
         InputStream inputStream = ResourceUtils.openAssetsFile("test.txt");
         String path = "test" + File.separator;
         String name = DateUtils.getNowString(DateUtils.yyyyMMddHHmmssNoSep.get()) + ".txt";
-        if (SAFUtils.writeFileToPublicDownloads(path, name, inputStream)) {
+        if (SAFUtils.writeFileToPublicDownloads(path, name, MimeTypeConstants.TXT, inputStream)) {
             ToastUtils.toast("写入成功");
         } else {
             ToastUtils.toast("写入失败");
@@ -202,16 +203,14 @@ public class SAFFragment extends XPageFragment {
     }
 
     @Permission(STORAGE)
-    private void deleteFile() {
-        if (!isSelectFile()) {
-            ToastUtils.toast("请先选择文件");
-            return;
-        }
-
-        if (SAFUtils.deleteFile(mUri)) {
-            ToastUtils.toast("删除文件成功");
+    private void writeAny() {
+        InputStream inputStream = ResourceUtils.openAssetsFile("test.txt");
+        String path = PathUtils.getExtDownloadsPath() + File.separator + "test" + File.separator;
+        String name = DateUtils.getNowString(DateUtils.yyyyMMddHHmmssNoSep.get()) + ".txt";
+        if (SAFUtils.writeFileAny(path, name, MimeTypeConstants.TXT, inputStream)) {
+            ToastUtils.toast("写入成功");
         } else {
-            ToastUtils.toast("删除文件失败");
+            ToastUtils.toast("写入失败");
         }
     }
 

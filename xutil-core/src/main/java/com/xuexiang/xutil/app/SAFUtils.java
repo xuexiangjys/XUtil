@@ -24,12 +24,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StringDef;
 
-import com.xuexiang.constant.MimeTypeConstants;
+import com.xuexiang.constant.PathConstants;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.logger.Logger;
 import com.xuexiang.xutil.display.ImageUtils;
@@ -288,49 +287,19 @@ public final class SAFUtils {
         return XUtil.getContentResolver().openAssetFileDescriptor(uri, mode);
     }
 
-    //============删除文件===============//
-
-    /**
-     * 根据uri删除指定文件【需要权限】
-     *
-     * @param uri 文件uri
-     * @return 是否删除成功
-     */
-    public static boolean deleteFile(Uri uri) {
-        try {
-            deleteFileWithException(uri);
-        } catch (FileNotFoundException e) {
-            Logger.e(e);
-        }
-        return false;
-    }
-
-    /**
-     * 根据uri删除指定文件【需要权限】
-     *
-     * @param uri 文件uri
-     * @return 是否删除成功
-     */
-    public static boolean deleteFileWithException(Uri uri) throws FileNotFoundException {
-        if (isScopedStorageMode()) {
-            return DocumentsContract.deleteDocument(XUtil.getContentResolver(), uri);
-        } else {
-            return FileUtils.deleteFile(PathUtils.getFilePathByUri(uri));
-        }
-    }
-
-    //============写文件===============//
+    //============往下载目录中写文件===============//
 
     /**
      * 写文件到外部公共下载目录
      *
      * @param dirPath  外部公共下载目录中的相对目录，例如传入目录是：test/，对应的写入位置就是：/storage/emulated/0/Download/test/
      * @param fileName 文件名
+     * @param mimeType 文件类型
      * @return {@code true}: 写入成功<br>{@code false}: 写入失败
      */
-    public static boolean writeFileToPublicDownloads(String dirPath, String fileName, InputStream inputStream) {
+    public static boolean writeFileToPublicDownloads(String dirPath, String fileName, String mimeType, InputStream inputStream) {
         if (isScopedStorageMode()) {
-            Uri insertUri = getFileDownloadUri(dirPath, fileName);
+            Uri insertUri = getFileDownloadUri(dirPath, fileName, mimeType);
             if (insertUri != null) {
                 return FileIOUtils.writeFileFromIS(inputStream, SAFUtils.openOutputStream(insertUri));
             }
@@ -348,13 +317,15 @@ public final class SAFUtils {
      * @return uri
      */
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    private static Uri getFileDownloadUri(String dirPath, String fileName) {
+    private static Uri getFileDownloadUri(String dirPath, String fileName, String mimeType) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
-        values.put(MediaStore.Downloads.MIME_TYPE, MimeTypeConstants.TXT);
+        values.put(MediaStore.Downloads.MIME_TYPE, mimeType);
         values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + File.separator + dirPath);
         return XUtil.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
     }
+
+    //============往公共相机目录中保存图片===============//
 
     private static final String _PNG = ".png";
     private static final String _WEBP = ".webp";
@@ -423,6 +394,8 @@ public final class SAFUtils {
         return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
+    //============往公共相机目录中写入图片===============//
+
     /**
      * 写图片文件到外部公共相机目录
      *
@@ -482,5 +455,120 @@ public final class SAFUtils {
         values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM + File.separator + dirPath);
         return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
+
+    //================任意公有目录写文件========================//
+
+
+    /**
+     * 写文件到任意公有目录写文件
+     *
+     * @param dirPath     任意公有目录写文件
+     * @param fileName    文件名
+     * @param mimeType    文件类型
+     * @param inputStream 输入流
+     * @return {@code true}: 写入成功<br>{@code false}: 写入失败
+     */
+    public static boolean writeFileAny(String dirPath, String fileName, String mimeType, InputStream inputStream) {
+        if (isScopedStorageMode() && PathUtils.isPublicPath(dirPath)) {
+            Uri insertUri = getPublicFileUri(dirPath, fileName, mimeType);
+            if (insertUri != null) {
+                return FileIOUtils.writeFileFromIS(inputStream, SAFUtils.openOutputStream(insertUri));
+            }
+            return false;
+        } else {
+            return FileIOUtils.writeFileFromIS(FileUtils.getFilePath(dirPath, fileName), inputStream);
+        }
+    }
+
+    /**
+     * 根据目录、文件名和文件类型获取对应的uri
+     *
+     * @param dirPath  文件目录
+     * @param fileName 文件名
+     * @param mimeType 文件类型
+     * @return uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static Uri getPublicFileUri(String dirPath, String fileName, String mimeType) {
+        Uri uri;
+        if (dirPath.startsWith(PathConstants.EXT_DOWNLOADS_PATH)) {
+            uri = getPublicDownloadFileUri(dirPath, fileName, mimeType);
+        } else if (dirPath.startsWith(PathConstants.EXT_PICTURES_PATH) || dirPath.startsWith(PathConstants.EXT_DCIM_PATH)) {
+            uri = getPublicMediaFileUri(dirPath, fileName, mimeType);
+        } else {
+            uri = getPublicNormalFileUri(dirPath, fileName, mimeType);
+        }
+        return uri;
+    }
+
+    /**
+     * 获取文件保存到外部公共下载目录的uri
+     *
+     * @param dirPath  文件目录
+     * @param fileName 文件名
+     * @param mimeType 文件类型
+     * @return uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static Uri getPublicDownloadFileUri(String dirPath, String fileName, String mimeType) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.TITLE, fileName);
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, mimeType);
+        values.put(MediaStore.Downloads.RELATIVE_PATH, getRelativePath(dirPath));
+        return XUtil.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+    }
+
+    /**
+     * 获取外部公共多媒体的uri
+     *
+     * @param dirPath  文件目录
+     * @param fileName 文件名
+     * @param mimeType 文件类型
+     * @return 图片的uri
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static Uri getPublicMediaFileUri(String dirPath, String fileName, String mimeType) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, getRelativePath(dirPath));
+        if ("image".equals(mimeType)) {
+            return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        } else if ("audio".equals(mimeType)) {
+            return XUtil.getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values);
+        } else if ("video".equals(mimeType)) {
+            return XUtil.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+        } else {
+            return XUtil.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        }
+    }
+
+    /**
+     * 获取外部公共普通文件的uri
+     *
+     * @param dirPath  文件目录
+     * @param fileName 文件名
+     * @param mimeType 文件类型
+     * @return 普通文件的uri
+     */
+    public static Uri getPublicNormalFileUri(String dirPath, String fileName, String mimeType) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATA, FileUtils.getFilePath(dirPath, fileName));
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        return XUtil.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+    }
+
+    private static String getRelativePath(String dirPath) {
+        int index = dirPath.indexOf(PathConstants.EXT_STORAGE_DIR);
+        if (index != -1) {
+            return dirPath.substring(PathConstants.EXT_STORAGE_DIR.length());
+        }
+        return dirPath;
+    }
+
 
 }

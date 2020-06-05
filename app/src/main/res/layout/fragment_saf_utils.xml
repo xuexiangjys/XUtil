@@ -68,10 +68,10 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btn_delete"
+                    android:id="@+id/btn_write_any"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="删除文件" />
+                    android:text="随意写文件" />
 
                 <Button
                     android:id="@+id/btn_read_image"

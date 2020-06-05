@@ -18,6 +18,7 @@ package com.xuexiang.constant;
 
 /**
  * 日期格式
+ *
  * @author xuexiang
  * @date 2018/2/16 下午10:23
  */

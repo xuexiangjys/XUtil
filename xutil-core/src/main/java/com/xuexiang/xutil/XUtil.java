@@ -59,6 +59,26 @@ public final class XUtil {
     //===================初始化========================//
 
     /**
+     * 是否自动初始化
+     */
+    private static boolean sAutoInit = true;
+
+    /**
+     * 禁止自动初始化
+     * 请在Application的attachBaseContext方法前调用方可生效
+     */
+    public static void disableAutoInit() {
+        XUtil.sAutoInit = false;
+    }
+
+    /**
+     * @return 是否自动初始化
+     */
+    public static boolean isAutoInit() {
+        return sAutoInit;
+    }
+
+    /**
      * 初始化工具【注册activity的生命回调】
      *
      * @param application

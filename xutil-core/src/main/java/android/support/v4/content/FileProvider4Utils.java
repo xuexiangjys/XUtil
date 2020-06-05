@@ -16,16 +16,25 @@
 
 package android.support.v4.content;
 
+import android.app.Application;
 import android.support.annotation.Keep;
 
+import com.xuexiang.xutil.XUtil;
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2018/04/23
- *     desc  :
- * </pre>
+ * 提供FileProvider能力，并执行自动初始化
+ *
+ * @author xuexiang
+ * @since 2020/6/5 11:26 PM
  */
 @Keep
 public final class FileProvider4Utils extends FileProvider {
+
+    @Override
+    public boolean onCreate() {
+        if (XUtil.isAutoInit()) {
+            XUtil.init((Application)getContext().getApplicationContext());
+        }
+        return true;
+    }
 }
