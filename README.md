@@ -42,15 +42,9 @@ allprojects {
 
 ```
 //基础功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.7'
+implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.8'
 //附加功能的工具类
-implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.7'
-```
-
-3.在Application进行初始化:
-
-```
-XUtil.init(this);
+implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.8'
 ```
 
 ------------------------------------
