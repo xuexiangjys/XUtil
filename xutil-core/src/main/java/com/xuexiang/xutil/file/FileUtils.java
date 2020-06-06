@@ -1332,7 +1332,7 @@ public final class FileUtils {
         }
         DigestInputStream dis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            InputStream fis = getFileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("MD5");
             dis = new DigestInputStream(fis, md);
             byte[] buffer = new byte[1024 * 256];
@@ -1349,6 +1349,21 @@ public final class FileUtils {
             CloseUtils.closeIO(dis);
         }
         return null;
+    }
+
+    /**
+     * 获取文件输入流
+     *
+     * @param file 文件
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static InputStream getFileInputStream(File file) throws FileNotFoundException {
+        if (SAFUtils.isScopedStorageMode()) {
+            return SAFUtils.openInputStreamWithException(Uri.fromFile(file));
+        } else {
+            return new FileInputStream(file);
+        }
     }
 
     /**
