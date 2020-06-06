@@ -37,6 +37,7 @@ import com.xuexiang.constant.PathConstants;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.common.logger.Logger;
+import com.xuexiang.xutil.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,7 +132,7 @@ public final class PathUtils {
             return false;
         }
         try {
-            return isPublicPath(file.getCanonicalFile());
+            return isPublicPath(file.getCanonicalPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -439,19 +440,40 @@ public final class PathUtils {
      */
     public static Uri getMediaContentUri(Context context, File mediaFile) {
         String filePath = mediaFile.getAbsolutePath();
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        Uri baseUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Cursor cursor = context.getContentResolver().query(baseUri,
                 new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
                 new String[]{filePath}, null);
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
             cursor.close();
-            Uri baseUri = Uri.parse("content://media/external/images/media");
             return Uri.withAppendedPath(baseUri, "" + id);
         } else {
             if (mediaFile.exists()) {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.DATA, filePath);
-                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                return context.getContentResolver().insert(baseUri, values);
+            }
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static Uri getDownloadContentUri(Context context, File file) {
+        String filePath = file.getAbsolutePath();
+        Uri baseUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+        Cursor cursor = context.getContentResolver().query(baseUri,
+                new String[]{MediaStore.Downloads._ID}, MediaStore.Downloads.DATA + "=? ",
+                new String[]{filePath}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.DownloadColumns._ID));
+            cursor.close();
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (file.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Downloads.DATA, filePath);
+                return context.getContentResolver().insert(baseUri, values);
             }
             return null;
         }
@@ -473,6 +495,41 @@ public final class PathUtils {
             return FileProvider.getUriForFile(XUtil.getContext(), authority, file);
         } else {
             return Uri.fromFile(file);
+        }
+    }
+
+
+    /**
+     * 根据文件获取uri
+     *
+     * @param filePath 文件路径
+     * @return
+     */
+    public static Uri getUriByFilePath(final String filePath) {
+        return getUriByFile(FileUtils.getFileByPath(filePath));
+    }
+
+    /**
+     * 根据文件获取uri
+     *
+     * @param file 文件
+     * @return
+     */
+    public static Uri getUriByFile(final File file) {
+        if (file == null) {
+            return null;
+        }
+        if (SAFUtils.isScopedStorageMode() && isPublicPath(file)) {
+            String filePath = file.getAbsolutePath();
+            if (filePath.startsWith(PathConstants.EXT_DOWNLOADS_PATH)) {
+                return getDownloadContentUri(XUtil.getContext(), file);
+            } else if (filePath.startsWith(PathConstants.EXT_PICTURES_PATH) || filePath.startsWith(PathConstants.EXT_DCIM_PATH)) {
+                return getMediaContentUri(XUtil.getContext(), file);
+            } else {
+                return getUriForFile(file);
+            }
+        } else {
+            return getUriForFile(file);
         }
     }
 
@@ -603,7 +660,7 @@ public final class PathUtils {
                     if (split.length == 2) {
                         // content://media/external/downloads
                         Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
-                        String selection = MediaStore.Images.Media._ID + "=?";
+                        String selection = MediaStore.Downloads._ID + "=?";
                         String[] selectionArgs = new String[]{split[1]};
                         return getDataColumn(context, contentUri, selection, selectionArgs);
                     }
@@ -677,12 +734,16 @@ public final class PathUtils {
         return null;
     }
 
+    private static final String AUTHORITY_EXTERNAL_STORAGE_DOCUMENT = "com.android.externalstorage.documents";
+    private static final String AUTHORITY_DOWNLOADS_DOCUMENT = "com.android.providers.downloads.documents";
+    private static final String AUTHORITY_MEDIA_DOCUMENT = "com.android.providers.media.documents";
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
      */
     public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+        return AUTHORITY_EXTERNAL_STORAGE_DOCUMENT.equals(uri.getAuthority());
     }
 
     /**
@@ -690,7 +751,7 @@ public final class PathUtils {
      * @return Whether the Uri authority is DownloadsProvider.
      */
     public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+        return AUTHORITY_DOWNLOADS_DOCUMENT.equals(uri.getAuthority());
     }
 
     /**
@@ -698,7 +759,7 @@ public final class PathUtils {
      * @return Whether the Uri authority is MediaProvider.
      */
     public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
+        return AUTHORITY_MEDIA_DOCUMENT.equals(uri.getAuthority());
     }
 
     /**

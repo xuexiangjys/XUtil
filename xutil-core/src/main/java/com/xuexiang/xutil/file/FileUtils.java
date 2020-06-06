@@ -1330,23 +1330,20 @@ public final class FileUtils {
         if (file == null) {
             return null;
         }
-        DigestInputStream dis = null;
+        InputStream fis = null;
         try {
-            InputStream fis = getFileInputStream(file);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            dis = new DigestInputStream(fis, md);
-            byte[] buffer = new byte[1024 * 256];
-            while (true) {
-                if (!(dis.read(buffer) > 0)) {
-                    break;
-                }
+            fis = getFileInputStream(file);
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] buffer = new byte[8192];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, len);
             }
-            md = dis.getMessageDigest();
-            return md.digest();
+            return digest.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         } finally {
-            CloseUtils.closeIO(dis);
+            CloseUtils.closeIO(fis);
         }
         return null;
     }
@@ -1358,9 +1355,10 @@ public final class FileUtils {
      * @return
      * @throws FileNotFoundException
      */
-    public static InputStream getFileInputStream(File file) throws FileNotFoundException {
-        if (SAFUtils.isScopedStorageMode()) {
-            return SAFUtils.openInputStreamWithException(Uri.fromFile(file));
+    public static InputStream getFileInputStream(File file) throws IOException {
+        if (SAFUtils.isScopedStorageMode() && PathUtils.isPublicPath(file)) {
+            Uri uri = PathUtils.getUriByFile(file);
+            return SAFUtils.openInputStreamWithException(uri);
         } else {
             return new FileInputStream(file);
         }

@@ -95,7 +95,7 @@ public class SAFFragment extends XPageFragment {
     }
 
     @SingleClick
-    @OnClick({R.id.btn_select, R.id.btn_read, R.id.btn_write, R.id.btn_write_any, R.id.btn_read_image, R.id.btn_write_image})
+    @OnClick({R.id.btn_select, R.id.btn_read, R.id.btn_write, R.id.btn_write_any, R.id.btn_read_image, R.id.btn_write_image, R.id.btn_md5})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_select:
@@ -115,6 +115,9 @@ public class SAFFragment extends XPageFragment {
                 break;
             case R.id.btn_write_image:
                 saveImage();
+                break;
+            case R.id.btn_md5:
+                getMD5();
                 break;
             default:
                 break;
@@ -197,6 +200,16 @@ public class SAFFragment extends XPageFragment {
         }
     }
 
+    private void getMD5() {
+        if (!isSelectFile()) {
+            ToastUtils.toast("请先选择文件");
+            return;
+        }
+
+        String md5 = FileUtils.getFileMD5ToString(mFilePath);
+        showOperationResult(md5);
+    }
+
     @Permission(STORAGE)
     private void selectFile() {
         startActivityForResult(IntentUtils.getDocumentPickerIntent(IntentUtils.DocumentType.ANY), REQUEST_FILE);
@@ -246,5 +259,6 @@ public class SAFFragment extends XPageFragment {
     private void showImg(Bitmap bitmap) {
         ivContent.setImageBitmap(bitmap);
     }
+
 
 }
