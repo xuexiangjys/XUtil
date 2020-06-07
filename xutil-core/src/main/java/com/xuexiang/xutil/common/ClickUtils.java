@@ -82,22 +82,39 @@ public final class ClickUtils {
 
     //====================多次点击==========================//
 
-    private final static int COUNTS = 5;// 点击次数
-    private final static long DURATION = 1000;// 规定有效时间
-    private static long[] mHits = new long[COUNTS];
+    /**
+     * 点击次数
+     */
+    private final static int COUNTS = 5;
+    private static long[] sHits = new long[COUNTS];
+    /**
+     * 规定有效时间
+     */
+    private final static long DEFAULT_DURATION = 1000;
 
     /**
-     * 连续点击
+     * 一秒内连续点击5次
      *
-     * @param listener
+     * @param listener 多次点击的监听
      */
     public static void doClick(OnContinuousClickListener listener) {
+        doClick(DEFAULT_DURATION, listener);
+    }
+
+    /**
+     * 规定时间内连续点击5次
+     *
+     * @param duration 规定时间
+     * @param listener 多次点击的监听
+     */
+    public static void doClick(long duration, OnContinuousClickListener listener) {
         //每次点击时，数组向前移动一位
-        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+        System.arraycopy(sHits, 1, sHits, 0, sHits.length - 1);
         //为数组最后一位赋值
-        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
-        if (mHits[0] >= (SystemClock.uptimeMillis() - DURATION)) {
-            mHits = new long[COUNTS];//重新初始化数组
+        sHits[sHits.length - 1] = SystemClock.uptimeMillis();
+        if (sHits[0] >= (SystemClock.uptimeMillis() - duration)) {
+            //重新初始化数组
+            sHits = new long[COUNTS];
             if (listener != null) {
                 listener.onContinuousClick();
             }
@@ -113,6 +130,8 @@ public final class ClickUtils {
          */
         void onContinuousClick();
     }
+
+    //====================双击退出==========================//
 
     /**
      * 双击退出函数

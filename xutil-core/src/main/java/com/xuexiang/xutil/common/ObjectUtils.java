@@ -213,7 +213,6 @@ public final class ObjectUtils {
         return object;
     }
 
-
     /**
      * 类型强转
      *
@@ -223,7 +222,25 @@ public final class ObjectUtils {
      * @return 类型强转结果
      */
     public static <T> T cast(final Object object, Class<T> clazz) {
-        return object != null && clazz.isInstance(object) ? (T) object : null;
+        return clazz != null && clazz.isInstance(object) ? (T) object : null;
+    }
+
+    /**
+     * 类型强转
+     *
+     * @param object       需要强转的对象
+     * @param defaultValue 强转的默认值
+     * @param <T>
+     * @return 类型强转结果
+     */
+    public static <T> T cast(Object object, T defaultValue) {
+        if (defaultValue == null) {
+            return null;
+        } else if (object == null) {
+            return null;
+        } else {
+            return defaultValue.getClass() == object.getClass() ? (T) object : defaultValue;
+        }
     }
 
     /**

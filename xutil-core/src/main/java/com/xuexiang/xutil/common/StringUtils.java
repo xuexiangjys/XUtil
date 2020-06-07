@@ -148,6 +148,26 @@ public final class StringUtils {
     }
 
     /**
+     * 裁剪字符串
+     *
+     * @param originalStr 原字符串
+     * @param beginIndex  开始的索引
+     * @param endIndex    结束的索引
+     * @return
+     */
+    public static String cutString(String originalStr, int beginIndex, int endIndex) {
+        if (isEmpty(originalStr)) {
+            return originalStr;
+        } else {
+            try {
+                return originalStr.substring(beginIndex, endIndex);
+            } catch (IndexOutOfBoundsException e) {
+                return originalStr;
+            }
+        }
+    }
+
+    /**
      * String转Int（防止崩溃）
      *
      * @param value
@@ -168,9 +188,8 @@ public final class StringUtils {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
     /**
@@ -194,9 +213,8 @@ public final class StringUtils {
         try {
             return Float.parseFloat(value);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
 
@@ -221,9 +239,8 @@ public final class StringUtils {
         try {
             return Short.parseShort(value);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
     /**
@@ -247,9 +264,8 @@ public final class StringUtils {
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
     /**
@@ -274,9 +290,8 @@ public final class StringUtils {
         try {
             return Double.parseDouble(value);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
     /**
@@ -300,9 +315,8 @@ public final class StringUtils {
         try {
             return Boolean.parseBoolean(value);
         } catch (Exception e) {
-            e.printStackTrace();
+            return defValue;
         }
-        return defValue;
     }
 
     /**
