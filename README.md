@@ -40,6 +40,20 @@ allprojects {
 
 2.然后在dependencies添加:
 
+以下是版本说明，选择一个即可。
+
+* androidx版本：2.0.0及以上
+
+
+```
+//基础功能的工具类
+implementation 'com.github.xuexiangjys.XUtil:xutil-core:2.0.0'
+//附加功能的工具类
+implementation 'com.github.xuexiangjys.XUtil:xutil-sub:2.0.0'
+```
+
+* support版本：1.1.8及以下
+
 ```
 //基础功能的工具类
 implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.8'
@@ -67,11 +81,11 @@ implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.8'
 
 https://github.com/Blankj/AndroidUtilCode
 
-## 联系方式
+## 公众号
 
-[![](https://img.shields.io/badge/点击一键加入QQ群-602082750-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=9922861ef85c19f1575aecea0e8680f60d9386080a97ed310c971ae074998887)
+> 更多资讯内容，欢迎扫描关注我的个人微信公众号:【我的Android开源之旅】
 
-![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
+![gzh_weixin.jpg](https://img.rruu.net/image/5f871cfff3194)
 
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
