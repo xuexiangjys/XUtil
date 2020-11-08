@@ -20,7 +20,8 @@ package com.xuexiang.xutil.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.common.logger.Logger;

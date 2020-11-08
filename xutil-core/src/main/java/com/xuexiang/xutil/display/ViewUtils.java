@@ -26,12 +26,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +41,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;

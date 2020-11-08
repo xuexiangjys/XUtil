@@ -1,6 +1,6 @@
 package com.xuexiang.xutil;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xutil.common.MapUtils;
 import com.xuexiang.xutil.data.DateUtils;

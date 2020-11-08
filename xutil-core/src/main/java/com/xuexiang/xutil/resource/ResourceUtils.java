@@ -19,7 +19,8 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.common.logger.Logger;

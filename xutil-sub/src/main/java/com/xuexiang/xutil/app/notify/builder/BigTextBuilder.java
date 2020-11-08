@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.app.notify.builder;
 
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 /**
  * <pre>

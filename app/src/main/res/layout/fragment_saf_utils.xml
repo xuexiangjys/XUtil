@@ -20,7 +20,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -131,7 +131,7 @@
                 android:scrollbars="vertical"
                 android:singleLine="false" />
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_content"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
@@ -139,6 +139,6 @@
         </LinearLayout>
 
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

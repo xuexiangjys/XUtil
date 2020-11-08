@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.net.type.impl;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xutil.net.type.TypeException;
 

@@ -24,9 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
-import android.support.v4.content.FileProvider;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
+import androidx.core.content.FileProvider;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;

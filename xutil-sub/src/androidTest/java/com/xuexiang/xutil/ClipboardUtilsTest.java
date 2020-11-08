@@ -18,8 +18,9 @@ package com.xuexiang.xutil;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
 import com.xuexiang.xutil.system.ClipboardUtils;
 

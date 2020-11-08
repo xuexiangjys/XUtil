@@ -16,8 +16,8 @@
 
 package com.xuexiang.xutil.common;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -32,7 +32,7 @@ import java.util.Set;
  */
 public final class MapUtils {
 
-    private static final Object sLock = new Object();
+    private static final Object LOCK = new Object();
 
     private MapUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -127,7 +127,7 @@ public final class MapUtils {
      */
     public static <K, V> void modifyMap(@NonNull Map<K, V> map, @NonNull OnModifyMapListener<K, V> listener) {
         Iterator<Map.Entry<K, V>> it = map.entrySet().iterator();
-        synchronized (sLock) {
+        synchronized (LOCK) {
             while (it.hasNext()) {
                 Map.Entry<K, V> entry = it.next();
                 listener.onModifyMap(it, entry);

@@ -24,9 +24,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiManager;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;

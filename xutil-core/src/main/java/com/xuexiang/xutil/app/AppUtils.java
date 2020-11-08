@@ -32,11 +32,12 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ShellUtils;

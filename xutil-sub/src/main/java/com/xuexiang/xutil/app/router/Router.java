@@ -21,9 +21,10 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.xuexiang.xutil.app.IntentUtils;
 
@@ -43,7 +44,7 @@ public class Router {
     private Activity fromActivity;
 
     private Fragment fromFragment;
-    private android.support.v4.app.Fragment fromFragmentV4;
+    private androidx.fragment.app.Fragment fromFragmentV4;
 
     private Class<?> to;
     private Bundle data;
@@ -72,7 +73,7 @@ public class Router {
         return router;
     }
 
-    public static Router newIntent(android.support.v4.app.Fragment fragment) {
+    public static Router newIntent(androidx.fragment.app.Fragment fragment) {
         Router router = new Router();
         router.fromFragmentV4 = fragment;
         return router;

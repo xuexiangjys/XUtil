@@ -19,7 +19,8 @@ package com.xuexiang.constant;
 import android.Manifest;
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
-import android.support.annotation.StringDef;
+import android.os.Build;
+import androidx.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -66,9 +67,14 @@ public final class PermissionConstants {
             permission.RECORD_AUDIO
     };
     private static final String[] GROUP_PHONE = {
-            permission.READ_PHONE_STATE, permission.MODIFY_PHONE_STATE, permission.CALL_PHONE,
-            permission.READ_CALL_LOG, permission.WRITE_CALL_LOG,
-            permission.ADD_VOICEMAIL, permission.USE_SIP, permission.PROCESS_OUTGOING_CALLS
+            permission.READ_PHONE_STATE, permission.READ_PHONE_NUMBERS, permission.CALL_PHONE,
+            permission.READ_CALL_LOG, permission.WRITE_CALL_LOG, permission.ADD_VOICEMAIL,
+            permission.USE_SIP, permission.PROCESS_OUTGOING_CALLS, permission.ANSWER_PHONE_CALLS
+    };
+    private static final String[] GROUP_PHONE_BELOW_O = {
+            permission.READ_PHONE_STATE, permission.READ_PHONE_NUMBERS, permission.CALL_PHONE,
+            permission.READ_CALL_LOG, permission.WRITE_CALL_LOG, permission.ADD_VOICEMAIL,
+            permission.USE_SIP, permission.PROCESS_OUTGOING_CALLS
     };
     private static final String[] GROUP_SENSORS = {
             permission.BODY_SENSORS
@@ -99,7 +105,11 @@ public final class PermissionConstants {
             case MICROPHONE:
                 return GROUP_MICROPHONE;
             case PHONE:
-                return GROUP_PHONE;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    return GROUP_PHONE_BELOW_O;
+                } else {
+                    return GROUP_PHONE;
+                }
             case SENSORS:
                 return GROUP_SENSORS;
             case SMS:

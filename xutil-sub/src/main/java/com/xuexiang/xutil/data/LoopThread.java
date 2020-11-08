@@ -21,6 +21,8 @@ public abstract class LoopThread extends Thread {
     protected abstract void doWork() throws Exception;
 
     /**
+     * 获取循环执行的间期
+     *
      * @return 循环执行的间期
      */
     protected abstract long getLoopInterval();

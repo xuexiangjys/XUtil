@@ -25,8 +25,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringDef;
+
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringDef;
 
 import com.xuexiang.constant.PathConstants;
 import com.xuexiang.xutil.XUtil;

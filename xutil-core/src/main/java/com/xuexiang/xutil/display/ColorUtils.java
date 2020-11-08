@@ -18,9 +18,10 @@ package com.xuexiang.xutil.display;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xutil.resource.ResUtils;
 

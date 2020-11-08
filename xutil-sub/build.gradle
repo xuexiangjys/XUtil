@@ -24,7 +24,7 @@ android {
         minSdkVersion 14
         targetSdkVersion build_versions.target_sdk
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -35,8 +35,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly deps.support.app_compat
-    compileOnly deps.support.design
+    compileOnly deps.androidx.appcompat
+    compileOnly deps.androidx.design
     testImplementation deps.junit
 
     androidTestImplementation deps.runner

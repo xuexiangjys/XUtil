@@ -18,7 +18,7 @@
 #保护注解
 -keepattributes *Annotation*
 #忽略警告
--ignorewarning
+-ignorewarnings
 
 ##记录生成的日志数据,gradle build时在本项目根目录输出##
 #apk 包内所有 class 的内部结构
@@ -47,7 +47,7 @@
 -keep public class com.android.vending.licensing.ILicensingService
 
 #如果有引用v4包可以添加下面这行
--keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends androidx.core.app.Fragment
 
 ##########JS接口类不混淆，否则执行不了
 -dontwarn com.android.JsInterface.**

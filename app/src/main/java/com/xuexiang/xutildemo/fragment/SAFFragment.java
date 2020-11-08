@@ -20,10 +20,11 @@ package com.xuexiang.xutildemo.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.xuexiang.constant.MimeTypeConstants;
 import com.xuexiang.xaop.annotation.IOThread;

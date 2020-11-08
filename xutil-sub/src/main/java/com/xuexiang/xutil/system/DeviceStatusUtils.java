@@ -25,9 +25,10 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.RequiresPermission;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.common.StringUtils;
 

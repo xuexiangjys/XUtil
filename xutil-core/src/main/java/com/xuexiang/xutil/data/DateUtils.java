@@ -17,7 +17,8 @@
 package com.xuexiang.xutil.data;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.xuexiang.constant.DateFormatConstants;
 import com.xuexiang.constant.TimeConstants;
@@ -32,6 +33,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.xuexiang.constant.TimeConstants.DAY;
+import static com.xuexiang.constant.TimeConstants.HOUR;
 import static com.xuexiang.constant.TimeConstants.MIN;
 import static com.xuexiang.constant.TimeConstants.SEC;
 import static com.xuexiang.xutil.common.StringUtils.EMPTY;
@@ -766,9 +769,7 @@ public final class DateUtils {
     public static String getFriendlyTimeSpanByNow(final long millis) {
         long now = System.currentTimeMillis();
         long span = now - millis;
-        if (span < 0)
-            // U can read http://www.apihome.cn/api/java/Formatter.html to understand it.
-        {
+        if (span < 0) {
             return String.format("%tc", millis);
         }
         if (span < 1000) {
@@ -798,11 +799,26 @@ public final class DateUtils {
         return cal.getTimeInMillis();
     }
 
-    public static final int YEAR = 365 * 24 * 60 * 60;// 年
-    public static final int MONTH = 30 * 24 * 60 * 60;// 月
-    public static final int DAY = 24 * 60 * 60;// 天
-    public static final int HOUR = 60 * 60;// 小时
-    public static final int MINUTE = 60;// 分钟
+    /**
+     * 年，单位【s】
+     */
+    private static final int YEAR_S = 365 * 24 * 60 * 60;
+    /**
+     * 月，单位【s】
+     */
+    private static final int MONTH_S = 30 * 24 * 60 * 60;
+    /**
+     * 天，单位【s】
+     */
+    private static final int DAY_S = 24 * 60 * 60;
+    /**
+     * 小时，单位【s】
+     */
+    private static final int HOUR_S = 60 * 60;
+    /**
+     * 分钟，单位【s】
+     */
+    private static final int MINUTE_S = 60;
 
     /**
      * 根据时间戳获取模糊型的时间描述。
@@ -857,18 +873,19 @@ public final class DateUtils {
      */
     public static String getFuzzyTimeDescriptionByNow(final long timestamp) {
         long currentTime = System.currentTimeMillis();
-        long timeGap = (currentTime - timestamp) / 1000;// 与现在时间相差秒数
+        // 与现在时间相差秒数
+        long timeGap = (currentTime - timestamp) / 1000;
         String timeStr;
         long span;
-        if ((span = Math.round((float) timeGap / YEAR)) > 0) {
+        if ((span = Math.round((float) timeGap / YEAR_S)) > 0) {
             timeStr = span + "年前";
-        } else if ((span = Math.round((float) timeGap / MONTH)) > 0) {
+        } else if ((span = Math.round((float) timeGap / MONTH_S)) > 0) {
             timeStr = span + "个月前";
-        } else if ((span = Math.round((float) timeGap / DAY)) > 0) {// 1天以上
+        } else if ((span = Math.round((float) timeGap / DAY_S)) > 0) {// 1天以上
             timeStr = span + "天前";
-        } else if ((span = Math.round((float) timeGap / HOUR)) > 0) {// 1小时-24小时
+        } else if ((span = Math.round((float) timeGap / HOUR_S)) > 0) {// 1小时-24小时
             timeStr = span + "小时前";
-        } else if ((span = Math.round((float) timeGap / MINUTE)) > 0) {// 1分钟-59分钟
+        } else if ((span = Math.round((float) timeGap / MINUTE_S)) > 0) {// 1分钟-59分钟
             timeStr = span + "分钟前";
         } else {// 1秒钟-59秒钟
             timeStr = "刚刚";

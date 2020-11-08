@@ -20,7 +20,8 @@ package com.xuexiang.xutil.common;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+
+import androidx.annotation.RequiresApi;
 
 import com.xuexiang.xutil.resource.ResUtils;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 xuexiangjys(xuexiangjys@163.com)
+ * Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,14 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package android.support.v4.content;
+package androidx.core.content;
 
 import android.app.Application;
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
 
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.common.ObjectUtils;
 
 /**
  * 提供FileProvider能力，并执行自动初始化
@@ -33,8 +36,11 @@ public final class FileProvider4Utils extends FileProvider {
     @Override
     public boolean onCreate() {
         if (XUtil.isAutoInit()) {
-            XUtil.init((Application)getContext().getApplicationContext());
+            Application application = ObjectUtils.cast(getContext(), Application.class);
+            if (application != null) {
+                XUtil.init(application.getApplicationContext());
+            }
         }
-        return true;
+        return super.onCreate();
     }
 }

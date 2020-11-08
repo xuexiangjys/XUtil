@@ -16,7 +16,7 @@
 
 package com.xuexiang.xutil.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

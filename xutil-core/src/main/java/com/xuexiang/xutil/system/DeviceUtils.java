@@ -26,8 +26,9 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
+
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.AppUtils;

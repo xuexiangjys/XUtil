@@ -20,7 +20,7 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider4Utils"
+            android:name="androidx.core.content.FileProvider4Utils"
             android:authorities="${applicationId}.xutil.provider"
             android:exported="false"
             android:grantUriPermissions="true">

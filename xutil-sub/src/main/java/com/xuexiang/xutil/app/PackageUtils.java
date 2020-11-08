@@ -28,9 +28,10 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.RequiresPermission;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresPermission;
+import androidx.core.content.FileProvider;
 
 import com.xuexiang.xutil.common.ShellUtils;
 import com.xuexiang.xutil.common.ShellUtils.CommandResult;

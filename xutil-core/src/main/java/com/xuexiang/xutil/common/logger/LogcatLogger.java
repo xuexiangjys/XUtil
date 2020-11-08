@@ -16,8 +16,9 @@
 
 package com.xuexiang.xutil.common.logger;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

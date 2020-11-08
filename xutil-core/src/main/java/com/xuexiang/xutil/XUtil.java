@@ -24,8 +24,9 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.app.ActivityLifecycleHelper;
 import com.xuexiang.xutil.app.AppUtils;

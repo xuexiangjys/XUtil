@@ -21,9 +21,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresPermission;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
+
+import androidx.annotation.RequiresPermission;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.IntentUtils;

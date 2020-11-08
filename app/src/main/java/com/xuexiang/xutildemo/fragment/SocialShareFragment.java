@@ -18,14 +18,20 @@ package com.xuexiang.xutildemo.fragment;
 
 import android.content.Intent;
 
+import androidx.fragment.app.Fragment;
+
+import com.luck.picture.lib.PictureSelectionModel;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.SocialShareUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import me.iwf.photopicker.PhotoPicker;
 
 import static android.app.Activity.RESULT_OK;
 import static com.xuexiang.xutil.app.IntentUtils.DocumentType.ANY;
@@ -85,27 +91,18 @@ public class SocialShareFragment extends XPageSimpleListFragment {
             //分享多张图片
             case 3:
                 mShareType = DEFAULT;
-                PhotoPicker.builder()
-                        .setPhotoCount(9)
-                        .setGridColumnCount(4)
-                        .start(getContext(), this, REQUEST_CODE_MULTIPLE_PICTURE);
-
+                getPictureSelector(this)
+                        .forResult(REQUEST_CODE_MULTIPLE_PICTURE);
                 break;
             case 4:
                 mShareType = WE_CHAT_CIRCLE;
-                PhotoPicker.builder()
-                        .setPhotoCount(9)
-                        .setGridColumnCount(4)
-                        .start(getContext(), this, REQUEST_CODE_MULTIPLE_PICTURE);
-
+                getPictureSelector(this)
+                        .forResult(REQUEST_CODE_MULTIPLE_PICTURE);
                 break;
             case 5:
                 mShareType = WE_CHAT_CONTACTS;
-                PhotoPicker.builder()
-                        .setPhotoCount(9)
-                        .setGridColumnCount(4)
-                        .start(getContext(), this, REQUEST_CODE_MULTIPLE_PICTURE);
-
+                getPictureSelector(this)
+                        .forResult(REQUEST_CODE_MULTIPLE_PICTURE);
                 break;
 
             //分享视频
@@ -163,7 +160,11 @@ public class SocialShareFragment extends XPageSimpleListFragment {
                     break;
                 case REQUEST_CODE_MULTIPLE_PICTURE:
                     if (data != null) {
-                        List<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                        List<LocalMedia> photoDatas = PictureSelector.obtainMultipleResult(data);
+                        List<String> photos = new ArrayList<>();
+                        for (LocalMedia localMedia : photoDatas) {
+                            photos.add(localMedia.getPath());
+                        }
                         switch (mShareType) {
                             case DEFAULT:
                                 SocialShareUtils.shareMultiplePicture(getActivity(), photos);
@@ -193,6 +194,26 @@ public class SocialShareFragment extends XPageSimpleListFragment {
                     break;
             }
         }
+    }
+
+
+    /**
+     * 获取图片选择的配置
+     *
+     * @param fragment
+     * @return
+     */
+    public static PictureSelectionModel getPictureSelector(Fragment fragment) {
+        return PictureSelector.create(fragment)
+                .openGallery(PictureMimeType.ofImage())
+                .maxSelectNum(9)
+                .minSelectNum(1)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .previewImage(true)
+                .isCamera(true)
+                .enableCrop(false)
+                .compress(true)
+                .previewEggs(true);
     }
 
 

@@ -19,8 +19,9 @@ package com.xuexiang.xutil.system;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.File;

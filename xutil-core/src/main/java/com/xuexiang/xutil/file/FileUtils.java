@@ -24,8 +24,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.PathUtils;
@@ -40,7 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;

@@ -28,10 +28,11 @@ import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import com.xuexiang.constant.PathConstants;
 import com.xuexiang.xutil.XUtil;
